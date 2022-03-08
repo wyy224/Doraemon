@@ -39,3 +39,6 @@ def typography():
 @app.route('/shop')
 def shop():
     return render_template('shop.html')
+@app.route('/single')
+def single():
+    return render_template('single.html')
