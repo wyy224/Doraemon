@@ -36,3 +36,6 @@ def service():
 @app.route('/typography')
 def typography():
     return render_template('typography.html')
+@app.route('/shop')
+def shop():
+    return render_template('shop.html')
