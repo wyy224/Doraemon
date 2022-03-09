@@ -42,3 +42,6 @@ def shop():
 @app.route('/single')
 def single():
     return render_template('single.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
