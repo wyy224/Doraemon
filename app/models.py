@@ -1,8 +1,6 @@
-from app.__init__ import db
+from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
 
 
 # A table of users in database
@@ -23,13 +21,13 @@ class User(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.user_name)
 
-    # encrypt password
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    # translate password
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+    # # encrypt password
+    # def set_password(self, password):
+    #     self.password_hash = generate_password_hash(password)
+    #
+    # # translate password
+    # def check_password(self, password):
+    #     return check_password_hash(self.password_hash, password)
 
 
 # A table of ranking list
@@ -51,8 +49,8 @@ class Cart(db.Model):
     __tablename__ = "cart"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    commodity_id = db.Column(db.Integer, db.Foreignkey('commodity.id'))
-    user_id = db.Column(db.Integer, db.Foreignkey('user.id'))
+    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     add_time = db.Column(db.DateTime, default=datetime.now)
     commodity_num = db.Column(db.Integer, default=1, nullable=False)
 
@@ -62,8 +60,8 @@ class Order(db.Model):
     __tablename__ = "order"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    commodity_id = db.Column(db.Integer, db.Foreignkey('commodity.id'))
-    user_id = db.Column(db.Integer, db.Foreignkey('user.id'))
+    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     purchase_time = db.Column(db.DateTime, default=datetime.now)
     commodity_num = db.Column(db.Integer, default=0, nullable=False)
     address = db.Column(db.String(64), nullable=False)
