@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
 }
-body{
+.log{
     height: 100vh;
     display: flex;
     justify-content: center;
