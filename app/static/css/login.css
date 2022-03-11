@@ -7,7 +7,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(200deg,#80bdff,#D1E0EE);
+    background: linear-gradient(200deg, #3b94f3,#80bdff,#D1E0EE);
+    background-size: 400% 400%;
+	animation: gradientBG 5s ease infinite;
+}
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 .container{
     background-color: #fff;
