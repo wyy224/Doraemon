@@ -3,13 +3,12 @@
     padding: 0;
 }
 .log{
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(200deg, #3b94f3,#80bdff,#D1E0EE);
-    background-size: 400% 400%;
-	animation: gradientBG 5s ease infinite;
+    background: url(../image/login.jpg)no-repeat center;
+    background-size: cover;
 }
 
 @keyframes gradientBG {
@@ -35,7 +34,7 @@
     position: absolute;
     top: -10%;
     left: 5%;
-    background-color: #d3b7d8;
+    background-color: black;
     width: 320px;
     height: 500px;
     border-radius: 5px;
@@ -68,7 +67,7 @@ input{
     width: 70%;
     color: #fff;
     border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.4);
+    border-bottom: 1px solid rgba(255,255,255,1);
     padding: 10px 0;
     text-indent: 10px;
     margin: 8px 0;
@@ -77,11 +76,12 @@ input{
 }
 input::placeholder{
     color: #fff;
+    opacity: 0.8;
 }
 input:focus{
-    color: #a262ad;
+    color: #F35091;
     outline: none;
-    border-bottom: 1px solid #a262ad80;
+    border-bottom: 1px solid #F35091;
     transition: 0.5s;
 }
 input:focus::placeholder{
@@ -94,13 +94,13 @@ input:focus::placeholder{
     outline: none;
     border-radius: 8px;
     padding: 13px;
-    color: #a262ad;
+    color: #F35091;
     letter-spacing: 2px;
     border: none;
     cursor: pointer;
 }
 .form-box button:hover{
-    background-color: #a262ad;
+    background-color: #F35091;
     color: #f6f6f6;
     transition: background-color 0.5s ease;
 }
@@ -135,7 +135,7 @@ input:focus::placeholder{
     text-align: center;
 }
 .con-box span{
-    color: #d3b7d8;
+    color: #F35091;
 }
 .con-box img{
     width: 150px;
@@ -146,7 +146,7 @@ input:focus::placeholder{
 .con-box button{
     margin-top: 3%;
     background-color: #fff;
-    color: #a262ad;
+    color: #F35091;
     border: 1px solid #d3b7d8;
     padding: 6px 10px;
     border-radius: 5px;
@@ -155,6 +155,6 @@ input:focus::placeholder{
     cursor: pointer;
 }
 .con-box button:hover{
-    background-color: #d3b7d8;
+    background-color: #ff3b9f;
     color: #fff;
 }
