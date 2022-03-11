@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="keywords" content="Toys Shop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+         Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design">
+      <script>
+         addEventListener("load", function () {
+         	setTimeout(hideURLbar, 0);
+         }, false);
+
+         function hideURLbar() {
+         	window.scrollTo(0, 1);
+         }
+      </script>
+      <!--//meta tags ends here-->
+      <!--booststrap-->
+      <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+      <!--//booststrap end-->
+      <!-- font-awesome icons -->
+      <link href="../static/css/fontawesome-all.min.css" rel="stylesheet" type="text/css" media="all">
+      <!-- //font-awesome icons -->
+      <!--Shoping cart-->
+      <link rel="stylesheet" href="../static/css/shop.css" type="text/css">
+      <!--//Shoping cart-->
+      <!--stylesheets-->
+      <link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all">
+      <!--//stylesheets-->
+
+      <!-- short -->
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewpoint" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <title>Login</title>
+        <link rel="stylesheet" href="../static/css/login.css">
+
+
+    <div style="height: 31vh"></div>
+    <div class="log">
+        <div class="container">
+            <div class="form-box">
+                <form action="" method="post">
+                    <div class="register-box hidden">
+                        <h1>register</h1>
+                        <input type="text" placeholder="UserName" name="username1">
+                        <input type="email" placeholder="Email" name="email">
+                        <input type="password" placeholder="Password" name="password1">
+                        <input type="password" placeholder="Confirm Password" name="password2">
+                        <button>Register</button>
+                    </div>
+                    <div class="login-box">
+                        <h1>login</h1>
+                        <input type="text" placeholder="UserName" name = "username2">
+                        <input type="password" placeholder="Password" name = "password">
+                        <button>Login</button>
+                    </div>
+                </form>
+            </div>
+            <div class="con-box left">
+                <h2>Welcome to <span>Doraemon Instrument Store</span></h2>
+                <p>Come to buy your own <span>Instrument</span>!</p>
+                image here
+                <p>Already have an account?</p>
+                <button id="login">Go to login</button>
+            </div>
+            <div class="con-box right">
+                <h2>Welcome to <span>Doraemon Instrument Store</span></h2>
+                <p>Come to see your <span>Order History</span>!</p>
+                image here
+                <p>Haven't have an account?</p>
+                <button id="register">Go to register</button>
+            </div>
+        </div>
+
+        <script>
+            let login=document.getElementById('login');
+            let register=document.getElementById('register');
+            let form_box=document.getElementsByClassName('form-box')[0];
+            let register_box=document.getElementsByClassName('register-box')[0];
+            let login_box=document.getElementsByClassName('login-box')[0];
+
+            register.addEventListener('click',()=>{
+                form_box.style.transform='translateX(80%)';
+                login_box.classList.add('hidden');
+                register_box.classList.remove('hidden');
+            })
+            login.addEventListener('click',()=>{
+                form_box.style.transform='translateX(0%)';
+                register_box.classList.add('hidden');
+                login_box.classList.remove('hidden');
+            })
+        </script>
+    </div>
+{% endblock %}
+
