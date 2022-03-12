@@ -70,7 +70,6 @@ def single():
 #     db.create_all()
 #     return redirect('/base')
 
-<<<<<<< HEAD
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -105,8 +104,3 @@ def login():
                     print(session)
                     return redirect(url_for('index'))
     return render_template('login.html')
-=======
-@app.route('/login')
-def login():
-    return render_template('login.html')
->>>>>>> bf0968529ef074d74beea37e84de52b5444f1c7c

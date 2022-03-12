@@ -11,10 +11,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(32), unique=True, nullable=False)
     password_hash = db.Column(db.String(64), nullable=False)
-<<<<<<< HEAD
     email = db.Column(db.String(64), nullable=False)
-=======
->>>>>>> bf0968529ef074d74beea37e84de52b5444f1c7c
     register_time = db.Column(db.DateTime, default=datetime.now)
     gender = db.Column(db.String(10), nullable=True)
     pic_path = db.Column(db.String(64), nullable=True)
