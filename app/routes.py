@@ -2,7 +2,7 @@ import logging
 import os
 from sqlalchemy import true, false
 
-from app.functions import set_db
+from app.functions import *
 from app.models import *
 import calendar
 from datetime import datetime
@@ -83,6 +83,7 @@ def login():
             if (check_password_hash(user_find.password_hash, request.form["password"])):
                 flash('Login success!')
                 session["USERNAME"] = user_find.user_name
+                session['Logged_in'] = True
                 return redirect(url_for('index'))
             else:
                 flash('Incorrect Password')
@@ -102,17 +103,27 @@ def login():
                     db.session.add(user)
                     db.session.commit()
                     flash('User registered with username:{}'.format(request.form["username1"]))
-                    session["USERNAME"] = user.user_name
+                    session['USERNAME'] = user.user_name
+                    session['Logged_in'] = True
                     print(session)
                     return redirect(url_for('index'))
     return render_template('login.html')
+
+
+@app.route('/main_page')
+def main_page():
+    if islogined():
+        name = session['USERNAME']
+    else:
+        name = "visitor"
+    return render_template('index.html', islogin=islogined(), username=name)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
 def getcommodity():
     data = Commodity.query
     commodity = data.order_by(Commodity.release_time)
-    return render_template("rank.html", commodity=commodity)
+    return render_template("index.html", commodity=commodity)
 
 # reset the database
 @app.route('/reset_db')
