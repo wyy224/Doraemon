@@ -22,13 +22,13 @@ class User(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.user_name)
 
-    # # encrypt password
-    # def set_password(self, password):
-    #     self.password_hash = generate_password_hash(password)
-    #
-    # # translate password
-    # def check_password(self, password):
-    #     return check_password_hash(self.password_hash, password)
+    # encrypt password
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    # translate password
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 # A table of ranking list
@@ -38,11 +38,11 @@ class Commodity(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     commodity_name = db.Column(db.String(32), nullable=False)
     release_time = db.Column(db.DateTime, default=datetime.now)
-    step = db.Column(db.Integer, nullable=False)
     cargo_quantity = db.Column(db.Integer, nullable=False)
     pic_path = db.Column(db.String(64), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     introduction = db.Column(db.String(64), nullable=True)
+    type = db.Column(db.String(32), nullable=False)
 
 
 # A table of shopping cart
