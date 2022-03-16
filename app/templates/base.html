@@ -35,14 +35,13 @@
                       <div class="col-lg-4 col-md-3 right-side-cart">
                          <div class="cart-icons">
                             <ul>
-                               <li>
+
+                               <li style="padding-left: 300px">
+
                                   <span class="far fa-heart"></span>
                                </li>
-                               <li>
-                                  <button type="button" onclick="location.href='http://127.0.0.1:5000/login'">
-                                      <span class="far fa-user"></span></button>
-                               </li>
-                               <li class="toyscart toyscart2 cart cart box_1">
+
+                               <li class="toyscart toyscart2 cart cart box_1" style="padding-left: 40px">
                                   <form action="#" method="post" class="last">
                                      <input type="hidden" name="cmd" value="_cart">
                                      <input type="hidden" name="display" value="1">
@@ -51,6 +50,18 @@
                                      </button>
                                   </form>
                                </li>
+                               <li style="padding-left: 40px">
+                                   {% if islogin %}
+                                       <button type="button" onclick="location.href='http://127.0.0.1:5000/login'" >
+	                                    <img src="../static/picture/t1.jpg" width="80">
+                                       </button>
+
+                                   {% else %}
+                                        <button type="button" onclick="location.href='http://127.0.0.1:5000/login'">
+                                        <span class="far fa-user"></span></button>
+                                   {% endif %}
+                               </li>
+
                             </ul>
                          </div>
                       </div>
