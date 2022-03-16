@@ -1,7 +1,9 @@
 import logging
 import os
 from sqlalchemy import true, false
-from app.models import User
+
+from app.functions import set_db
+from app.models import *
 import calendar
 from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify
@@ -104,3 +106,16 @@ def login():
                     print(session)
                     return redirect(url_for('index'))
     return render_template('login.html')
+
+
+@app.route('/commodity', methods=['GET', 'POST'])
+def getcommodity():
+    data = Commodity.query
+    commodity = data.order_by(Commodity.release_time)
+    return render_template("rank.html", commodity=commodity)
+
+# reset the database
+@app.route('/reset_db')
+def reset_db():
+    set_db()
+    return redirect('/')
