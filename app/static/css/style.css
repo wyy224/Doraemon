@@ -690,7 +690,7 @@ bottom:-86px}
 /*--//flexisel--*/
 /*--//slider--*/
 /* --customer-review--*/
-.clients { background: url(../image/b1.jpg)no-repeat center;
+.clients { background: url(../instruments/CustomerReview.jpg)no-repeat center;
     background-size: cover;
 	-webkit-background-size: cover;
     -moz-background-size: cover;
@@ -753,7 +753,7 @@ color:#000;}
     padding: 2em 3em;
 }
 .sub-agile-info-toys p{line-height:32px;}
-.agileits-toys-left{background: url(../image/pp1.png)no-repeat center;
+.agileits-toys-left{background: url(../instruments/Zheng.png)no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -761,16 +761,16 @@ color:#000;}
     -ms-background-size: cover;
     height:534px;}
 /*--//Premium-- */
-.img-toy-w3l-top{background: url(../image/cc1.jpg)no-repeat center;
+.img-toy-w3l-top{background: url(../image/Head.jpg)no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     -ms-background-size: cover;
     height:534px;}
-.toys-img-one{background: url(../image/cc2.jpg)no-repeat center;}
-.toys-img-one-two{background: url(../image/tt1.jpg)no-repeat center;}
-.toys-img-one-three{background: url(../image/tt2.jpg)no-repeat center;}
+.toys-img-one{background: url(../instruments/drumps.jpg)no-repeat center;}
+.toys-img-one-two{background: url(../image/login.jpg)no-repeat center;}
+.toys-img-one-three{background: url(../image/Base.jpg)no-repeat center;}
 .toys-img-one-two,.toys-img-one-three{
 	    background-size: cover;
     -webkit-background-size: cover;
