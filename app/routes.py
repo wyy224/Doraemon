@@ -84,7 +84,7 @@ def login():
                 flash('Login success!')
                 session["USERNAME"] = user_find.user_name
                 session['Logged_in'] = True
-                return redirect(url_for('index'))
+                return redirect(url_for('main_page'))
             else:
                 flash('Incorrect Password')
                 return redirect(url_for('login'))
@@ -96,7 +96,7 @@ def login():
             else:
                 if request.form["password1"] != request.form["password2"]:
                     flash('Passwords do not match!')
-                    return redirect(url_for('login'))
+                    return redirect(url_for('main_page'))
                 else:
                     passw_hash = generate_password_hash(request.form["password1"])
                     user = User(user_name=request.form["username1"], email=request.form["email"], password_hash=passw_hash)
@@ -106,7 +106,7 @@ def login():
                     session['USERNAME'] = user.user_name
                     session['Logged_in'] = True
                     print(session)
-                    return redirect(url_for('index'))
+                    return redirect(url_for('main_page'))
     return render_template('login.html')
 
 
