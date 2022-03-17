@@ -117,9 +117,15 @@
                       </ul>
                    </div>
                 </nav>
+                <main>
+{#                Here to show flash message lnx#}
+                    {% for message in get_flashed_messages() %}
+                        <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                    {% block content %}{% endblock %}
+                </main>
              </div>
           </div>
-         {% block content %}{% endblock %}
     </body>
 </html>
 {#缺陷：导航栏中跳转到选择分类之后，相应区域标题并未变色#}
