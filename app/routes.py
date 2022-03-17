@@ -18,12 +18,12 @@ from app import app, db, Config
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
-    return render_template('index.html')
+    return render_template('index.html',islogin=islogined())
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html',islogin=islogined())
 
 
 @app.route('/contact')
@@ -48,7 +48,7 @@ def product():
 
 @app.route('/service')
 def service():
-    return render_template('service.html')
+    return render_template('service.html',islogin=islogined())
 
 
 @app.route('/typography')
@@ -58,12 +58,12 @@ def typography():
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html')
+    return render_template('shop.html',islogin=islogined())
 
 
 @app.route('/single')
 def single():
-    return render_template('single.html')
+    return render_template('single.html',islogin=islogined())
 
 
 # @app.route('/setdatabase')
