@@ -72,42 +72,54 @@ def single():
 #     db.create_all()
 #     return redirect('/base')
 
-@app.route('/login', methods=['GET', 'POST'])
+# Separate registration from login lnx
+@app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         if request.form["email"] == "":
-            user_find = User.query.filter(User.user_name==request.form["username2"]).first()
-            if not user_find:
-                flash('No user found with username: {}'.format(request.form["username2"]))
-                return redirect(url_for('login'))
-            if (check_password_hash(user_find.password_hash, request.form["password"])):
-                flash('Login success!')
-                session["USERNAME"] = user_find.user_name
-                session['Logged_in'] = True
-                return redirect(url_for('main_page'))
-            else:
-                flash('Incorrect Password')
-                return redirect(url_for('login'))
-        
+            return login_mes()
         else:
-            user_in_db = User.query.filter(User.user_name==request.form["username1"]).first()
-            if user_in_db:
-                flash('User has sign up!')
-            else:
-                if request.form["password1"] != request.form["password2"]:
-                    flash('Passwords do not match!')
-                    return redirect(url_for('main_page'))
-                else:
-                    passw_hash = generate_password_hash(request.form["password1"])
-                    user = User(user_name=request.form["username1"], email=request.form["email"], password_hash=passw_hash)
-                    db.session.add(user)
-                    db.session.commit()
-                    flash('User registered with username:{}'.format(request.form["username1"]))
-                    session['USERNAME'] = user.user_name
-                    session['Logged_in'] = True
-                    print(session)
-                    return redirect(url_for('main_page'))
+            return reg_mes()
+    else:
+        return render_template('login.html')
     return render_template('login.html')
+
+
+@app.route('/login/login_mes')
+def login_mes():
+    user_find = User.query.filter(User.user_name == request.form["username2"]).first()
+    if not user_find:
+        flash('Incorrect username')
+        return redirect(url_for('login'))
+    if (check_password_hash(user_find.password_hash, request.form["password"])):
+        flash('Login success!')
+        session["USERNAME"] = user_find.user_name
+        session['Logged_in'] = True
+        return redirect(url_for('main_page'))
+    else:
+        flash('Incorrect Password')
+        return redirect(url_for('login'))
+
+@app.route('/login/reg_mes')
+def reg_mes():
+    user_in_db = User.query.filter(User.user_name == request.form["username1"]).first()
+    if user_in_db:
+        flash('User has sign up!')
+        return redirect(url_for('login'))
+    else:
+        if request.form["password1"] != request.form["password2"]:
+            flash('Passwords do not match!')
+            return redirect(url_for('login'))
+        else:
+            passw_hash = generate_password_hash(request.form["password1"])
+            user = User(user_name=request.form["username1"], email=request.form["email"], password_hash=passw_hash)
+            db.session.add(user)
+            db.session.commit()
+            flash('User registered with username:{}'.format(request.form["username1"]))
+            session['USERNAME'] = user.user_name
+            session['Logged_in'] = True
+            print(session)
+            return redirect(url_for('main_page'))
 
 
 @app.route('/main_page')
