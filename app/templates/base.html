@@ -34,14 +34,17 @@
                       </div>
                       <div class="col-lg-4 col-md-3 right-side-cart">
                          <div class="cart-icons">
-                            <ul>
+                            <ul style="display: flex; justify-content: right">
 
-                               <li style="padding-left: 300px">
+                            <li class="enjoy" style="width: 270px;line-height: 33px">
+                                <u>Enjoy your own music!</u>
+                            </li>
 
+                               <li>
                                   <span class="far fa-heart"></span>
                                </li>
 
-                               <li class="toyscart toyscart2 cart cart box_1" style="padding-left: 40px">
+                               <li>
                                   <form action="#" method="post" class="last">
                                      <input type="hidden" name="cmd" value="_cart">
                                      <input type="hidden" name="display" value="1">
@@ -50,10 +53,13 @@
                                      </button>
                                   </form>
                                </li>
-                               <li style="padding-left: 40px">
+                               <li>
                                    {% if islogin %}
-                                       <button type="button" onclick="location.href='http://127.0.0.1:5000/service'" >
-	                                    <img src="../static/picture/t1.jpg" width="80">
+                                       <button type="button" onclick="location.href='http://127.0.0.1:5000/index'" >
+                                       <span class="far">
+                                           <img src="../static/picture/t1.jpg" style="width: 33px;height: 33px">
+                                       </span>
+
                                        </button>
 
                                    {% else %}

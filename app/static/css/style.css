@@ -56,7 +56,7 @@ h5,
 h6 {
     margin: 0;
     padding: 0;
-font-family: 'Sunflower', sans-serif;
+    font-family: 'Sunflower', sans-serif;
     letter-spacing: 1px;
 }
 
@@ -96,7 +96,8 @@ ul {
 h1 a.navbar-brand {
 font-size:32px; 
 color: #fff !important; 
-text-transform:capitalize; 
+text-transform:capitalize;
+font-family: fantasy;
 font-weight: 400;
 letter-spacing: 2px;
 margin: 0px;
@@ -148,8 +149,8 @@ margin: 0px;
     font-size: 14px;
 	margin-right: 0px !important;
 	border-radius:0px;
-	border-top-left-radius: 25px;
-	border-bottom-left-radius: 25px;
+	/*border-top-left-radius: 25px;*/
+	/*border-bottom-left-radius: 25px;*/
 }
 .search-right button {
     background: #000;
@@ -208,9 +209,9 @@ h5#exampleModalLabel{
 }
 /*--//model--*/
 /*-- banner --*/ 
-.one-img{  background: url(../image/b1.jpg)no-repeat center;}
-.two-img{  background: url(../image/b2.jpg)no-repeat center;}
-.three-img{  background: url(../image/b3.jpg)no-repeat center;} 
+.one-img{  background: url(../image/Bass.jpg)no-repeat center;}
+.two-img{  background: url(../image/Base.jpg)no-repeat center;}
+.three-img{  background: url(../image/Slide3.jpg)no-repeat center;}
 .slider-img{  background-size: cover;
 min-height: 800px;}  
 .rslides {
@@ -368,12 +369,13 @@ padding: 23em 0 0;
     border-radius: 50px;
     padding: 10px 22px;
     border: 2px double #ea1d5d;
-	margin-top: 15px;
+	margin-top: 10px;
 	transition: 0.5s all;
     -webkit-transition: 0.5s all;
     -moz-transition: 0.5s all;
     -o-transition: 0.5s all;
     -ms-transition: 0.5s all;
+    margin-bottom: 10px;
 }
 .outs_more-buttn a:hover{
     background: none;
@@ -475,7 +477,7 @@ border: 4px solid #d24055;
 /*-- inner-banner --*/ 
 .inner_page-banner {
 text-align: center;
-background: url(../image/b2.jpg) no-repeat center;
+background: url(../image/Head.jpg) no-repeat center;
 background-size: cover;
 -webkit-background-size: cover;
 -moz-background-size: cover;
@@ -1560,4 +1562,9 @@ h3.typo-main-heading {
 }
 }
 /*--//responsive--*/
-
+.enjoy{
+    width: 270px;
+    line-height: 33px;
+    font-family: fantasy;
+    font-size: 19px;
+}
