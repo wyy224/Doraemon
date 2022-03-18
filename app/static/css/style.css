@@ -1568,3 +1568,9 @@ h3.typo-main-heading {
     font-family: fantasy;
     font-size: 19px;
 }
+.show{
+    background: white;opacity:0.8;text-align: center;font-family: fantasy;font-size: 25px;color: crimson;
+}
+.unshow{
+    display: none;
+}
