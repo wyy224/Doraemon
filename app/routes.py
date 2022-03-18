@@ -68,6 +68,15 @@ def single():
     return render_template('single.html', islogin=islogined())
 
 
+@app.route('/home')
+def home():
+    return render_template('home.html',islogin=islogined())
+
+@app.route('/collection')
+def collection():
+    return render_template('collection.html',islogin=islogined())
+
+
 # @app.route('/setdatabase')
 # def set_database():
 #     db.drop_all()
@@ -103,6 +112,7 @@ def login_mes():
         return redirect(url_for('login'))
 
 
+
 @app.route('/login/reg_mes')
 def reg_mes():
     user_in_db = User.query.filter(User.user_name == request.form["username1"]).first()
@@ -120,9 +130,14 @@ def reg_mes():
             db.session.commit()
             flash('User registered with username:{}'.format(request.form["username1"]))
             session['USERNAME'] = user.user_name
-            session['Logged_in'] = True
             print(session)
             return redirect(url_for('main_page'))
+
+
+@app.route('/api/logout', methods=["GET", "POST"])
+def logout():
+    session.pop("USERNAME", None)
+    return jsonify({'returnValue': 1})
 
 
 @app.route('/main_page')

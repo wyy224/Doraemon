@@ -33,7 +33,7 @@ def set_db():
 # This function is use to check whether the user is login
 def islogined():
     # Check whether the user is logged into the web
-    if session.get('Logged_in'):
+    if session.get('USERNAME'):
         return True
     else:
         return False
