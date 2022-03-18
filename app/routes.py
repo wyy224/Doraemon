@@ -154,13 +154,13 @@ def reset_db():
     set_db()
     return redirect('/')
 
-@app.route('/add_db')
-def add_db():
-    piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
-                      price=3000, introduction='piano', type='piano')
-    db.session.add(piano)
-
-    db.session.commit()
-    return redirect('/')
+# @app.route('/add_db')
+# def add_db():
+#     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
+#                       price=3000, introduction='piano', type='piano')
+#     db.session.add(piano)
+#
+#     db.session.commit()
+#     return redirect('/')
 
 
