@@ -18,12 +18,12 @@ from app import app, db, Config
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
-    return render_template('index.html',islogin=islogined())
+    return render_template('index.html', islogin=islogined())
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html',islogin=islogined())
+    return render_template('about.html', islogin=islogined())
 
 
 @app.route('/contact')
@@ -48,7 +48,7 @@ def product():
 
 @app.route('/service')
 def service():
-    return render_template('service.html',islogin=islogined())
+    return render_template('service.html', islogin=islogined())
 
 
 @app.route('/typography')
@@ -58,12 +58,13 @@ def typography():
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html',islogin=islogined())
+    commodities = Commodity.query.all()
+    return render_template('shop.html', islogin=islogined(), commodities=commodities)
 
 
 @app.route('/single')
 def single():
-    return render_template('single.html',islogin=islogined())
+    return render_template('single.html', islogin=islogined())
 
 
 # @app.route('/setdatabase')
@@ -73,7 +74,7 @@ def single():
 #     return redirect('/base')
 
 # Separate registration from login lnx
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         if request.form["email"] == "":
@@ -99,6 +100,7 @@ def login_mes():
     else:
         flash('Incorrect Password')
         return redirect(url_for('login'))
+
 
 @app.route('/login/reg_mes')
 def reg_mes():
@@ -132,13 +134,33 @@ def main_page():
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
-def getcommodity():
+def get_commodity():
     data = Commodity.query
     commodity = data.order_by(Commodity.release_time)
     return render_template("index.html", commodity=commodity)
+
+
+
+
+# @app.route('/shop')
+# def show_commodity():
+#
+#     return render_template("shop.html", )
+
 
 # reset the database
 @app.route('/reset_db')
 def reset_db():
     set_db()
     return redirect('/')
+
+@app.route('/add_db')
+def add_db():
+    piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
+                      price=3000, introduction='piano', type='piano')
+    db.session.add(piano)
+
+    db.session.commit()
+    return redirect('/')
+
+
