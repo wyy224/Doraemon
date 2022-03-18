@@ -59,7 +59,8 @@ def typography():
 @app.route('/shop')
 def shop():
     commodities = Commodity.query.all()
-    return render_template('shop.html', islogin=islogined(), commodities=commodities)
+    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities)
 
 
 @app.route('/single')
