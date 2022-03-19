@@ -82,7 +82,7 @@ def single():
 
 @app.route('/home')
 def home():
-    user = User.query.filter(User.user_name=session.get('USERNAME')).first()
+    user = User.query.filter(User.user_name==session.get('USERNAME')).first()
     return render_template('home.html', islogin=islogined(), user = user)
 
 
