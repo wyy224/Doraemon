@@ -100,17 +100,22 @@
                                <a class="nav-link " href="typography">Typography</a>
                             </div>
                          </li>
+
                          <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Product
                             </a>
+
+
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                               <a class="nav-link" href="product">Instrument for kids</a>
-                               <a class="nav-link " href="product">Instrument for adult</a>
-                               <a class="nav-link " href="product">Piano class</a>
-                               <a class="nav-link " href="product">Orchestra class</a>
+                                {% for type in types %}
+                               <a class="nav-link" href="product?type={{ type }}">{{ types[type] }}</a>
+                                {% endfor %}
                             </div>
+
+
                          </li>
+
                          <li class="nav-item">
                             <a href="contact" class="nav-link">Contact</a>
                          </li>

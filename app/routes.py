@@ -11,24 +11,29 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import app, db, Config
 
-
 # from app.forms import LoginForm, SignupForm, YearForm, UpdateForm
 # from app.models import User, Notes
+
+all_type = dict({
+    '1': 'drum',
+    '2': 'piano'
+})
+
 
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
-    return render_template('index.html', islogin=islogined())
+    return render_template('index.html', islogin=islogined(), types=all_type, type_value=all_type.values())
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html', islogin=islogined())
+    return render_template('about.html', islogin=islogined(), types=all_type, type_value=all_type.values())
 
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    return render_template('contact.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/index')
@@ -43,12 +48,19 @@ def icon():
 
 @app.route('/product')
 def product():
-    return render_template('product.html')
+    types = request.args.get('type', None)
+    if not types:
+        return redirect(url_for('base'))
+    if not all_type[types]:
+        return redirect(url_for('base'))
+
+    products = Commodity.query.filter_by(type=all_type[types]).all()
+    return render_template('product.html', products=products, types=all_type, type_value=all_type.values())
 
 
 @app.route('/service')
 def service():
-    return render_template('service.html', islogin=islogined())
+    return render_template('service.html', islogin=islogined(), types=all_type, type_value=all_type.values())
 
 
 @app.route('/typography')
@@ -60,7 +72,7 @@ def typography():
 def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities)
+    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities, types=all_type, type_value=all_type.values())
 
 
 @app.route('/single')
@@ -70,11 +82,12 @@ def single():
 
 @app.route('/home')
 def home():
-    return render_template('home.html',islogin=islogined())
+    return render_template('home.html', islogin=islogined())
+
 
 @app.route('/collection')
 def collection():
-    return render_template('collection.html',islogin=islogined())
+    return render_template('collection.html', islogin=islogined())
 
 
 # @app.route('/setdatabase')
@@ -110,7 +123,6 @@ def login_mes():
     else:
         flash('Incorrect Password')
         return redirect(url_for('login'))
-
 
 
 @app.route('/login/reg_mes')
@@ -156,6 +168,9 @@ def get_commodity():
     return render_template("index.html", commodity=commodity)
 
 
+# @app.route('/division', methods=['GET', 'POST'])
+# def division():
+#     return render_template("base.html", types=all_type)
 
 
 # @app.route('/shop')
@@ -178,5 +193,3 @@ def reset_db():
 #
 #     db.session.commit()
 #     return redirect('/')
-
-
