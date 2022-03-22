@@ -6,8 +6,9 @@ from app.functions import *
 from app.models import *
 import calendar
 from datetime import datetime
-from flask import render_template, redirect, flash, url_for, session, request, jsonify
+from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_avatars import Avatars
 
 from app import app, db, Config
 
@@ -19,6 +20,7 @@ all_type = dict({
     '2': 'piano'
 })
 
+avatars = Avatars()
 
 # logger = logging.getLogger(__name__)
 @app.route('/')
@@ -195,3 +197,47 @@ def reset_db():
 #
 #     db.session.commit()
 #     return redirect('/')
+
+
+
+#Icon change
+# @app.route('/img/<path:filename>')
+# def get_avatar(filename):
+#     return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static_pp/img/'), filename, as_attachment=True)
+#
+# @app.route('/change-avatar/', methods=['GET', 'POST'])
+# def upload():
+#     if request.method == 'POST':
+#         f = request.files.get('file')
+#         raw_filename = avatars.save_avatar(f)
+#         session['raw_filename'] = raw_filename
+#         print("app/personal_page/static_pp/img/" + session['raw_filename'])
+#         print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
+#         u = session['uid']
+#         avatar = User.query.filter(User.uid == u).first()
+#         avatar.raw_avatar = "../static_pp/img/" + session['raw_filename']
+#         db.session.commit()
+#         return redirect("/change-avatar/crop/")
+#     return render_template('upload.html')
+#
+# @app.route('/change-avatar/crop/', methods=['GET', 'POST'])
+# def crop():
+#     if request.method == 'POST':
+#         x = request.form.get('x')
+#         y = request.form.get('y')
+#         w = request.form.get('w')
+#         h = request.form.get('h')
+#         user = User.query.filter(User.user_name == session["UserName"]).first()
+#         filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+#         url_s = filenames[0]
+#         url_m = filenames[1]
+#         url_l = filenames[2]
+#         user.raw_avatar = "../static_pp/img/" + url_l
+#         db.session.commit()
+#         flash('更改头像成功', 'success')
+#         # return redirect(url_for('personalpage'
+#         #                   , name=u.user_name
+#         #                 ))
+#
+#         return redirect("/personal")
+#     return render_template('crop.html')
