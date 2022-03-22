@@ -72,7 +72,8 @@ def typography():
 def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities, types=all_type, type_value=all_type.values())
+    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
+                           types=all_type, type_value=all_type.values())
 
 
 @app.route('/single')
@@ -82,8 +83,8 @@ def single():
 
 @app.route('/home')
 def home():
-    user = User.query.filter(User.user_name==session.get('USERNAME')).first()
-    return render_template('home.html', islogin=islogined(), user = user)
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
 
 
 @app.route('/collection')
