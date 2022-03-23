@@ -86,7 +86,10 @@ def single():
 @app.route('/home')
 def home():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
+    user_icon = user.icon
+    if user_icon == None:
+        user_icon = 'NULL'
+    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(), icon=user_icon)
 
 
 @app.route('/collection')
@@ -123,6 +126,7 @@ def login_mes():
         flash('Login success!')
         session["USERNAME"] = user_find.user_name
         session['Logged_in'] = True
+        session['uid'] = user_find.id
         return redirect(url_for('main_page'))
     else:
         flash('Incorrect Password')
@@ -201,43 +205,43 @@ def reset_db():
 
 
 #Icon change
-# @app.route('/img/<path:filename>')
-# def get_avatar(filename):
-#     return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static_pp/img/'), filename, as_attachment=True)
-#
-# @app.route('/change-avatar/', methods=['GET', 'POST'])
-# def upload():
-#     if request.method == 'POST':
-#         f = request.files.get('file')
-#         raw_filename = avatars.save_avatar(f)
-#         session['raw_filename'] = raw_filename
-#         print("app/personal_page/static_pp/img/" + session['raw_filename'])
-#         print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
-#         u = session['uid']
-#         avatar = User.query.filter(User.uid == u).first()
-#         avatar.raw_avatar = "../static_pp/img/" + session['raw_filename']
-#         db.session.commit()
-#         return redirect("/change-avatar/crop/")
-#     return render_template('upload.html')
-#
-# @app.route('/change-avatar/crop/', methods=['GET', 'POST'])
-# def crop():
-#     if request.method == 'POST':
-#         x = request.form.get('x')
-#         y = request.form.get('y')
-#         w = request.form.get('w')
-#         h = request.form.get('h')
-#         user = User.query.filter(User.user_name == session["UserName"]).first()
-#         filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
-#         url_s = filenames[0]
-#         url_m = filenames[1]
-#         url_l = filenames[2]
-#         user.raw_avatar = "../static_pp/img/" + url_l
-#         db.session.commit()
-#         flash('更改头像成功', 'success')
-#         # return redirect(url_for('personalpage'
-#         #                   , name=u.user_name
-#         #                 ))
-#
-#         return redirect("/personal")
-#     return render_template('crop.html')
+@app.route('/img/<path:filename>')
+def get_avatar(filename):
+    return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/icon/'), filename, as_attachment=True)
+
+@app.route('/change-avatar/', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        raw_filename = avatars.save_avatar(f)
+        session['raw_filename'] = raw_filename
+        print("app/static/icon/" + session['raw_filename'])
+        print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
+        u = session['uid']
+        avatar = User.query.filter(User.uid == u).first()
+        avatar.raw_avatar = "app/static/icon/" + session['raw_filename']
+        db.session.commit()
+        return redirect("/change-avatar/crop/")
+    return render_template('upload.html')
+
+@app.route('/change-avatar/crop/', methods=['GET', 'POST'])
+def crop():
+    if request.method == 'POST':
+        x = request.form.get('x')
+        y = request.form.get('y')
+        w = request.form.get('w')
+        h = request.form.get('h')
+        user = User.query.filter(User.user_name == session["USERNAME"]).first()
+        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+        url_s = filenames[0]
+        url_m = filenames[1]
+        url_l = filenames[2]
+        user.raw_avatar = "app/static/icon/" + url_l
+        db.session.commit()
+        flash('更改头像成功', 'success')
+        # return redirect(url_for('home'
+        #                   , name=u.user_name
+        #                 ))
+
+        return redirect("/home")
+    return render_template('crop.html')
