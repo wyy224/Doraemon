@@ -4,6 +4,7 @@ from sqlalchemy import true, false
 
 from app.functions import *
 from app.models import *
+from app.forms import UpdateForm
 import calendar
 from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory
@@ -93,6 +94,12 @@ def home():
 def collection():
     return render_template('collection.html', islogin=islogined())
 
+
+@app.route('/modify')
+def modify():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    form = UpdateForm()
+    return render_template('modify.html', islogin=islogined(), user = user, form = form)
 
 # @app.route('/setdatabase')
 # def set_database():

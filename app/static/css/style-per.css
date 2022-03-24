@@ -7273,7 +7273,7 @@ body {
   font-size: 15px;
   line-height: 1.8;
   font-weight: 500;
-  color: #999999; }
+  color: #0c5460; }
   body.offcanvas {
     overflow-x: hidden; }
     body.offcanvas #colorlib-aside {
@@ -7429,6 +7429,9 @@ h1, h2, h3, h4, h5,
           -ms-transform: scaleX(1);
           -o-transform: scaleX(1);
           transform: scaleX(1); }
+        input {
+          align-items: center;
+        }
   #colorlib-aside .colorlib-footer {
     position: absolute;
     bottom: 40px;
@@ -7624,28 +7627,36 @@ h1, h2, h3, h4, h5,
       opacity: 1;
       visibility: visible; } }
 
+.back{
+  background-image: url("../instruments/CustomerReview.jpg");
+  background-size: cover;
+
+}
+.back-color{background-color: rgba(255,255,255,0.7);}
+
 .hero-wrap {
+
+  background-color: rgba(255,255,255,0.7);
   width: 100%;
   height: 100%;
   position: relative;
   z-index: 0; }
-  .hero-wrap .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    content: '';
-    opacity: 0;
-    background: #fff;
-    z-index: 0; }
+  /*.hero-wrap .overlay {*/
+  /*  position: absolute;*/
+  /*  top: 0;*/
+  /*  left: 0;*/
+  /*  right: 0;*/
+  /*  bottom: 0;*/
+  /*  content: '';*/
+  /*  opacity: 0;*/
+  /*  background-color: rgba(255,255,255,0.7);*/
+  /*  z-index: 0; }*/
   .hero-wrap .author-info, .hero-wrap .author-image {
     width: 50%; }
     @media (max-width: 767.98px) {
       .hero-wrap .author-info, .hero-wrap .author-image {
         width: 30%; } }
-  .hero-wrap .author-info {
-    overflow-y: scroll; }
+
     @media (max-width: 767.98px) {
       .hero-wrap .author-info {
         width: 70%; } }
