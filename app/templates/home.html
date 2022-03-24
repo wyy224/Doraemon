@@ -32,11 +32,13 @@
 
       <div class="pic">
 
+{#      这边要改到下面放头像的地方去#}
           {% if icon == "NULL" %}
-              <img src='{{ avatars.default(size='l') }}' alt="" width=100% height=100%>
+              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>
           {% else %}
-              <img src= {{ icon }} alt="" width=100% height=100%>
+              <img src= {{ icon }} alt="" width=10% height=10%>
           {% endif %}
+{#      这边要改到下面放头像的地方去#}
 
           {% if user == current_user %} {# 判断用户是不是当前用户 #}
               <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
@@ -51,7 +53,7 @@
 				<ul>
 					<li class="colorlib-active"><a href="http://127.0.0.1:5000/home ">Home</a></li>
 					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-					<li><a href="http://127.0.0.1:5000/shoppingCart">Shopping Cart</a></li>
+					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
 					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
                     <li><button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button> </li>
 				</ul>

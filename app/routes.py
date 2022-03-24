@@ -23,6 +23,7 @@ all_type = dict({
 
 avatars = Avatars()
 
+
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
@@ -37,6 +38,11 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template('contact.html', types=all_type, type_value=all_type.values())
+
+
+@app.route('/ShoppingCart')
+def ShoppingCart():
+    return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/index')
@@ -90,7 +96,8 @@ def home():
     user_icon = user.icon
     if user_icon == None:
         user_icon = 'NULL'
-    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(), icon=user_icon)
+    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+                           icon=user_icon)
 
 
 @app.route('/collection')
@@ -102,7 +109,8 @@ def collection():
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     form = UpdateForm()
-    return render_template('modify.html', islogin=islogined(), user = user, form = form)
+    return render_template('modify.html', islogin=islogined(), user=user, form=form)
+
 
 # @app.route('/setdatabase')
 # def set_database():
@@ -200,6 +208,7 @@ def reset_db():
     set_db()
     return redirect('/')
 
+
 # @app.route('/add_db')
 # def add_db():
 #     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
@@ -210,11 +219,12 @@ def reset_db():
 #     return redirect('/')
 
 
-
-#Icon change
+# Icon change
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/icon/'), filename, as_attachment=True)
+    return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/icon/'), filename,
+                               as_attachment=True)
+
 
 @app.route('/change-avatar/', methods=['GET', 'POST'])
 def upload():
@@ -230,6 +240,7 @@ def upload():
         db.session.commit()
         return redirect("/change-avatar/crop/")
     return render_template('upload.html')
+
 
 @app.route('/change-avatar/crop/', methods=['GET', 'POST'])
 def crop():
