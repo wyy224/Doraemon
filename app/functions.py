@@ -41,3 +41,9 @@ def islogined():
         return True
     else:
         return False
+
+
+
+
+def create_app():
+    app = Flask(__name__)

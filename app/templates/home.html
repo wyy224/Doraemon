@@ -30,6 +30,19 @@
   </head>
   <body>
 
+      <div class="pic">
+
+          {% if icon == "NULL" %}
+              <img src='{{ avatars.default(size='l') }}' alt="" width=100% height=100%>
+          {% else %}
+              <img src= {{ icon }} alt="" width=100% height=100%>
+          {% endif %}
+
+          {% if user == current_user %} {# 判断用户是不是当前用户 #}
+              <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
+          {% endif %}
+      </div>
+
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
