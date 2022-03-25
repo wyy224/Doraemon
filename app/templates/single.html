@@ -57,14 +57,14 @@
                      <div class="grid images_3_of_2">
                         <div class="flexslider1">
                            <ul class="slides">
-                              <li data-thumb="../static/instruments/saxophone.jpg">
-                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="{{ commodity.pic_path }}">
+                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
-                              <li data-thumb="../static/instruments/saxophone.jpg">
-                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="{{ commodity.pic_path }}">
+                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
-                              <li data-thumb="../static/instruments/saxophone.jpg">
-                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="{{ commodity.pic_path }}">
+                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
                            </ul>
                            <div class="clearfix"></div>
@@ -72,9 +72,9 @@
                      </div>
                   </div>
                   <div class="col-lg-8 single-right-left simpleCart_shelfItem">
-                     <h3>Soft Teddy Bear (Brown)</h3>
-                     <p><span class="item_price">$650</span>
-                        <del>$1,199</del>
+                     <h3>{{ commodity.commodity_name }}</h3>
+                     <p><span class="item_price">{{ commodity.price }}</span>
+{#                        <del>$1,199</del>#}
                      </p>
                      <div class="rating1">
                         <ul class="stars">
@@ -118,12 +118,15 @@
                      </div>
                      <div class="occasion-cart">
                         <div class="toys single-item singlepage">
-                           <form action="#" method="post">
-                              <input type="hidden" name="cmd" value="_cart">
-                              <input type="hidden" name="add" value="1">
-                              <input type="hidden" name="toys_item" value="Farenheit">
-                              <input type="hidden" name="amount" value="575.00">
-                              <button type="submit" class="toys-cart ptoys-cart add">
+                           <form action="/cart/add" method="post">
+{#                              <input type="hidden" name="cmd" value="_cart">#}
+{#                              <input type="hidden" name="add" value="1">#}
+{#                              <input type="hidden" name="toys_item" value="Farenheit">#}
+{#                              <input type="hidden" name="amount" value="575.00">#}
+                               <input type="hidden" name="commodity_id" value="{{ commodity.id }}">
+                               <input type="hidden" name="num" value="1">
+
+                              <button type="submit" class="toys-cart ptoys-cart add" >
                               Add to Cart
                               </button>
                            </form>
@@ -171,13 +174,12 @@
                            <!--/tab_one-->
                            <div class="tab1">
                               <div class="single_page">
-                                 <h6>Lorem ipsum dolor sit amet</h6>
-                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
-                                    blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                                    ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
-                                    magna aliqua.
+                                 <h6>{{ commodity.commodity_name }}</h6>
+                                 <p>
+                                     {{ commodity.introduction }}
                                  </p>
-                                 <p class="para">Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
+                                 <p class="para">
+                                     Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
                                     blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
                                     ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
                                     magna aliqua.
@@ -190,7 +192,7 @@
                                  <div class="bootstrap-tab-text-grids">
                                     <div class="bootstrap-tab-text-grid">
                                        <div class="bootstrap-tab-text-grid-left">
-                                          <img src="../static/picture/team1.jpg" alt=" " class="img-fluid">
+{#                                          <img src="" alt=" " class="img-fluid">#}
                                        </div>
                                        <div class="bootstrap-tab-text-grid-right">
                                           <ul>
@@ -224,11 +226,8 @@
                            </div>
                            <div class="tab3">
                               <div class="single_page">
-                                 <h6>Teddy Bear(Blue)</h6>
-                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
-                                    blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                                    ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
-                                    magna aliqua.
+                                 <h6>{{ commodity.commodity_name }}</h6>
+                                 <p>{{ commodity.introduction }}
                                  </p>
                                  <p class="para">Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
                                     blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt

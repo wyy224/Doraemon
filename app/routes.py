@@ -28,8 +28,11 @@ avatars = Avatars()
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
-    return render_template('index.html', islogin=islogined(), user=user, icon=user_icon, types=all_type, type_value=all_type.values())
+    # user_icon = setIcon()
+    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
+
+
+# icon=user_icon
 
 
 @app.route('/about')
@@ -87,9 +90,22 @@ def shop():
                            types=all_type, type_value=all_type.values())
 
 
-@app.route('/single')
-def single():
-    return render_template('single.html', islogin=islogined())
+@app.route('/single/<int:id>', methods=['GET', 'POST'])
+def single(id):
+    commodity = Commodity.query.get(int(id))
+    return render_template('single.html', islogin=islogined(), commodity=commodity)
+
+
+@app.route("/cart/add",methods=['GET', 'POST'])
+def cart_add():
+    if request.method == 'POST':
+        commodity_id = request.form.get('commodity_id', None)
+        commodity_num = request.form.get('num', None)
+        user_id = session.get('uid')
+        cart = Cart(commodity_id=commodity_id, commodity_num=commodity_num, user_id=user_id)
+        db.session.add(cart)
+        db.session.commit()
+        return redirect(url_for('ShoppingCart'))
 
 
 @app.route('/home')
@@ -103,7 +119,8 @@ def home():
         profile.phone_num = ''
     if profile.name == None:
         profile.name = ''
-    return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type, type_value=all_type.values(),
+    return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
+                           type_value=all_type.values(),
                            icon=user_icon)
 
 
@@ -111,10 +128,10 @@ def home():
 def collection():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    return render_template('collection.html',user=user, icon=user_icon, islogin=islogined())
+    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined())
 
 
-@app.route('/modify',methods=['GET', 'POST'])
+@app.route('/modify', methods=['GET', 'POST'])
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
@@ -140,6 +157,7 @@ def modify():
         return redirect(url_for('home'))
     return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form)
 
+
 # To get the avatar
 def setIcon():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
@@ -148,8 +166,9 @@ def setIcon():
         user_icon = 'NULL'
     else:
         icon = user.icon.decode()
-        user_icon = url_for('static', filename='uploaded_AVA/'+icon)
+        user_icon = url_for('static', filename='uploaded_AVA/' + icon)
     return user_icon
+
 
 # @app.route('/setdatabase')
 # def set_database():
@@ -204,6 +223,7 @@ def reg_mes():
             db.session.commit()
             flash('User registered with username:{}'.format(request.form["username1"]))
             session['USERNAME'] = user.user_name
+            session['uid'] = user.id
             print(session)
             return redirect(url_for('main_page'))
 
@@ -264,7 +284,6 @@ def get_avatar(filename):
     return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/icon/'), filename,
                                as_attachment=True)
 
-
 # @app.route('/change-avatar/', methods=['GET', 'POST'])
 # def upload():
 #     if request.method == 'POST':
@@ -296,9 +315,9 @@ def get_avatar(filename):
 #         user.raw_avatar = "app/static/icon/" + url_l
 #         db.session.commit()
 #         flash('Change avatar successfully', 'success')
-        # return redirect(url_for('home'
-        #                   , name=u.user_name
-        #                 ))
+# return redirect(url_for('home'
+#                   , name=u.user_name
+#                 ))
 
-    #     return redirect("/home")
-    # return render_template('crop.html')
+#     return redirect("/home")
+# return render_template('crop.html')
