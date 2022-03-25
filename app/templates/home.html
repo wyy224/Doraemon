@@ -30,18 +30,7 @@
   </head>
   <body>
 
-      <div class="pic">
 
-          {% if icon == "NULL" %}
-              <img src='{{ avatars.default(size='l') }}' alt="" width=100% height=100%>
-          {% else %}
-              <img src= {{ icon }} alt="" width=100% height=100%>
-          {% endif %}
-
-          {% if user == current_user %} {# 判断用户是不是当前用户 #}
-              <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
-          {% endif %}
-      </div>
 
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
@@ -80,9 +69,12 @@
 
 					      <div class="slider-item js-fullheight" style="background-image:url(../static/image/back2.jpg);">
 					      </div>
+
+
 					    </section>
 						</div>
 						<div class="author-info text p-3 p-md-5">
+
 							<div class="desc">
 								<h1 class="mb-4"><span>Personal Information:</span></h1>
 								<p class="mb-4">Name: {{user.user_name}}</p>
@@ -91,6 +83,18 @@
 								<p class="mb-4">Oder forms: </p>
 								<ul class="ftco-social mt-3">
 		            </ul>
+                            <div class="pic">
+
+                            {% if icon == "NULL" %}
+                                <img src='{{ avatars.default(size='l') }}' alt="" width=100% height=100%>
+                            {% else %}
+                                <img src= {{ icon }} alt="" width=100% height=100%>
+                            {% endif %}
+
+{#                            {% if user == current_user %} {# 判断用户是不是当前用户 #}
+                                <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
+{#                            {% endif %}#}
+                          </div>
 	            </div>
 						</div>
 					</div>

@@ -8,7 +8,7 @@ def set_db():
     db.create_all()
     from app.models import User, Commodity, Cart, Order
 
-    # create user1
+    # create users
     user1 = User(user_name='user1', email='12345678@qq.com')
     user1.set_password('000000')
     db.session.add(user1)
@@ -20,6 +20,10 @@ def set_db():
     user3 = User(user_name='1920', email='135792468@qq.com')
     user3.set_password('222222')
     db.session.add(user3)
+
+    admin = User(user_name='admin', email='admin123@gmail.com', authority=1)
+    admin.set_password('123456')
+    db.session.add(admin)
 
     # add commodity
 

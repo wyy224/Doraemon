@@ -57,7 +57,12 @@ def product():
         return redirect(url_for('base'))
 
     products = Commodity.query.filter_by(type=all_type[types]).all()
-    return render_template('product.html', products=products, types=all_type, type_value=all_type.values())
+    if islogined():
+        authority = session['authority']
+    else:
+        authority = 0
+    return render_template('product.html', products=products, types=all_type, type_value=all_type.values(),
+                           authority=authority)
 
 
 @app.route('/service')
@@ -81,6 +86,10 @@ def shop():
 @app.route('/single')
 def single():
     return render_template('single.html', islogin=islogined())
+
+@app.route('/newsingle')
+def newsingle():
+    return render_template('newsingle.html', islogin=islogined())
 
 
 @app.route('/home')
@@ -127,6 +136,7 @@ def login_mes():
         session["USERNAME"] = user_find.user_name
         session['Logged_in'] = True
         session['uid'] = user_find.id
+        session['authority'] = user_find.authority
         return redirect(url_for('main_page'))
     else:
         flash('Incorrect Password')
