@@ -4,14 +4,14 @@
     <title>Personal information</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
 {#    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">#}
 {#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">#}
 {#    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">#}
 
     <link rel="stylesheet" href="../static/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/animate.css">
-    
+
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../static/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="../static/css/magnific-popup.css">
@@ -23,43 +23,28 @@
     <link rel="stylesheet" href="../static/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="../static/css/jquery.timepicker.css">
 
-    
+
     <link rel="stylesheet" href="../static/css/flaticon.css">
     <link rel="stylesheet" href="../static/css/icomoon.css">
     <link rel="stylesheet" href="../static/css/style-per.css">
   </head>
   <body>
 
-      <div class="pic">
-
-{#      这边要改到下面放头像的地方去#}
-{#          {% if icon == "NULL" %}#}
-{#              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>#}
-{#          {% else %}#}
-{#              <img src= {{ icon }} alt="" width=10% height=10%>#}
-{#          {% endif %}#}
-{#      这边要改到下面放头像的地方去#}
-
-          {% if user == current_user %} {# 判断用户是不是当前用户 #}
-              <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
-          {% endif %}
-      </div>
-
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+			<h1 id="colorlib-logo"><a href="home.html">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
                     {% else %}
                         <img src='{{ icon }}' alt="" width=100 height=100>
                     {% endif %}
-                </span><br>{{user.user_name}}</a>
-            </h1>
+            </span><br>
+                {{user.user_name}}</a></h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="http://127.0.0.1:5000/home ">Home</a></li>
+					<li><a href="http://127.0.0.1:5000/home">Home</a></li>
 					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
 					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
 					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
@@ -78,86 +63,70 @@
 				</div>
 			</div>
 		</aside> <!-- END COLORLIB-ASIDE -->
-		<div id="colorlib-main">
+
+        <div id="colorlib-main">
 			<section class="ftco-section-no-padding bg-light">
 				<div class="hero-wrap">
-					<div class="overlay"></div>
+                <div class="back">
+                <div class="back-color">
 					<div class="d-flex align-items-center js-fullheight">
-						<div class="author-image text img d-flex">
-							<section class="home-slider js-fullheight owl-carousel">
-					      <div class="slider-item js-fullheight" style="background-image: url(../static/image/back.jpg);">
-					      </div>
 
-					      <div class="slider-item js-fullheight" style="background-image:url(../static/image/back2.jpg);">
-					      </div>
-					    </section>
-						</div>
 						<div class="author-info text p-3 p-md-5">
 							<div class="desc">
-								<h1 class="mb-4"><span>Personal Information:</span></h1>
-								<p class="mb-4">Name: {{user.user_name}}</p>
-								<p class="mb-4">Email: {{user.email}}</p>
-                                <p class="mb-4">Delivery address: {{ profile.address }}</p>
-                                <p class="mb-4">Phone number: {{ profile.phone_num }}</p>
-                                <p class="mb-4">Consignee name: {{ profile.name }}</p>
-                                <button onclick="location.href='http://127.0.0.1:5000/modify'">Modify the information</button>
-								<ul class="ftco-social mt-3">
-		                        </ul>
+                            <div id="modify">
+                                <form action="" method="post" enctype="multipart/form-data" novalidate>
+                                {{ form.hidden_tag() }}
+                                <p class='btn btn-primary' style="margin-top: 10px">
+                                    {{ form.avatar.label }}<br>
+                                    {{ form.avatar(size=12) }}
+
+                                    {% for error in form.avatar.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.username.label }}<br>
+                                    {{ form.username(size=32,value=user.user_name) }}
+
+                                    {% for error in form.username.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.email.label }}<br>
+                                    {{ form.email(size=32,value=user.email) }}
+                                    {% for error in form.email.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+
+                                </p>
+                                <p>
+                                    {{ form.address.label }}<br>
+                                    {{ form.address(size=64,value=profile.address) }}
+
+                                </p>
+                                <p>
+                                    {{ form.phone_num.label }}<br>
+                                    {{ form.phone_num(size=11,value=profile.phone_num) }}
+
+
+                                </p>
+                                <p> {{ form.name.label }}<br>
+                                    {{ form.name(size=11,value=profile.name) }}</p>
+                                <p>{{ form.submit(class="form_but") }}</p>
+                            </form>
+                            <button onclick="change2();">Back</button>
 	                        </div>
+                            </div>
 						</div>
 					</div>
+                </div>
 				</div>
+            </div>
 			</section>
-			<section class="ftco-section instagram">
-				<div class="container">
-					<div class="row justify-content-center mb-2 pb-3">
-	          <div class="col-md-7 heading-section heading-section-2 text-center ftco-animate">
-	            <h2 class="mb-4">Recent Collections</h2>
-	          </div>
-	        </div>  
-					<div class="row no-gutters">
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/saxophone.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/saxophone.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/clarionet.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/clarionet.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/ukulele.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/ukulele.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/erhu.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/erhu.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/piano.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/piano.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		      </div>
-				</div>
-			</section>
-		</div><!-- END COLORLIB-MAIN -->
-	</div><!-- END COLORLIB-PAGE -->
-
-  <!-- loader -->
+		</div>
+    </div><!-- END COLORLIB-MAIN -->
+          <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
@@ -180,10 +149,16 @@
   <script src="../static/js/main.js"></script>
 
   </body>
-</html>
 
+</html>
 <script>
-    function clickToLogout(){
+
+ function change2(){
+     window.location.href="http://127.0.0.1:5000/home"
+
+ }
+
+  function clickToLogout(){
              $.post('/api/logout',{
         }).done(function (response) {
             let server_code = response['returnValue']

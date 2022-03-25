@@ -6,20 +6,26 @@ from flask import session
 def set_db():
     db.drop_all()
     db.create_all()
-    from app.models import User, Commodity, Cart, Order
+    from app.models import User, Commodity, Cart, Order, Profile
 
     # create users
     user1 = User(user_name='user1', email='12345678@qq.com')
     user1.set_password('000000')
     db.session.add(user1)
+    profile1 = Profile(user_id=1)
+    db.session.add(profile1)
 
     user2 = User(user_name='user2', email='87654321@qq.com')
     user2.set_password('111111')
     db.session.add(user2)
+    profile2 = Profile(user_id=2)
+    db.session.add(profile2)
 
     user3 = User(user_name='1920', email='135792468@qq.com')
     user3.set_password('222222')
     db.session.add(user3)
+    profile3 = Profile(user_id=3)
+    db.session.add(profile3)
 
     admin = User(user_name='admin', email='admin123@gmail.com', authority=1)
     admin.set_password('123456')
@@ -37,7 +43,6 @@ def set_db():
 
     db.session.commit()
 
-
 # This function is use to check whether the user is login
 def islogined():
     # Check whether the user is logged into the web
@@ -45,7 +50,6 @@ def islogined():
         return True
     else:
         return False
-
 
 
 
