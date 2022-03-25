@@ -6,11 +6,12 @@ from flask_wtf.file import FileRequired, FileAllowed
 
 	
 class UpdateForm(FlaskForm):
+	avatar = FileField('Change your avatar', validators = [FileAllowed(['jpg','jpeg','png'], 'Only pictures please')])
 	username = StringField('Username', validators=[DataRequired()])
 	email = StringField('Email', validators=[DataRequired(),Regexp(regex='^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$')])
-	address = StringField('Address', validators=[DataRequired()])
-	phone_num = StringField('Phone number', validators=[DataRequired()])
-	name = StringField('Name', validators=[DataRequired()])
+	address = StringField('Address')
+	phone_num = StringField('Phone number')
+	name = StringField('Name')
 	submit = SubmitField('Submit')
 	
 

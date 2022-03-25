@@ -15,7 +15,8 @@ class User(db.Model):
     register_time = db.Column(db.DateTime, default=datetime.now)
     gender = db.Column(db.String(10), nullable=True)
     icon = db.Column(db.String(128), nullable=True)
-    pic_path = db.Column(db.String(64), nullable=True)
+    # delete pic_path and use icon
+    # pic_path = db.Column(db.String(64), nullable=True)
     introduction = db.Column(db.String(64), nullable=True)
     authority = db.Column(db.Integer, default=0, nullable=False)
     money = db.Column(db.Integer, default=0, nullable=False)
@@ -68,3 +69,13 @@ class Order(db.Model):
     commodity_num = db.Column(db.Integer, default=0, nullable=False)
     address = db.Column(db.String(64), nullable=False)
     transport = db.Column(db.String(64),nullable=False)
+
+# A table of more user information
+class Profile(db.Model):
+    __tablename__ = "profile"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    address = db.Column(db.String(64), nullable=True)
+    phone_num = db.Column(db.String(11), nullable=True)
+    name = db.Column(db.String(11), nullable=True)

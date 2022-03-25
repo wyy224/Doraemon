@@ -27,7 +27,9 @@ avatars = Avatars()
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
-    return render_template('index.html', islogin=islogined(), types=all_type, type_value=all_type.values())
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    return render_template('index.html', islogin=islogined(), user=user, icon=user_icon, types=all_type, type_value=all_type.values())
 
 
 @app.route('/about')
@@ -93,24 +95,61 @@ def single():
 @app.route('/home')
 def home():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = user.icon
-    if user_icon == None:
-        user_icon = 'NULL'
-    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+    profile = Profile.query.filter(Profile.user_id == user.id).first()
+    user_icon = setIcon()
+    if profile.address == None:
+        profile.address = ''
+    if profile.phone_num == None:
+        profile.phone_num = ''
+    if profile.name == None:
+        profile.name = ''
+    return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type, type_value=all_type.values(),
                            icon=user_icon)
 
 
 @app.route('/collection')
 def collection():
-    return render_template('collection.html', islogin=islogined())
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    return render_template('collection.html',user=user, icon=user_icon, islogin=islogined())
 
 
-@app.route('/modify')
+@app.route('/modify',methods=['GET', 'POST'])
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    profile = Profile.query.filter(Profile.user_id == user.id).first()
     form = UpdateForm()
-    return render_template('modify.html', islogin=islogined(), user=user, form=form)
+    ava_dir = Config.AVA_UPLOAD_DIR
+    # change profile
+    if form.validate_on_submit():
+        user.user_name = form.username.data
+        user.email = form.email.data
+        profile.address = form.address.data
+        profile.phone_num = form.phone_num.data
+        profile.name = form.name.data
 
+        # change avatar
+        if form.avatar.data:
+            file_obj = form.avatar.data
+            ava_filename = session.get("USERNAME") + '_AVA.jpeg'
+            file_obj.save(os.path.join(ava_dir, ava_filename))
+            flash('AVA uploaded and saved')
+            user.icon = ava_filename.encode()
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form)
+
+# To get the avatar
+def setIcon():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = user.icon
+    if user_icon == None:
+        user_icon = 'NULL'
+    else:
+        icon = user.icon.decode()
+        user_icon = url_for('static', filename='uploaded_AVA/'+icon)
+    return user_icon
 
 # @app.route('/setdatabase')
 # def set_database():
@@ -226,40 +265,40 @@ def get_avatar(filename):
                                as_attachment=True)
 
 
-@app.route('/change-avatar/', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        f = request.files.get('file')
-        raw_filename = avatars.save_avatar(f)
-        session['raw_filename'] = raw_filename
-        print("app/static/icon/" + session['raw_filename'])
-        print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
-        u = session['uid']
-        avatar = User.query.filter(User.uid == u).first()
-        avatar.raw_avatar = "app/static/icon/" + session['raw_filename']
-        db.session.commit()
-        return redirect("/change-avatar/crop/")
-    return render_template('upload.html')
-
-
-@app.route('/change-avatar/crop/', methods=['GET', 'POST'])
-def crop():
-    if request.method == 'POST':
-        x = request.form.get('x')
-        y = request.form.get('y')
-        w = request.form.get('w')
-        h = request.form.get('h')
-        user = User.query.filter(User.user_name == session["USERNAME"]).first()
-        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
-        url_s = filenames[0]
-        url_m = filenames[1]
-        url_l = filenames[2]
-        user.raw_avatar = "app/static/icon/" + url_l
-        db.session.commit()
-        flash('更改头像成功', 'success')
+# @app.route('/change-avatar/', methods=['GET', 'POST'])
+# def upload():
+#     if request.method == 'POST':
+#         f = request.files.get('file')
+#         raw_filename = avatars.save_avatar(f)
+#         session['raw_filename'] = raw_filename
+#         print("app/static/icon/" + session['raw_filename'])
+#         print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
+#         u = session['uid']
+#         avatar = User.query.filter(User.uid == u).first()
+#         avatar.raw_avatar = "app/static/icon/" + session['raw_filename']
+#         db.session.commit()
+#         return redirect("/change-avatar/crop/")
+#     return render_template('upload.html')
+#
+#
+# @app.route('/change-avatar/crop/', methods=['GET', 'POST'])
+# def crop():
+#     if request.method == 'POST':
+#         x = request.form.get('x')
+#         y = request.form.get('y')
+#         w = request.form.get('w')
+#         h = request.form.get('h')
+#         user = User.query.filter(User.user_name == session["USERNAME"]).first()
+#         filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+#         url_s = filenames[0]
+#         url_m = filenames[1]
+#         url_l = filenames[2]
+#         user.raw_avatar = "app/static/icon/" + url_l
+#         db.session.commit()
+#         flash('Change avatar successfully', 'success')
         # return redirect(url_for('home'
         #                   , name=u.user_name
         #                 ))
 
-        return redirect("/home")
-    return render_template('crop.html')
+    #     return redirect("/home")
+    # return render_template('crop.html')

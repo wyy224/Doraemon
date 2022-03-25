@@ -33,12 +33,20 @@
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="home.html"><span class="img" style="background-image: url(../static/image/author.jpg);"></span>{{user.user_name}}</a></h1>
+			<h1 id="colorlib-logo"><a href="home.html">
+                <span>
+                    {% if icon == "NULL" %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ icon }}' alt="" width=100 height=100>
+                    {% endif %}
+            </span><br>
+                {{user.user_name}}</a></h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li><a href="http://127.0.0.1:5000/personal">Home</a></li>
+					<li><a href="http://127.0.0.1:5000/home">Home</a></li>
 					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-					<li><a href="http://127.0.0.1:5000/shoppingCart">Shopping Cart</a></li>
+					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
 					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
                     <li><button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button> </li>
 				</ul>
@@ -62,33 +70,23 @@
                 <div class="back">
                 <div class="back-color">
 					<div class="d-flex align-items-center js-fullheight">
+
 						<div class="author-info text p-3 p-md-5">
 							<div class="desc">
-                                <div id="current">
-                                    <h1 class="mb-4"><span>Personal Information:
-                                    (Current)</span></h1>
-                                    <p class="mb-4">Photo: <img src="../static/image/author.jpg" height="100" width="100"></p>
-                                    <p class="mb-4">Name: {{user.user_name}}</p>
-                                    <p class="mb-4">Email: {{user.email}}</p>
-                                    <p class="mb-4">Collections: </p>
-                                    <p class="mb-4">Oder forms: </p>
-                                    <p class="mb-4">Delivery address: </p>
-                                    <p class="mb-4">Phone number: </p>
-                                    <p class="mb-4">Consignee name: </p>
-                                    <button onclick="change1();">Change</button>
-                                </div>
-	                        </div>
-						</div>
-						<div class="author-info text p-3 p-md-5">
-							<div class="desc">
-                            <div id="modify" style="display: none">
-								<h1 class="mb-4"><span>Personal Information:
-                                (Modified)</span></h1>
-                                <form action="" method="post" novalidate class="center">
+                            <div id="modify">
+                                <form action="" method="post" enctype="multipart/form-data" novalidate>
                                 {{ form.hidden_tag() }}
+                                <p class='btn btn-primary' style="margin-top: 10px">
+                                    {{ form.avatar.label }}<br>
+                                    {{ form.avatar(size=12) }}
+
+                                    {% for error in form.avatar.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
                                 <p>
                                     {{ form.username.label }}<br>
-                                    {{ form.username(size=32) }}
+                                    {{ form.username(size=32,value=user.user_name) }}
 
                                     {% for error in form.username.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
@@ -96,7 +94,7 @@
                                 </p>
                                 <p>
                                     {{ form.email.label }}<br>
-                                    {{ form.email(size=32) }}
+                                    {{ form.email(size=32,value=user.email) }}
                                     {% for error in form.email.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -104,17 +102,17 @@
                                 </p>
                                 <p>
                                     {{ form.address.label }}<br>
-                                    {{ form.address(size=35) }}
+                                    {{ form.address(size=64,value=profile.address) }}
 
                                 </p>
                                 <p>
                                     {{ form.phone_num.label }}<br>
-                                    {{ form.phone_num(size=11) }}
+                                    {{ form.phone_num(size=11,value=profile.phone_num) }}
 
 
                                 </p>
                                 <p> {{ form.name.label }}<br>
-                                    {{ form.name(size=11) }}</p>
+                                    {{ form.name(size=11,value=profile.name) }}</p>
                                 <p>{{ form.submit(class="form_but") }}</p>
                             </form>
                             <button onclick="change2();">Back</button>
@@ -154,16 +152,9 @@
 
 </html>
 <script>
-     function change1(){
-     document.getElementById("current").style.display='none'
-     document.getElementById("modify").style.display='block'
-         alert("execute!")
-
- }
 
  function change2(){
-     document.getElementById("modify").style.display='none'
-     document.getElementById("current").style.display='block'
+     window.location.href="http://127.0.0.1:5000/home"
 
  }
 
