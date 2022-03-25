@@ -89,9 +89,9 @@
 								<h1 class="mb-4"><span>Personal Information:</span></h1>
 								<p class="mb-4">Name: {{user.user_name}}</p>
 								<p class="mb-4">Email: {{user.email}}</p>
-                                <p class="mb-4">Delivery address: </p>
-                                <p class="mb-4">Phone number: </p>
-                                <p class="mb-4">Consignee name: </p>
+                                <p class="mb-4">Delivery address: {{ profile.address }}</p>
+                                <p class="mb-4">Phone number: {{ profile.phone_num }}</p>
+                                <p class="mb-4">Consignee name: {{ profile.name }}</p>
                                 <button onclick="location.href='http://127.0.0.1:5000/modify'">Modify the information</button>
 								<ul class="ftco-social mt-3">
 		                        </ul>

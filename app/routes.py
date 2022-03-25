@@ -93,10 +93,17 @@ def single():
 @app.route('/home')
 def home():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    profile = Profile.query.filter(Profile.user_id == user.id).first()
     user_icon = user.icon
     if user_icon == None:
         user_icon = 'NULL'
-    return render_template('home.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+    if profile.address == None:
+        profile.address = ''
+    if profile.phone_num == None:
+        profile.phone_num = ''
+    if profile.name == None:
+        profile.name = ''
+    return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type, type_value=all_type.values(),
                            icon=user_icon)
 
 
@@ -105,11 +112,22 @@ def collection():
     return render_template('collection.html', islogin=islogined())
 
 
-@app.route('/modify')
+@app.route('/modify',methods=['GET', 'POST'])
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    profile = Profile.query.filter(Profile.user_id == user.id).first()
     form = UpdateForm()
-    return render_template('modify.html', islogin=islogined(), user=user, form=form)
+    # change profile
+    if form.validate_on_submit():
+        print(form.address.data)
+        user.user_name = form.username.data
+        user.email = form.email.data
+        profile.address = form.address.data
+        profile.phone_num = form.phone_num.data
+        profile.name = form.name.data
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('modify.html', islogin=islogined(), user=user, profile=profile, form=form)
 
 
 # @app.route('/setdatabase')

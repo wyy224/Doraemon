@@ -76,5 +76,5 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     address = db.Column(db.String(64), nullable=True)
-    phone_num = db.Column(db.Integer, nullable=True)
-    name = db.Column(db.String(32), nullable=True)
+    phone_num = db.Column(db.String(11), nullable=True)
+    name = db.Column(db.String(11), nullable=True)

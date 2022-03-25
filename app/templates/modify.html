@@ -72,7 +72,7 @@
                                 {{ form.hidden_tag() }}
                                 <p>
                                     {{ form.username.label }}<br>
-                                    {{ form.username(size=32) }}
+                                    {{ form.username(size=32,value=user.user_name) }}
 
                                     {% for error in form.username.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
@@ -80,7 +80,7 @@
                                 </p>
                                 <p>
                                     {{ form.email.label }}<br>
-                                    {{ form.email(size=32) }}
+                                    {{ form.email(size=32,value=user.email) }}
                                     {% for error in form.email.errors %}
                                     <span style="color: red;">[{{ error }}]</span>
                                     {% endfor %}
@@ -88,17 +88,17 @@
                                 </p>
                                 <p>
                                     {{ form.address.label }}<br>
-                                    {{ form.address(size=35) }}
+                                    {{ form.address(size=64,value=profile.address) }}
 
                                 </p>
                                 <p>
                                     {{ form.phone_num.label }}<br>
-                                    {{ form.phone_num(size=11) }}
+                                    {{ form.phone_num(size=11,value=profile.phone_num) }}
 
 
                                 </p>
                                 <p> {{ form.name.label }}<br>
-                                    {{ form.name(size=11) }}</p>
+                                    {{ form.name(size=11,value=profile.name) }}</p>
                                 <p>{{ form.submit(class="form_but") }}</p>
                             </form>
                             <button onclick="change2();">Back</button>
