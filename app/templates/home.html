@@ -33,11 +33,11 @@
       <div class="pic">
 
 {#      这边要改到下面放头像的地方去#}
-          {% if icon == "NULL" %}
-              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>
-          {% else %}
-              <img src= {{ icon }} alt="" width=10% height=10%>
-          {% endif %}
+{#          {% if icon == "NULL" %}#}
+{#              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>#}
+{#          {% else %}#}
+{#              <img src= {{ icon }} alt="" width=10% height=10%>#}
+{#          {% endif %}#}
 {#      这边要改到下面放头像的地方去#}
 
           {% if user == current_user %} {# 判断用户是不是当前用户 #}
@@ -48,7 +48,15 @@
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home"><span class="img" style="background-image: url(../static/image/author.jpg);"></span>{{user.user_name}}</a></h1>
+			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+                <span>
+                    {% if icon == "NULL" %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ icon }}' alt="" width=100 height=100>
+                    {% endif %}
+                </span><br>{{user.user_name}}</a>
+            </h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li class="colorlib-active"><a href="http://127.0.0.1:5000/home ">Home</a></li>

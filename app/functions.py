@@ -49,6 +49,5 @@ def islogined():
 
 
 
-
 def create_app():
     app = Flask(__name__)
