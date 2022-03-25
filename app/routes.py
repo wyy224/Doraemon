@@ -256,7 +256,7 @@ def crop():
         url_l = filenames[2]
         user.raw_avatar = "app/static/icon/" + url_l
         db.session.commit()
-        flash('更改头像成功', 'success')
+        flash('Change avatar successfully', 'success')
         # return redirect(url_for('home'
         #                   , name=u.user_name
         #                 ))
