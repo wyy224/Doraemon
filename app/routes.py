@@ -10,6 +10,7 @@ from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
+from sqlalchemy import and_
 
 from app import app, db, Config
 
@@ -48,6 +49,21 @@ def contact():
 @app.route('/ShoppingCart')
 def ShoppingCart():
     return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
+
+
+@app.route('/api/ShoppingCart/getpro', methods=['GET'])
+def get_cart():
+    products = db.session.query(Cart).filter(Cart.user_id == session.get('uid')).all()
+    list = []
+    for prod in products:
+        item = dict()
+        pd = Commodity.query.filter(Commodity.id == prod.commodity_id).first()
+        item['pic'] = pd.pic_path
+        item['name'] = pd.commodity_name
+        item['price'] = pd.price
+        item['num'] = prod.commodity_num
+        list.append(item)
+    return jsonify({'products':list})
 
 
 @app.route('/index')
@@ -96,16 +112,25 @@ def single(id):
     return render_template('single.html', islogin=islogined(), commodity=commodity)
 
 
-@app.route("/cart/add",methods=['GET', 'POST'])
+# determine if user is logged in or not, if not, jump to login page
+@app.route("/cart/add", methods=['GET', 'POST'])
 def cart_add():
     if request.method == 'POST':
-        commodity_id = request.form.get('commodity_id', None)
-        commodity_num = request.form.get('num', None)
-        user_id = session.get('uid')
-        cart = Cart(commodity_id=commodity_id, commodity_num=commodity_num, user_id=user_id)
-        db.session.add(cart)
-        db.session.commit()
-        return redirect(url_for('ShoppingCart'))
+        if session.get('uid') is not None:
+            commodity_id = request.form.get('commodity_id', None)
+            commodity_num = request.form.get('num', None)
+            user_id = session.get('uid')
+            c = Cart.query.filter(and_(Cart.user_id == user_id, Cart.commodity_id == commodity_id)).first()
+            # if commodity is already in cart, directly add commodity_num
+            if c is not None:
+                c.commodity_num = str(int(c.commodity_num) + int(commodity_num))
+            else:
+                cart = Cart(commodity_id=commodity_id, commodity_num=commodity_num, user_id=user_id)
+                db.session.add(cart)
+            db.session.commit()
+            return redirect(url_for('ShoppingCart'))
+        else:
+            return redirect(url_for('login'))
 
 
 @app.route('/home')
@@ -228,9 +253,11 @@ def reg_mes():
             return redirect(url_for('main_page'))
 
 
+# bug
 @app.route('/api/logout', methods=["GET", "POST"])
 def logout():
     session.pop("USERNAME", None)
+    session.pop("uid", None)
     return jsonify({'returnValue': 1})
 
 
