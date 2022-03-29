@@ -139,7 +139,7 @@
     total();
 
     function get_prods(arr){
-	    $.get('/api/ShoppingCart/get_pro', function (response) {
+	    jQuery.get('/api/ShoppingCart/get_pro', function (response) {
             alert("hi")
 		    var prods = response['products'];
 		    prods.forEach(function (element) {
