@@ -129,6 +129,10 @@
                               <button type="submit" class="toys-cart ptoys-cart add" >
                               Add to Cart
                               </button>
+                              {% if authority ==1 %}
+                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='http://127.0.0.1:5000/newsingle'">edit product</button>
+
+                              {% endif %}
                            </form>
                         </div>
                      </div>

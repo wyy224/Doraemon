@@ -1207,9 +1207,14 @@ button.toys-cart {
 	margin-left: 1300px;
 	height: 40px;
 	width: 120px;
-	background: #3fc3e8;
-
-
-
+	background: #e81921;
+	color: white;
+	border: none;
 }
+.addproduct:hover{
+	background: #c9040c;
+	color: white;
+	border: none;
+}
+
 /*-- //Responsive --*/

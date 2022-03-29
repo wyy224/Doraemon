@@ -114,9 +114,13 @@ def shop():
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
+    if islogined():
+        authority = session['authority']
+    else:
+        authority = 0
     commodity = Commodity.query.get(int(id))
     return render_template('single.html', islogin=islogined(), commodity=commodity, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(), authority=authority)
 
 
 # determine if user is logged in or not, if not, jump to login page
