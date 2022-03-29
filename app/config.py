@@ -13,7 +13,8 @@ class Config(object):
 	SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 	AVA_UPLOAD_DIR = os.path.join(basedir, 'static/uploaded_AVA')
-
+	AVATARS_SAVE_PATH = os.path.join(basedir, 'static/uploaded_AVA')
+	COMMODITY_SAVE_PATH = os.path.join(basedir, 'static/commodity')
 
 
 	# logging.basicConfig(filename="record.log", level=logging.INFO, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')

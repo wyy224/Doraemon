@@ -28,11 +28,9 @@ avatars = Avatars()
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    # user_icon = setIcon()
-    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
+    user_icon = setIcon()
+    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(), icon=user_icon)
 
-
-# icon=user_icon
 
 
 @app.route('/about')
@@ -160,17 +158,21 @@ def newsingle():
 
 @app.route('/home')
 def home():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    profile = Profile.query.filter(Profile.user_id == user.id).first()
-    # user_icon = setIcon()
-    if profile.address == None:
-        profile.address = ''
-    if profile.phone_num == None:
-        profile.phone_num = ''
-    if profile.name == None:
-        profile.name = ''
-    return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                           type_value=all_type.values())
+    if islogined():
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        profile = Profile.query.filter(Profile.user_id == user.id).first()
+        user_icon = setIcon()
+        print(user_icon)
+        if profile.address == None:
+            profile.address = ''
+        if profile.phone_num == None:
+            profile.phone_num = ''
+        if profile.name == None:
+            profile.name = ''
+        return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
+                               type_value=all_type.values(), icon=user_icon)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/collection')
@@ -214,16 +216,10 @@ def setIcon():
     if user_icon == None:
         user_icon = 'NULL'
     else:
-        icon = user.icon.decode()
+        icon = user.icon
         user_icon = url_for('static', filename='uploaded_AVA/' + icon)
     return user_icon
 
-
-# @app.route('/setdatabase')
-# def set_database():
-#     db.drop_all()
-#     db.create_all()
-#     return redirect('/base')
 
 # Separate registration from login lnx
 @app.route('/login', methods=['GET', 'POST'])
@@ -321,55 +317,78 @@ def reset_db():
     return redirect('/')
 
 
-# @app.route('/add_db')
-# def add_db():
-#     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
-#                       price=3000, introduction='piano', type='piano')
-#     db.session.add(piano)
-#
-#     db.session.commit()
-#     return redirect('/')
-
-
-# Icon change
+# Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/icon/'), filename, as_attachment=True)
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')), filename, as_attachment=True)
 
-# @app.route('/change-avatar/', methods=['GET', 'POST'])
-# def upload():
-#     if request.method == 'POST':
-#         f = request.files.get('file')
-#         raw_filename = avatars.save_avatar(f)
-#         session['raw_filename'] = raw_filename
-#         print("app/static/icon/" + session['raw_filename'])
-#         print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
-#         u = session['uid']
-#         avatar = User.query.filter(User.uid == u).first()
-#         avatar.raw_avatar = "app/static/icon/" + session['raw_filename']
-#         db.session.commit()
-#         return redirect("/change-avatar/crop/")
-#     return render_template('upload.html')
-#
-#
-# @app.route('/change-avatar/crop/', methods=['GET', 'POST'])
-# def crop():
-#     if request.method == 'POST':
-#         x = request.form.get('x')
-#         y = request.form.get('y')
-#         w = request.form.get('w')
-#         h = request.form.get('h')
-#         user = User.query.filter(User.user_name == session["USERNAME"]).first()
-#         filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
-#         url_s = filenames[0]
-#         url_m = filenames[1]
-#         url_l = filenames[2]
-#         user.raw_avatar = "app/static/icon/" + url_l
-#         db.session.commit()
-#         flash('Change avatar successfully', 'success')
-# return redirect(url_for('home'
-#                   , name=u.user_name
-#                 ))
+@app.route('/change-avatar/', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        raw_filename = avatars.save_avatar(f)
+        session['raw_filename'] = raw_filename
+        print("app/static/uploaded_AVA/" + session['raw_filename'])
+        print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
+        u = session['uid']
+        avatar = User.query.filter(User.id == u).first()
+        # avatar.icon = "app/static/uploaded_AVA/" + session['raw_filename']
+        avatar.icon = session['raw_filename']
+        db.session.commit()
+        return redirect("/change-avatar/crop/")
+    return render_template('upload.html')
 
-#     return redirect("/home")
-# return render_template('crop.html')
+
+@app.route('/change-avatar/crop/', methods=['GET', 'POST'])
+def crop():
+    if request.method == 'POST':
+        x = request.form.get('x')
+        y = request.form.get('y')
+        w = request.form.get('w')
+        h = request.form.get('h')
+        user = User.query.filter(User.user_name == session["USERNAME"]).first()
+        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+        url_s = filenames[0]
+        url_m = filenames[1]
+        url_l = filenames[2]
+        # user.icon = "app/static/uploaded_AVA/" + url_l
+        user.icon = url_l
+        db.session.commit()
+        flash('Change avatar successfully', 'success')
+
+        return redirect("/home")
+    return render_template('crop.html')
+
+
+# add commodity
+@app.route('/add_commodity/<path:filename>')
+def get_commodity(filename):
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')), filename, as_attachment=True)
+
+@app.route('/change-commodity/', methods=['GET', 'POST'])
+def upload_commodity():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        raw_filename = avatars.save_avatar(f)
+        session['raw_filename'] = raw_filename
+        print("app/static/commodity/" + session['raw_filename'])
+        return redirect("/change-commodity/crop/")
+    return render_template('upload.html')
+
+
+@app.route('/change-commodity/crop/', methods=['GET', 'POST'])
+def commodity_crop():
+    if request.method == 'POST':
+        x = request.form.get('x')
+        y = request.form.get('y')
+        w = request.form.get('w')
+        h = request.form.get('h')
+        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+        url_s = filenames[0]
+        url_m = filenames[1]
+        url_l = filenames[2]
+        # user.icon = "app/static/uploaded_AVA/" + url_l
+        flash('Change avatar successfully', 'success')
+
+        return render_template('index.html', islogin=islogined(), pic_path=url_l)
+    return render_template('crop.html')
