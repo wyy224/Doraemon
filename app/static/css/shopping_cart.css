@@ -1,17 +1,19 @@
   body {
             background: url(../image/Base.jpg) repeat center;
+            padding-bottom: 25px;
         }
 
         div.box {
-            width: 700px;
+            width: 95%;
             margin: 50px auto 0;
         }
 
         div.box table {
             border-collapse: collapse;
-            width: inherit;
+            width: 100%;
             text-align: center;
             background-color: #f6f6f6;
+            opacity: 0.9;
         }
 
         div.box table td, div.box th {
@@ -58,25 +60,41 @@
         }
 
         div.box div.bottom {
-            padding: 15px 0;
-            margin-top: 15px;
+            position: fixed;
+
+            left: 0px;
+
+            bottom: 0px;
+
+            width: 100%;
+
             height: 25px;
+
+            padding: 15px 0;
+            /*margin-top: 15px;*/
+            /*height: 25px;*/
             background-color: white;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;
             position: relative;
+            opacity: 0.9;
         }
 
         div.box div.bottom span.delAll {
-            cursor: default;
+            cursor: pointer;
+            padding: 0 10px;
+            height: 22px;
+            background-color: black;
+            color: white;
         }
 
         div.box div.bottom div.js {
-            padding: 0 6px;
-            background-color: #00A5FF;
+            padding: 0 10px;
+            height: 22px;
+            background-color: black;
             color: white;
             margin-right: 10px;
-            cursor: default;
+            cursor: pointer;
         }
 
         div.box div.bottom aside div {
