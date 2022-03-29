@@ -51,7 +51,7 @@ def ShoppingCart():
     return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
 
 
-@app.route('/api/ShoppingCart/getpro', methods=['GET'])
+@app.route('/api/ShoppingCart/get_pro', methods=['GET'])
 def get_cart():
     products = db.session.query(Cart).filter(Cart.user_id == session.get('uid')).all()
     list = []
