@@ -1,3 +1,6 @@
+<head>
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+</head>
 <body onselectstart="return false;">
 <template id="temp">
     <tr>
@@ -46,14 +49,14 @@
         <label>
             <input type="checkbox" class="checkAll check" checked>Select All
         </label>
-        <span class="delAll">Delete All</span>
+        <span class="delAll">&nbsp;Delete All&nbsp;</span>
         <div>items selected:
-            <span class="selected" id="num">3</span>pcs
+            <span class="selected" id="num">0</span>pcs
         </div>
         <div>Total: $
-            <span class="total" id="total">7000</span>
+            <span class="total" id="total">0</span>
         </div>
-        <div class="js">Pay</div>
+        <div class="js">&nbsp;Pay&nbsp;</div>
     </div>
 </div>
 
@@ -68,11 +71,12 @@
         }
         return el;
     }
-    var arr = [];/*表单的数据*/
-    arr[arr.length] = {src: '../static/instruments/clarionet.jpg', txt: 'Casio EX-TR350', price: 5999.88};
-    arr[arr.length] = {src: '../static/instruments/piano.jpg', txt: 'Canon PowerShot SX50 HS', price: 3888.50};
-    arr[arr.length] = {src: '../static/instruments/erhu.jpg', txt: 'Sony DSC-WX300', price: 1428.50};
-    arr[arr.length] = {src: '../static/instruments/saxophone.jpg', txt: 'Fujifilm instax mini 25', price: 640.60};
+    var arr = [];
+    get_prods(arr)
+    {#arr[arr.length] = {src: '../static/instruments/clarionet.jpg', txt: 'Casio EX-TR350', price: 5999.88};#}
+    {#arr[arr.length] = {src: '../static/instruments/piano.jpg', txt: 'Canon PowerShot SX50 HS', price: 3888.50};#}
+    {#arr[arr.length] = {src: '../static/instruments/erhu.jpg', txt: 'Sony DSC-WX300', price: 1428.50};#}
+    {#arr[arr.length] = {src: '../static/instruments/saxophone.jpg', txt: 'Fujifilm instax mini 25', price: 640.60};#}
     var temp=$('#temp').innerHTML;
     var tbody=$('#tbody');
     arr.forEach(function (el) {//把数据插入到HTML中
@@ -133,6 +137,17 @@
     var total_all=$('#total');
     var num=$('#num');
     total();
+
+    function get_prods(arr){
+	    jQuery.get('/api/ShoppingCart/get_pro', function (response) {
+            alert("hi")
+		    var prods = response['products'];
+		    prods.forEach(function (element) {
+                arr[arr.length] = {src: element['pic'], txt: element['name'], price: element['price']};
+		    });
+	    });
+    }
+
     function total() {//计算价格
         var sum=0,number=0;
         trs=$('tbody tr');
