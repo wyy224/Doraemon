@@ -158,7 +158,7 @@ def newsingle():
 def home():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     profile = Profile.query.filter(Profile.user_id == user.id).first()
-    user_icon = setIcon()
+    # user_icon = setIcon()
     if profile.address == None:
         profile.address = ''
     if profile.phone_num == None:
@@ -166,8 +166,7 @@ def home():
     if profile.name == None:
         profile.name = ''
     return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                           type_value=all_type.values(),
-                           icon=user_icon)
+                           type_value=all_type.values())
 
 
 @app.route('/collection')
