@@ -87,7 +87,7 @@ def shop():
 def single():
     return render_template('single.html', islogin=islogined())
 
-@app.route('/newsingle')
+@app.route('/newsingle', methods=['GET', 'POST'])
 def newsingle():
     if request.method == 'POST':
         print("1111111")
