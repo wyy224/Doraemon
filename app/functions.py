@@ -9,7 +9,7 @@ def set_db():
     from app.models import User, Commodity, Cart, Order, Profile
 
     # create users
-    user1 = User(user_name='user1', email='12345678@qq.com')
+    user1 = User(user_name='user1', email='12345678@qq.com', icon='82f58fa4a973419d9a997abb07ad02fd_l.png')
     user1.set_password('000000')
     db.session.add(user1)
     profile1 = Profile(user_id=1)
