@@ -63,7 +63,7 @@ def get_cart():
         item['price'] = pd.price
         item['num'] = prod.commodity_num
         list.append(item)
-    return jsonify({'products':list})
+    return jsonify({'products': list})
 
 
 @app.route('/index')
@@ -73,7 +73,7 @@ def index():
 
 @app.route('/icon')
 def icon():
-    return render_template('icon.html')
+    return render_template('icon.html', types=all_type, ype_value=all_type.values())
 
 
 @app.route('/product')
@@ -85,7 +85,9 @@ def product():
         return redirect(url_for('base'))
 
     products = Commodity.query.filter_by(type=all_type[types]).all()
-    return render_template('product.html', products=products, types=all_type, type_value=all_type.values())
+    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    return render_template('product.html', products=products, types=all_type, type_value=all_type.values(),
+                           new_commodities=new_commodities)
 
 
 @app.route('/service')
@@ -95,7 +97,7 @@ def service():
 
 @app.route('/typography')
 def typography():
-    return render_template('typography.html')
+    return render_template('typography.html', types=all_type, ype_value=all_type.values())
 
 
 @app.route('/shop')
@@ -109,7 +111,8 @@ def shop():
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
     commodity = Commodity.query.get(int(id))
-    return render_template('single.html', islogin=islogined(), commodity=commodity)
+    return render_template('single.html', islogin=islogined(), commodity=commodity, types=all_type,
+                           type_value=all_type.values())
 
 
 # determine if user is logged in or not, if not, jump to login page
@@ -267,7 +270,8 @@ def main_page():
         name = session['USERNAME']
     else:
         name = "visitor"
-    return render_template('index.html', islogin=islogined(), username=name)
+    return render_template('index.html', islogin=islogined(), username=name, types=all_type,
+                           ype_value=all_type.values())
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
