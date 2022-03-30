@@ -28,8 +28,9 @@ avatars = Avatars()
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
-    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(), icon=user_icon)
+    # user_icon = setIcon()
+    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
+# , icon=user_icon
 
 
 
@@ -106,8 +107,18 @@ def typography():
 def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    user_id = session.get('uid')
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values())
+                           types=all_type, type_value=all_type.values(), user_id=user_id)
+
+@app.route('/collect', methods=['GET', 'POST'])
+def collect():
+    user_id = request.form.get("user_id")
+    commodity_id = request.form.get("commodity_id")
+    collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
+    db.session.add(collect1)
+    db.session.commit()
+    return "collect success"
 
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
@@ -179,7 +190,8 @@ def home():
 def collection():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined())
+    collects = Collections.query.filter(Collections.user_id == session.get('uid'))
+    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects)
 
 
 @app.route('/modify', methods=['GET', 'POST'])

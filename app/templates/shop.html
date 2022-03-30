@@ -277,7 +277,11 @@
                                                     <input type="hidden" name="add" value="1">
                                                     <input type="hidden" name="toys_item" value="toys(barbie)">
                                                     <input type="hidden" name="amount" value="575.00">
-                                                    <button type="submit" class="toys-cart ptoys-cart">
+                                                    <input type="hidden" id="user_id"
+                                                               value="{{ user_id }}"/>
+                                                        <input type="hidden" value="{{ commodity.id }}"
+                                                               id="commodity_id">
+                                                    <button class="toys-cart ptoys-cart" onclick="collect()">
                                                         <i class="fas fa-cart-plus"></i>
                                                     </button>
                                                 </form>
@@ -405,6 +409,23 @@
     <!-- cart-js -->
     <script src="../static/js/minicart.js"></script>
     <script>
+        function collect() {
+            var sendData = {
+                "user_id": document.getElementById("user_id").value,
+                "commodity_id": document.getElementById("commodity_id").value
+            };
+            if ("{{ user_id }}" == "None") {
+                alert("please login");
+            } else
+                Ajax('post', '/collect', sendData, function (data) {
+                    alert("collect success")
+                    location.reload();
+                }, function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+    <script>
         toys.render();
 
         toys.cart.on('toys_checkout', function (evt) {
@@ -471,6 +492,59 @@
 
         });
     </script>
+
+    <script>
+        function Ajax(type, url, data, success, failed) {
+            // 创建ajax对象
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP')
+            }
+
+            var type = type.toUpperCase();
+            // 用于清除缓存
+            var random = Math.random();
+
+            if (typeof data == 'object') {
+                var str = '';
+                for (var key in data) {
+                    str += key + '=' + data[key] + '&';
+                }
+                data = str.replace(/&$/, '');
+            }
+
+            if (type == 'GET') {
+                if (data) {
+                    xhr.open('GET', url + '?' + data, true);
+                } else {
+                    xhr.open('GET', url + '?t=' + random, true);
+                }
+                xhr.send();
+
+            } else if (type == 'POST') {
+                xhr.open('POST', url, true);
+                // 如果需要像 html 表单那样 POST 数据，请使用 setRequestHeader() 来添加 http 头。
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(data);
+            }
+
+            // 处理返回数据
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        success(xhr.responseText);
+                    } else {
+                        if (failed) {
+                            failed(xhr.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <!-- //here ends scrolling icon -->
     <!--bootstrap working-->
     <script src="../static/js/bootstrap.min.js"></script>
