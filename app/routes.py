@@ -28,9 +28,10 @@ avatars = Avatars()
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    # user_icon = setIcon()
-    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values())
-# , icon=user_icon
+    user_icon = setIcon()
+    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+                           icon=user_icon)
+
 
 
 
@@ -223,13 +224,16 @@ def modify():
 
 # To get the avatar
 def setIcon():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = user.icon
-    if user_icon == None:
-        user_icon = 'NULL'
+    if islogined():
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        user_icon = user.icon
+        if user_icon != None:
+            icon = user.icon
+            user_icon = url_for('static', filename='uploaded_AVA/' + icon)
+        else:
+            user_icon = 'NULL'
     else:
-        icon = user.icon
-        user_icon = url_for('static', filename='uploaded_AVA/' + icon)
+        user_icon = 'NULL'
     return user_icon
 
 
@@ -289,19 +293,22 @@ def reg_mes():
 # bug
 @app.route('/api/logout', methods=["GET", "POST"])
 def logout():
-    session.pop("USERNAME", None)
-    session.pop("uid", None)
-    return jsonify({'returnValue': 1})
+    # session.pop("USERNAME", None)
+    # session.pop("uid", None)
+    # return jsonify({'returnValue': 1})
+    session.clear()
+    return redirect('/main_page')
 
 
 @app.route('/main_page')
 def main_page():
     if islogined():
         name = session['USERNAME']
+        user_icon = setIcon()
     else:
         name = "visitor"
     return render_template('index.html', islogin=islogined(), username=name, types=all_type,
-                           ype_value=all_type.values())
+                           ype_value=all_type.values(), icon=user_icon)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
