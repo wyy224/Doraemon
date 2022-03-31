@@ -24,13 +24,14 @@ all_type = dict({
 
 avatars = Avatars()
 
+
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(), icon=user_icon)
-
+    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+                           icon=user_icon)
 
 
 @app.route('/about')
@@ -91,7 +92,6 @@ def product():
                            authority=authority, new_commodities=new_commodities)
 
 
-
 @app.route('/service')
 def service():
     return render_template('service.html', islogin=islogined(), types=all_type, type_value=all_type.values())
@@ -102,12 +102,42 @@ def typography():
     return render_template('typography.html', types=all_type, ype_value=all_type.values())
 
 
-@app.route('/shop')
+@app.route('/shop', methods=['GET', 'POST'])
 def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    user_id = session.get('uid')
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values())
+                           types=all_type, type_value=all_type.values(), user_id=user_id)
+
+
+@app.route('/collect', methods=['GET', 'POST'])
+def collect():
+    user_id = request.form.get("user_id")
+    commodity_id = request.form.get("commodity_id")
+    exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+    if exist is not None:
+        db.session.delete(exist)
+        db.session.commit()
+        return "cancel collect"
+    else:
+        collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
+        db.session.add(collect1)
+        db.session.commit()
+        return "collect success"
+
+
+@app.route('/adjust_icon', methods=['GET', 'POST'])
+def adjust_icon():
+    user_id = request.form.get("user_id")
+    commodity_id = request.form.get("commodity_id")
+    exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+    if exist is not None:
+        return "#ffc107"
+    else:
+        return "#00b9ff"
+
+
 
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
@@ -146,8 +176,10 @@ def cart_add():
 def newsingle():
     if request.method == 'POST':
         print("1111111")
-        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'], pic_path='../static/instruments/piano.jpg',
-                      price=request.form['price'], introduction=request.form['introduction'], type=request.form['type'])
+        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
+                                 pic_path='../static/instruments/piano.jpg',
+                                 price=request.form['price'], introduction=request.form['introduction'],
+                                 type=request.form['type'])
         db.session.add(newcommodity)
         db.session.commit()
         print("22222222")
@@ -179,7 +211,8 @@ def home():
 def collection():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined())
+    collects = Collections.query.filter(Collections.user_id == session.get('uid'))
+    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects)
 
 
 @app.route('/modify', methods=['GET', 'POST'])
@@ -211,13 +244,16 @@ def modify():
 
 # To get the avatar
 def setIcon():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = user.icon
-    if user_icon == None:
-        user_icon = 'NULL'
+    if islogined():
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        user_icon = user.icon
+        if user_icon != None:
+            icon = user.icon
+            user_icon = url_for('static', filename='uploaded_AVA/' + icon)
+        else:
+            user_icon = 'NULL'
     else:
-        icon = user.icon
-        user_icon = url_for('static', filename='uploaded_AVA/' + icon)
+        user_icon = 'NULL'
     return user_icon
 
 
@@ -277,19 +313,22 @@ def reg_mes():
 # bug
 @app.route('/api/logout', methods=["GET", "POST"])
 def logout():
-    session.pop("USERNAME", None)
-    session.pop("uid", None)
-    return jsonify({'returnValue': 1})
+    # session.pop("USERNAME", None)
+    # session.pop("uid", None)
+    # return jsonify({'returnValue': 1})
+    session.clear()
+    return redirect('/main_page')
 
 
 @app.route('/main_page')
 def main_page():
     if islogined():
         name = session['USERNAME']
+        user_icon = setIcon()
     else:
         name = "visitor"
     return render_template('index.html', islogin=islogined(), username=name, types=all_type,
-                           ype_value=all_type.values())
+                           ype_value=all_type.values(), icon=user_icon)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
@@ -320,7 +359,9 @@ def reset_db():
 # Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')), filename, as_attachment=True)
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')),
+                               filename, as_attachment=True)
+
 
 @app.route('/change-avatar/', methods=['GET', 'POST'])
 def upload():
@@ -358,7 +399,6 @@ def crop():
 
         return redirect("/home")
     return render_template('crop.html')
-
 
 # add commodity
 # @app.route('/add_commodity/<path:filename>')

@@ -823,13 +823,13 @@ button.toys-cart  {
     text-align: center;
     border-left:none!important;
     background: none;
-	background: #171717;
+	background: #00b9ff;
     width:20%;
 	padding:12px 0px
 }
-button.toys-cart:hover {
-	    background:#ffcb2d;
-}
+/*ton.toys-cart:hover {*/
+/*	    background:#ffcb2d;*/
+/*}*/
 /*-- single-page --*/
 .single-right-left h3 {
     text-transform: capitalize;
