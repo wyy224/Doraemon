@@ -1,5 +1,7 @@
 import logging
 import os
+from uuid import uuid4
+from PIL import Image
 from sqlalchemy import true, false
 
 from app.functions import *
@@ -7,10 +9,11 @@ from app.models import *
 from app.forms import UpdateForm
 import calendar
 from datetime import datetime
-from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory
+from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
 from sqlalchemy import and_
+
 
 from app import app, db, Config
 
@@ -184,7 +187,7 @@ def newsingle():
         db.session.commit()
         session['cid'] = newcommodity.id
         print("22222222")
-        return redirect(url_for('product'))
+        return redirect(url_for('upload_commodity'))
     else:
         return render_template('newsingle.html', islogin=islogined())
 
@@ -411,7 +414,7 @@ def get_commodity(filename):
 def upload_commodity():
     if request.method == 'POST':
         f = request.files.get('file')
-        raw_filename = avatars.save_avatar(f)
+        raw_filename = save_commodity_pic(f)
         session['raw_filename'] = raw_filename
         print("app/static/commodity/" + session['raw_filename'])
         c = session['cid']
@@ -430,7 +433,7 @@ def commodity_crop():
         w = request.form.get('w')
         h = request.form.get('h')
         commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
-        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+        filenames = crop_commodity_pic(session['raw_filename'], x, y, w, h)
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
@@ -438,4 +441,71 @@ def commodity_crop():
         db.session.commit()
 
         return redirect("/shop")
-    return render_template('crop.html')
+    return render_template('cropCommodity.html')
+
+
+def save_commodity_pic(image):
+    """Save an avatar as raw image, return new filename.
+
+    :param image: The image that needs to be saved.
+    """
+    path = current_app.config['COMMODITY_SAVE_PATH']
+    filename = uuid4().hex + '_raw.png'
+    image.save(os.path.join(path, filename))
+    return filename
+
+
+def crop_commodity_pic(self, filename, x, y, w, h):
+    """Crop avatar with given size, return a list of file name: [filename_s, filename_m, filename_l].
+
+    :param filename: The raw image's filename.
+    :param x: The x-pos to start crop.
+    :param y: The y-pos to start crop.
+    :param w: The crop width.
+    :param h: The crop height.
+    """
+    x = int(x)
+    y = int(y)
+    w = int(w)
+    h = int(h)
+
+    print("1")
+
+    app.config.setdefault('AVATARS_SIZE_TUPLE', (30, 60, 150))
+    sizes = current_app.config['AVATARS_SIZE_TUPLE']
+
+    print("12")
+
+    path = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename)
+
+    print("123")
+    print(path)
+
+    raw_img = Image.open(path)
+
+    base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
+
+    if raw_img.size[0] >= base_width:
+        raw_img = self.resize_avatar(raw_img, base_width=base_width)
+
+    cropped_img = raw_img.crop((x, y, x + w, y + h))
+
+    filename = uuid4().hex
+
+    avatar_s = self.resize_avatar(cropped_img, base_width=sizes[0])
+    avatar_m = self.resize_avatar(cropped_img, base_width=sizes[1])
+    avatar_l = self.resize_avatar(cropped_img, base_width=sizes[2])
+
+    filename_s = filename + '_s.png'
+    filename_m = filename + '_m.png'
+    filename_l = filename + '_l.png'
+
+    path_s = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_s)
+    path_m = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_m)
+    path_l = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_l)
+
+    avatar_s.save(path_s, optimize=True, quality=85)
+    avatar_m.save(path_m, optimize=True, quality=85)
+    avatar_l.save(path_l, optimize=True, quality=85)
+
+    return [filename_s, filename_m, filename_l]
