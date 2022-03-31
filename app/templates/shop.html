@@ -205,11 +205,12 @@
                     <!-- //deals -->
                 </div>
                 <div class="left-ads-display col-lg-9">
+                    {% for commodity in commodities %}
                     <div class="row">
 
                         <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
                             <div class="product-toys-info">
-                                {% for commodity in commodities %}
+
                                 <div class="men-pro-item">
 
                                         <div class="men-thumb-item">
@@ -282,7 +283,7 @@
                                                         <input type="hidden" value="{{ commodity.id }}"
                                                                id="commodity_id">
                                                     <button class="toys-cart ptoys-cart" onclick="collect()">
-                                                        <i class="fas fa-cart-plus"></i>
+                                                        <i class="fas fa-star"></i>
                                                     </button>
                                                 </form>
                                             </div>
@@ -290,10 +291,11 @@
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
-                                {% endfor %}
+
                             </div>
                         </div>
                     </div>
+                {% endfor %}
                 </div>
             </div>
         </div>
