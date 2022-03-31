@@ -177,11 +177,12 @@ def newsingle():
     if request.method == 'POST':
         print("1111111")
         newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
-                                 pic_path='../static/instruments/piano.jpg',
+                                 # pic_path='../static/instruments/piano.jpg',
                                  price=request.form['price'], introduction=request.form['introduction'],
                                  type=request.form['type'])
         db.session.add(newcommodity)
         db.session.commit()
+        session['cid'] = newcommodity.id
         print("22222222")
         return redirect(url_for('product'))
     else:
@@ -401,34 +402,40 @@ def crop():
     return render_template('crop.html')
 
 # add commodity
-# @app.route('/add_commodity/<path:filename>')
-# def get_commodity(filename):
-#     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')), filename, as_attachment=True)
-#
-# @app.route('/change-commodity/', methods=['GET', 'POST'])
-# def upload_commodity():
-#     if request.method == 'POST':
-#         f = request.files.get('file')
-#         raw_filename = avatars.save_avatar(f)
-#         session['raw_filename'] = raw_filename
-#         print("app/static/commodity/" + session['raw_filename'])
-#         return redirect("/change-commodity/crop/")
-#     return render_template('upload.html')
-#
-#
-# @app.route('/change-commodity/crop/', methods=['GET', 'POST'])
-# def commodity_crop():
-#     if request.method == 'POST':
-#         x = request.form.get('x')
-#         y = request.form.get('y')
-#         w = request.form.get('w')
-#         h = request.form.get('h')
-#         filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
-#         url_s = filenames[0]
-#         url_m = filenames[1]
-#         url_l = filenames[2]
-#         # user.icon = "app/static/uploaded_AVA/" + url_l
-#         flash('Change avatar successfully', 'success')
-#
-#         return render_template('index.html', islogin=islogined(), pic_path=url_l)
-#     return render_template('crop.html')
+@app.route('/img/<path:filename>', endpoint="commodity_pic")
+def get_commodity(filename):
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
+                               filename, as_attachment=True)
+
+@app.route('/change-commodity/', methods=['GET', 'POST'])
+def upload_commodity():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        raw_filename = avatars.save_avatar(f)
+        session['raw_filename'] = raw_filename
+        print("app/static/commodity/" + session['raw_filename'])
+        c = session['cid']
+        commodity = Commodity.query.filter(Commodity.id == c).first()
+        commodity.pic_path = session['raw_filename']
+        db.session.commit()
+        return redirect("/change-commodity/crop/")
+    return render_template('upload.html')
+
+
+@app.route('/change-commodity/crop/', methods=['GET', 'POST'])
+def commodity_crop():
+    if request.method == 'POST':
+        x = request.form.get('x')
+        y = request.form.get('y')
+        w = request.form.get('w')
+        h = request.form.get('h')
+        commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
+        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
+        url_s = filenames[0]
+        url_m = filenames[1]
+        url_l = filenames[2]
+        commodity.pic_path = url_l
+        db.session.commit()
+
+        return redirect("/shop")
+    return render_template('crop.html')
