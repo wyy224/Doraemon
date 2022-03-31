@@ -1,5 +1,5 @@
 from app.models import *
-from flask import session
+from flask import session, Flask
 
 
 # This function is use to reset the database into initialized
