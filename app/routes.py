@@ -127,6 +127,19 @@ def collect():
         return "collect success"
 
 
+@app.route('/adjust_icon', methods=['GET', 'POST'])
+def adjust_icon():
+    user_id = request.form.get("user_id")
+    commodity_id = request.form.get("commodity_id")
+    exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+    if exist is not None:
+        return "#ffc107"
+    else:
+        return "#00b9ff"
+
+
+
+
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
     if islogined():
