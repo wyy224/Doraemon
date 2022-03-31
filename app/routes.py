@@ -110,11 +110,15 @@ def typography():
 
 @app.route('/shop', methods=['GET', 'POST'])
 def shop():
+    if islogined():
+        authority = session['authority']
+    else:
+        authority = 0
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     user_id = session.get('uid')
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values(), user_id=user_id)
+                           types=all_type, type_value=all_type.values(), user_id=user_id,authority=authority)
 
 
 @app.route('/collect', methods=['GET', 'POST'])
