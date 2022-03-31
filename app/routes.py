@@ -532,6 +532,7 @@ def modify_single():
         else:
             print("to start modify")
             IsModify = True
+            authority = 1
             commodity = Commodity.query.get(int(id))
             return render_template('newsingle.html', islogin=islogined(), commodity=commodity, types=all_type,
                                    type_value=all_type.values(), authority=authority, modify=IsModify)

@@ -72,8 +72,24 @@
                      </div>
                   </div>
                   <div class="col-lg-8 single-right-left simpleCart_shelfItem">
-                      <form action="" method="post">
-                          <h3>product name</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="">
+                      {% if modify  %}
+                           <form action="" method="post">
+                          <h3>product name</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="" value={{commodity.commodity_name}}>
+                          <p><span class="item_price">quantity<input class="form-control" type="text" name="quantity" placeholder="Please enter..." required="" value={{commodity.cargo_quantity}}></span>
+                          <span class="item_price"> price<input class="form-control" type="text" name="price" placeholder="Please enter..." required="" value={{commodity.price}}></span>
+                          <span class="item_price">type<select class="form-control" value="1" name="type">
+                                <option value="1">piano</option>
+                                <option value="2">drum</option>
+                            </select>
+                          </span>
+                           <span class="item_price">introduction<textarea  class="form-control"  rows="6" name="introduction" placeholder="Please enter..." style="OVERFLOW:hidden" required="" >{{commodity.introduction}}</textarea></span>
+                          </p>
+                          <button type="submit"> confirm</button>
+
+                      </form>
+                      {% else %}
+                          <form action="" method="post">
+                          <h3>product name</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="" value="">
                           <p><span class="item_price">quantity<input class="form-control" type="text" name="quantity" placeholder="Please enter..." required=""></span>
                           <span class="item_price"> price<input class="form-control" type="text" name="price" placeholder="Please enter..." required=""></span>
                           <span class="item_price">type<select class="form-control" value="1" name="type">
@@ -86,6 +102,10 @@
                           <button type="submit"> confirm</button>
 
                       </form>
+
+                        {% endif %}
+
+
 
                      </ul>
                   </div>
