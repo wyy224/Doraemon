@@ -405,7 +405,7 @@ def crop():
     return render_template('crop.html')
 
 # add commodity
-@app.route('/img/<path:filename>', endpoint="commodity_pic")
+@app.route('/img_commodity/<path:filename>', endpoint="commodity_pic")
 def get_commodity(filename):
     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
                                filename, as_attachment=True)
@@ -415,25 +415,26 @@ def upload_commodity():
     if request.method == 'POST':
         f = request.files.get('file')
         raw_filename = save_commodity_pic(f)
-        session['raw_filename'] = raw_filename
-        print("app/static/commodity/" + session['raw_filename'])
+        session['c_filename'] = raw_filename
+        print("../static/commodity/" + session['c_filename'])
         c = session['cid']
         commodity = Commodity.query.filter(Commodity.id == c).first()
-        commodity.pic_path = session['raw_filename']
+        commodity.pic_path = "../static/commodity/" + session['c_filename']
         db.session.commit()
-        return redirect("/change-commodity/crop/")
+        return redirect("/shop")
     return render_template('upload.html')
 
 
 @app.route('/change-commodity/crop/', methods=['GET', 'POST'])
 def commodity_crop():
     if request.method == 'POST':
+        print("555")
         x = request.form.get('x')
         y = request.form.get('y')
         w = request.form.get('w')
         h = request.form.get('h')
         commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
-        filenames = crop_commodity_pic(session['raw_filename'], x, y, w, h)
+        filenames = crop_commodity_pic(avatars, session['c_filename'], x, y, w, h)
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
@@ -441,6 +442,7 @@ def commodity_crop():
         db.session.commit()
 
         return redirect("/shop")
+    print("666")
     return render_template('cropCommodity.html')
 
 
