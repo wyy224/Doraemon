@@ -24,6 +24,7 @@ all_type = dict({
 
 avatars = Avatars()
 
+
 # logger = logging.getLogger(__name__)
 @app.route('/')
 def base():
@@ -31,8 +32,6 @@ def base():
     user_icon = setIcon()
     return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
                            icon=user_icon)
-
-
 
 
 @app.route('/about')
@@ -93,7 +92,6 @@ def product():
                            authority=authority, new_commodities=new_commodities)
 
 
-
 @app.route('/service')
 def service():
     return render_template('service.html', islogin=islogined(), types=all_type, type_value=all_type.values())
@@ -104,7 +102,7 @@ def typography():
     return render_template('typography.html', types=all_type, ype_value=all_type.values())
 
 
-@app.route('/shop')
+@app.route('/shop', methods=['GET', 'POST'])
 def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
@@ -112,14 +110,21 @@ def shop():
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), user_id=user_id)
 
+
 @app.route('/collect', methods=['GET', 'POST'])
 def collect():
     user_id = request.form.get("user_id")
     commodity_id = request.form.get("commodity_id")
-    collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
-    db.session.add(collect1)
-    db.session.commit()
-    return "collect success"
+    exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+    if exist is not None:
+        db.session.delete(exist)
+        db.session.commit()
+        return "cancel collect"
+    else:
+        collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
+        db.session.add(collect1)
+        db.session.commit()
+        return "collect success"
 
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
@@ -158,8 +163,10 @@ def cart_add():
 def newsingle():
     if request.method == 'POST':
         print("1111111")
-        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'], pic_path='../static/instruments/piano.jpg',
-                      price=request.form['price'], introduction=request.form['introduction'], type=request.form['type'])
+        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
+                                 pic_path='../static/instruments/piano.jpg',
+                                 price=request.form['price'], introduction=request.form['introduction'],
+                                 type=request.form['type'])
         db.session.add(newcommodity)
         db.session.commit()
         print("22222222")
@@ -339,7 +346,9 @@ def reset_db():
 # Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')), filename, as_attachment=True)
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')),
+                               filename, as_attachment=True)
+
 
 @app.route('/change-avatar/', methods=['GET', 'POST'])
 def upload():
@@ -377,7 +386,6 @@ def crop():
 
         return redirect("/home")
     return render_template('crop.html')
-
 
 # add commodity
 # @app.route('/add_commodity/<path:filename>')

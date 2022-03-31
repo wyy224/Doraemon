@@ -418,7 +418,7 @@
                 alert("please login");
             } else
                 Ajax('post', '/collect', sendData, function (data) {
-                    alert("collect success")
+                    alert(data)
                     location.reload();
                 }, function (error) {
                     console.log(error);
