@@ -148,6 +148,7 @@ def adjust_icon():
 def single(id):
     if islogined():
         authority = session['authority']
+        session['cid'] = id
     else:
         authority = 0
     commodity = Commodity.query.get(int(id))
@@ -181,7 +182,6 @@ def newsingle():
     if request.method == 'POST':
         print("1111111")
         newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
-                                 # pic_path='../static/instruments/piano.jpg',
                                  price=request.form['price'], introduction=request.form['introduction'],
                                  type=request.form['type'])
         db.session.add(newcommodity)
@@ -348,11 +348,6 @@ def get_commodity():
 #     return render_template("base.html", types=all_type)
 
 
-# @app.route('/shop')
-# def show_commodity():
-#
-#     return render_template("shop.html", )
-
 
 # reset the database
 @app.route('/reset_db')
@@ -514,3 +509,26 @@ def crop_commodity_pic(self, filename, x, y, w, h):
     avatar_l.save(path_l, optimize=True, quality=85)
 
     return [filename_s, filename_m, filename_l]
+
+
+# modify commodity page
+@app.route('/modify_commodity', methods=['GET', 'POST'])
+def modify_single():
+    if islogined() and session['authority'] == 1:
+        id = session['cid']
+        if request.method == 'POST':
+            print("modify")
+            commodity = Commodity.query.get(int(id))
+            commodity.commodity_name = request.form['product name']
+            commodity.cargo_quantity = request.form['quantity']
+            commodity.price = request.form['price']
+            commodity.introduction = request.form['introduction']
+            db.session.commit()
+            return redirect('/shop')
+        else:
+            print("to start modify")
+            IsModify = True
+            commodity = Commodity.query.get(int(id))
+            return render_template('newsingle.html', islogin=islogined(), commodity=commodity, types=all_type,
+                                   type_value=all_type.values(), authority=authority, modify=IsModify)
+    return redirect('/home')
