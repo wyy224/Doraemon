@@ -292,7 +292,7 @@
                                                     <input type="hidden" value="{{ commodity.id }}"
                                                            id="commodity_id">
                                                     <button id="button_collect" class="toys-cart ptoys-cart"
-                                                            onclick=collect()>
+                                                            onclick=collect("{{ commodity.id }}")>
                                                         <i class="fas fa-star"></i>
                                                     </button>
                                                     {#                                                    </form>#}
@@ -560,10 +560,11 @@
     </script>
 
     <script>
-        function collect() {
+        function collect(commodity) {
             var sendData = {
                 "user_id": document.getElementById("user_id").value,
                 "commodity_id": document.getElementById("commodity_id").value,
+                "commodity": commodity
 
             };
             if ("{{ user_id }}" == "None") {
@@ -576,7 +577,7 @@
                     } else
                     {
                         console.log("123")
-                        document.getElementById("button_collect").style.background = "#ffc107"
+                        document.getElementById("button_collect").style.background = "rgb(255, 193, 7)"
                     }
                     alert(data)
                     {#console.log("123");#}

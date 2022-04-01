@@ -120,7 +120,7 @@ def shop():
 @app.route('/collect', methods=['GET', 'POST'])
 def collect():
     user_id = request.form.get("user_id")
-    commodity_id = request.form.get("commodity_id")
+    commodity_id = request.form.get("commodity")
     exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
     if exist is not None:
         db.session.delete(exist)
@@ -139,7 +139,7 @@ def adjust_icon():
     commodity_id = request.form.get("commodity_id")
     exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
     if exist is not None:
-        return "#ffc107"
+        return "rgb(255, 193, 7)"
     else:
         return "#00b9ff"
 
