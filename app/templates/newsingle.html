@@ -57,14 +57,14 @@
                      <div class="grid images_3_of_2">
                         <div class="flexslider1">
                            <ul class="slides">
-                              <li data-thumb="{{ commodity.pic_path }}">
-                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="../static/instruments/saxophone.jpg">
+                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
-                              <li data-thumb="{{ commodity.pic_path }}">
-                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="../static/instruments/saxophone.jpg">
+                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
-                              <li data-thumb="{{ commodity.pic_path }}">
-                                 <div style="display:flex;justify-content: center"> <img src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+                              <li data-thumb="../static/instruments/saxophone.jpg">
+                                 <div style="display:flex;justify-content: center"> <img src="../static/instruments/saxophone.jpg" data-imagezoom="true" class="img-fluid" alt=" "> </div>
                               </li>
                            </ul>
                            <div class="clearfix"></div>
@@ -72,95 +72,41 @@
                      </div>
                   </div>
                   <div class="col-lg-8 single-right-left simpleCart_shelfItem">
-                     <h3>{{ commodity.commodity_name }}</h3>
-                     <p><span class="item_price">{{ commodity.price }}</span>
-{#                        <del>$1,199</del>#}
-                     </p>
-                     <div class="rating1">
-                        <ul class="stars">
-                           <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                           <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                           <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                           <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                           <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                        </ul>
-                     </div>
-                     <div class="color-quality">
-                        <div class="color-quality-right">
-                           <h5>Number :</h5>
-                           <select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
-                              <option value="null">1</option>
-                              <option value="null">2</option>
-                              <option value="null">3</option>
-                              <option value="null">4</option>
-                              <option value="null">5</option>
-                              <option value="null">6</option>
-{#                               </span><input name="box" style="width:50px;position:absolute;left:20px;">#}
+                      {% if modify  %}
+                           <form action="" method="post">
+                          <h3>product name</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="" value={{commodity.commodity_name}}>
+                          <p><span class="item_price">quantity<input class="form-control" type="text" name="quantity" placeholder="Please enter..." required="" value={{commodity.cargo_quantity}}></span>
+                          <span class="item_price"> price<input class="form-control" type="text" name="price" placeholder="Please enter..." required="" value={{commodity.price}}></span>
+                          <span class="item_price">type<select class="form-control" value="1" name="type">
+                                <option value="1">piano</option>
+                                <option value="2">drum</option>
+                            </select>
+                          </span>
+                           <span class="item_price">introduction<textarea  class="form-control"  rows="6" name="introduction" placeholder="Please enter..." style="OVERFLOW:hidden" required="" >{{commodity.introduction}}</textarea></span>
+                          </p>
+                          <button type="submit"> confirm</button>
 
-                           </select>
-                        </div>
-                     </div>
-                     <div class="occasional">
-                        <h5>You can click here to listen the sound!</h5>
+                      </form>
+                      {% else %}
+                          <form action="" method="post">
+                          <h3>product name</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="" value="">
+                          <p><span class="item_price">quantity<input class="form-control" type="text" name="quantity" placeholder="Please enter..." required=""></span>
+                          <span class="item_price"> price<input class="form-control" type="text" name="price" placeholder="Please enter..." required=""></span>
+                          <span class="item_price">type<select class="form-control" value="1" name="type">
+                                <option value="1">piano</option>
+                                <option value="2">drum</option>
+                            </select>
+                          </span>
+                           <span class="item_price">introduction<textarea  class="form-control"  rows="6" name="introduction" placeholder="Please enter..." style="OVERFLOW:hidden" required=""></textarea></span>
+                          </p>
+                          <button type="submit"> confirm</button>
 
-{#                        <div class="colr ert">#}
-{#                           <label class="radio"><input type="radio" name="radio" checked=""><i></i> Soft Teddy Bear (Black)</label>#}
-{#                        </div>#}
-{#                        <div class="colr">#}
-{#                           <label class="radio"><input type="radio" name="radio"><i></i>Soft Teddy Bear (Brown)</label>#}
-{#                        </div>#}
-                           <button class="music"  type="button" onclick="alert(yes)" style="background: url(../static/image/sound.jpg); width: 60px; height: 60px">
+                      </form>
 
-                           </button>
-{#                        <div class="clearfix"> </div>#}
-                     </div>
-                     <div class="occasion-cart">
-                        <div class="toys single-item singlepage">
-                           <form action="/cart/add" method="post">
-{#                              <input type="hidden" name="cmd" value="_cart">#}
-{#                              <input type="hidden" name="add" value="1">#}
-{#                              <input type="hidden" name="toys_item" value="Farenheit">#}
-{#                              <input type="hidden" name="amount" value="575.00">#}
-                               <input type="hidden" name="commodity_id" value="{{ commodity.id }}">
-                               <input type="hidden" name="num" value="1">
+                        {% endif %}
 
-                              <button type="submit" class="toys-cart ptoys-cart add" >
-                              Add to Cart
-                              </button>
-                              {% if authority ==1 %}
-                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='http://127.0.0.1:5000/modify_commodity'">edit product</button>
 
-                              {% endif %}
-                           </form>
-                        </div>
-                     </div>
-                     <ul class="footer-social text-left mt-lg-4 mt-3">
-                        <li>Share On : </li>
-                        <li class="mx-1">
-                           <a href="#">
-                           <span class="fab fa-facebook-f"></span>
-                           </a>
-                        </li>
-                        <li class="">
-                           <a href="#">
-                           <span class="fab fa-twitter"></span>
-                           </a>
-                        </li>
-                        <li class="mx-1">
-                           <a href="#">
-                           <span class="fab fa-google-plus-g"></span>
-                           </a>
-                        </li>
-                        <li class="">
-                           <a href="#">
-                           <span class="fab fa-linkedin-in"></span>
-                           </a>
-                        </li>
-                        <li class="mx-1">
-                           <a href="#">
-                           <span class="fas fa-rss"></span>
-                           </a>
-                        </li>
+
                      </ul>
                   </div>
                   <div class="clearfix"> </div>
@@ -176,12 +122,13 @@
                            <!--/tab_one-->
                            <div class="tab1">
                               <div class="single_page">
-                                 <h6>{{ commodity.commodity_name }}</h6>
-                                 <p>
-                                     {{ commodity.introduction }}
+                                 <h6>Lorem ipsum dolor sit amet</h6>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
+                                    blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
+                                    magna aliqua.
                                  </p>
-                                 <p class="para">
-                                     Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
+                                 <p class="para">Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
                                     blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
                                     ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
                                     magna aliqua.
@@ -194,7 +141,7 @@
                                  <div class="bootstrap-tab-text-grids">
                                     <div class="bootstrap-tab-text-grid">
                                        <div class="bootstrap-tab-text-grid-left">
-{#                                          <img src="" alt=" " class="img-fluid">#}
+                                          <img src="../static/picture/team1.jpg" alt=" " class="img-fluid">
                                        </div>
                                        <div class="bootstrap-tab-text-grid-right">
                                           <ul>
@@ -228,8 +175,11 @@
                            </div>
                            <div class="tab3">
                               <div class="single_page">
-                                 <h6>{{ commodity.commodity_name }}</h6>
-                                 <p>{{ commodity.introduction }}
+                                 <h6>Teddy Bear(Blue)</h6>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
+                                    blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut lab ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. labore et dolore
+                                    magna aliqua.
                                  </p>
                                  <p class="para">Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula augue eget nisl ullamcorper, molestie
                                     blandit ipsum auctor. Mauris volutpat augue dolor.Consectetur adipisicing elit, sed do eiusmod tempor incididunt
@@ -284,10 +234,10 @@
                   <li><a href="#"><span class="fas fa-rss"></span></a></li>
                   <li><a href="#"><span class="fab fa-vk"></span></a></li>
                </ul>
-               <p class="my-3">velit sagittis vehicula. Duis posuere 
+               <p class="my-3">velit sagittis vehicula. Duis posuere
                   ex in mollis iaculis. Suspendisse tincidunt
-                  velit sagittis vehicula. Duis posuere 
-                  velit sagittis vehicula. Duis posuere 
+                  velit sagittis vehicula. Duis posuere
+                  velit sagittis vehicula. Duis posuere
                </p>
             </div>
             <div class="email-sub-agile">
@@ -306,7 +256,7 @@
       <!-- footer -->
       <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
          <div class="copy-agile-right">
-            <p> 
+            <p>
                Copyright &copy; 2022.Company name All rights reserved.<a target="_blank" href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
             </p>
          </div>
@@ -354,13 +304,13 @@
       <script src="../static/js/minicart.js"></script>
       <script>
          toys.render();
-         
+
          toys.cart.on('toys_checkout', function (evt) {
          	var items, len, i;
-         
+
          	if (this.subtotal() > 0) {
          		items = this.items();
-         
+
          		for (i = 0, len = items.length; i < len; i++) {}
          	}
          });
@@ -369,7 +319,7 @@
       <!-- price range (top products) -->
       <script src="../static/js/jquery-ui.js"></script>
       <script>
-         //<![CDATA[ 
+         //<![CDATA[
          $(window).load(function () {
          	$("#slider-range").slider({
          		range: true,
@@ -381,7 +331,7 @@
          		}
          	});
          	$("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
-         
+
          }); //]]>
       </script>
       <!-- //price range (top products) -->
@@ -393,7 +343,7 @@
       <script>
          $(document).ready(function () {
          	$('#horizontalTab').easyResponsiveTabs({
-         		type: 'default', //Types: default, vertical, accordion           
+         		type: 'default', //Types: default, vertical, accordion
          		width: 'auto', //auto or any width like 600px
          		fit: true, // 100% fit in a container
          		closed: 'accordion', // Start closed if in accordion view
@@ -441,19 +391,19 @@
       <!-- here stars scrolling icon -->
       <script>
          $(document).ready(function () {
-         
+
          	var defaults = {
          		containerID: 'toTop', // fading element id
          		containerHoverID: 'toTopHover', // fading element hover id
          		scrollSpeed: 1200,
          		easingType: 'linear'
          	};
-         
-         
+
+
          	$().UItoTop({
          		easingType: 'easeOutQuart'
          	});
-         
+
          });
       </script>
       <!-- //here ends scrolling icon -->

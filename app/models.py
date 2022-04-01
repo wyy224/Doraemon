@@ -79,3 +79,12 @@ class Profile(db.Model):
     address = db.Column(db.String(64), nullable=True)
     phone_num = db.Column(db.String(11), nullable=True)
     name = db.Column(db.String(11), nullable=True)
+
+# A table of collection list
+class Collections(db.Model):
+    __tablename__ = "collections"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    commodity = db.relationship('Commodity', backref=db.backref('Commodity', lazy='dynamic'))

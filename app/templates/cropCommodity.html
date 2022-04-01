@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        #preview-box{
-            position: absolute;
-            left: 600px;
-            top: 100px;
-        }
-    </style>
-</head>
 <body>
 {% block content %}
     {{ avatars.jcrop_css() }}  <!--导入内置的jcrop css-->
@@ -19,10 +7,10 @@
         <div class="card">
             <div class="card-body row">
                 <div class="crop">
-                  {{ avatars.crop_box('get_avatar', session['raw_filename']) }}  <!-- crop window -->
+                  {{ avatars.crop_box('get_commodity', session['c_filename']) }}  <!-- crop window -->
                 </div>
                 <div class="preview">
-                    {{ avatars.preview_box('get_avatar', session['raw_filename']) }}  <!-- preview widow -->
+                    {{ avatars.preview_box('get_commodity', session['c_filename']) }}  <!-- preview widow -->
                 </div>
                 <br>
                 <form method="post">

@@ -53,7 +53,13 @@
     <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
 
         <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
-            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3">Toys Shop</h3>
+            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3">Instruments Shop</h3>
+            {% if authority ==1 %}
+                <button type="button" class="addproduct" onclick="location.href='http://127.0.0.1:5000/newsingle'">add
+                    product
+                </button>
+
+            {% endif %}
             <div class="row">
                 <div class="side-bar col-lg-3">
                     <div class="search-hotel">
@@ -187,30 +193,39 @@
                     </div>
                     <!-- //reviews -->
                     <!-- deals -->
+
                     <div class="deal-leftmk left-side">
+
                         <h3 class="agileits-sear-head">The Newest commodities</h3>
+
                         {% for commodity in new_commodities %}
-                        <div class="row special-sec1">
-                            <div class="col-xs-4 img-deals">
-                                <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
+                            <div class="row special-sec1">
+
+                                <div class="col-xs-4 img-deals">
+                                    <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
+                                </div>
+                                <div class="col-xs-8 img-deal1">
+                                    <h3>{{ commodity.commodity_name }}</h3>
+                                    <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
+                                </div>
+                                <div class="clearfix"></div>
+
                             </div>
-                            <div class="col-xs-8 img-deal1">
-                                <h3>{{ commodity.commodity_name }}</h3>
-                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
                         {% endfor %}
+
+
                     </div>
+
                     <!-- //deals -->
                 </div>
                 <div class="left-ads-display col-lg-9">
-                    <div class="row">
+                    {% for commodity in commodities %}
+                        <div class="row">
 
-                        <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
-                            <div class="product-toys-info">
-                                {% for commodity in commodities %}
-                                <div class="men-pro-item">
+                            <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
+                                <div class="product-toys-info">
+
+                                    <div class="men-pro-item">
 
                                         <div class="men-thumb-item">
 
@@ -220,7 +235,8 @@
 
                                             <div class="men-cart-pro">
                                                 <div class="inner-men-cart-pro">
-                                                    <a href="single/{{ commodity.id }}" class="link-product-add-cart">Quick View</a>
+                                                    <a href="single/{{ commodity.id }}" class="link-product-add-cart">Quick
+                                                        View</a>
                                                 </div>
                                             </div>
 
@@ -229,67 +245,74 @@
                                         </div>
 
 
-                                    <div class="item-info-product">
-                                        <div class="info-product-price">
-                                            <div class="grid_meta">
+                                        <div class="item-info-product">
+                                            <div class="info-product-price">
+                                                <div class="grid_meta">
 
-                                                <div class="product_price">
-                                                    <h4>
+                                                    <div class="product_price">
+                                                        <h4>
 
-                                                        <a href="single/{{ commodity.id }}">{{ commodity.commodity_name }}</a>
+                                                            <a href="single/{{ commodity.id }}">{{ commodity.commodity_name }}</a>
 
-                                                    </h4>
-                                                    <div class="grid-price mt-2">
-                                                        <span class="money ">${{ commodity.price }}</span>
+                                                        </h4>
+                                                        <div class="grid-price mt-2">
+                                                            <span class="money ">${{ commodity.price }}</span>
+                                                        </div>
                                                     </div>
+                                                    <ul class="stars">
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fas fa-star"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fas fa-star"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fas fa-star"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="fas fa-star"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">
+                                                                <i class="far fa-star-half-o"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
-                                                <ul class="stars">
-                                                    <li>
-                                                        <a href="#">
-                                                            <i class="fas fa-star"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <i class="fas fa-star"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <i class="fas fa-star"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <i class="fas fa-star"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <i class="far fa-star-half-o"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="toys single-item hvr-outline-out">
-                                                <form action="#" method="post">
+                                                <div class="toys single-item hvr-outline-out">
+                                                    {#                                                    <form action="#" method="post">#}
                                                     <input type="hidden" name="cmd" value="_cart">
                                                     <input type="hidden" name="add" value="1">
                                                     <input type="hidden" name="toys_item" value="toys(barbie)">
                                                     <input type="hidden" name="amount" value="575.00">
-                                                    <button type="submit" class="toys-cart ptoys-cart">
-                                                        <i class="fas fa-cart-plus"></i>
+                                                    <input type="hidden" id="user_id"
+                                                           value="{{ user_id }}"/>
+                                                    <input type="hidden" value="{{ commodity.id }}"
+                                                           id="commodity_id">
+                                                    <button id="button_collect{{ commodity.id }}"
+                                                            class="toys-cart ptoys-cart"
+                                                            onclick=collect("{{ commodity.id }}")>
+                                                        <i class="fas fa-star"></i>
                                                     </button>
-                                                </form>
+                                                    {#                                                    </form>#}
+                                                </div>
                                             </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="clearfix"></div>
                                     </div>
+
                                 </div>
-                                {% endfor %}
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -404,6 +427,8 @@
     <!--//js working-->
     <!-- cart-js -->
     <script src="../static/js/minicart.js"></script>
+
+
     <script>
         toys.render();
 
@@ -469,8 +494,107 @@
                 easingType: 'easeOutQuart'
             });
 
+
+            var sendData = {
+                "user_id": document.getElementById("user_id").value,
+                "commodity_id": document.getElementById("commodity_id").value,
+
+            };
+            if ("{{ user_id }}" !== "None") {
+                Ajax('post', '/adjust_icon', sendData, function (data) {
+                    {#document.getElementById("button_collect{{ commodity.id }}").style.background = data#}
+                    {#console.log("123");#}
+                    {#location.reload();#}
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+
+
         });
     </script>
+
+    <script>
+        function Ajax(type, url, data, success, failed) {
+            // 创建ajax对象
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP')
+            }
+
+            var type = type.toUpperCase();
+            // 用于清除缓存
+            var random = Math.random();
+
+            if (typeof data == 'object') {
+                var str = '';
+                for (var key in data) {
+                    str += key + '=' + data[key] + '&';
+                }
+                data = str.replace(/&$/, '');
+            }
+
+            if (type == 'GET') {
+                if (data) {
+                    xhr.open('GET', url + '?' + data, true);
+                } else {
+                    xhr.open('GET', url + '?t=' + random, true);
+                }
+                xhr.send();
+
+            } else if (type == 'POST') {
+                xhr.open('POST', url, true);
+                // 如果需要像 html 表单那样 POST 数据，请使用 setRequestHeader() 来添加 http 头。
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(data);
+            }
+
+            // 处理返回数据
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        success(xhr.responseText);
+                    } else {
+                        if (failed) {
+                            failed(xhr.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function collect(commodity) {
+            var sendData = {
+                "user_id": document.getElementById("user_id").value,
+                "commodity_id": document.getElementById("commodity_id").value,
+                "commodity": commodity
+
+            };
+            if ("{{ user_id }}" == "None") {
+                alert("please login");
+            } else
+                Ajax('post', '/collect', sendData, function (data) {
+                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
+                        console.log("12")
+                        document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
+                    } else {
+                        console.log("123")
+                        document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
+                    }
+                    alert(data)
+                    {#console.log("123");#}
+                    {#location.reload();#}
+
+                }, function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+
     <!-- //here ends scrolling icon -->
     <!--bootstrap working-->
     <script src="../static/js/bootstrap.min.js"></script>
