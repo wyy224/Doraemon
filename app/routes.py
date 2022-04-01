@@ -63,6 +63,7 @@ def get_cart():
         item['price'] = pd.price
         item['num'] = prod.commodity_num
         list.append(item)
+    print(list)
     return jsonify({'products': list})
 
 
