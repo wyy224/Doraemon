@@ -84,15 +84,18 @@ def product():
         return redirect(url_for('base'))
     if not all_type[types]:
         return redirect(url_for('base'))
-
-    products = Commodity.query.filter_by(type=all_type[types]).all()
+    page = request.args.get('page', 1, type=int)
+    products = Commodity.query.filter_by(type=all_type[types]).paginate(page,
+                                                                         per_page=5,
+                                                                         error_out=False)
     if islogined():
         authority = session['authority']
     else:
         authority = 0
+
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     return render_template('product.html', products=products, types=all_type, type_value=all_type.values(),
-                           authority=authority, new_commodities=new_commodities)
+                           authority=authority, new_commodities=new_commodities, type=types)
 
 
 @app.route('/service')
@@ -139,8 +142,6 @@ def adjust_icon():
         return "#ffc107"
     else:
         return "#00b9ff"
-
-
 
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
@@ -404,11 +405,13 @@ def crop():
         return redirect("/home")
     return render_template('crop.html')
 
+
 # add commodity
 @app.route('/img_commodity/<path:filename>', endpoint="commodity_pic")
 def get_commodity(filename):
     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
                                filename, as_attachment=True)
+
 
 @app.route('/change-commodity/', methods=['GET', 'POST'])
 def upload_commodity():
