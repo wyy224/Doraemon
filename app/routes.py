@@ -139,7 +139,7 @@ def adjust_icon():
     commodity_id = request.form.get("commodity_id")
     exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
     if exist is not None:
-        return "rgb(255, 193, 7)"
+        return "#ffc107"
     else:
         return "#00b9ff"
 
