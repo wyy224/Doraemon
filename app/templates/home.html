@@ -30,19 +30,39 @@
   </head>
   <body>
 
+      <div class="pic">
 
+{#      这边要改到下面放头像的地方去#}
+{#          {% if icon == "NULL" %}#}
+{#              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>#}
+{#          {% else %}#}
+{#              <img src= {{ icon }} alt="" width=10% height=10%>#}
+{#          {% endif %}#}
+{#      这边要改到下面放头像的地方去#}
+
+          {% if user == current_user %} {# 判断用户是不是当前用户 #}
+              <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
+          {% endif %}
+      </div>
 
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="home.html"><span class="img" style="background-image: url(../static/image/author.jpg);"></span>{{user.user_name}}</a></h1>
+			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+                <span>
+                    {% if icon == "NULL" %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ icon }}' alt="" width=100 height=100>
+                    {% endif %}
+                </span><br>{{user.user_name}}</a>
+            </h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="http://127.0.0.1:5000/personal">Home</a></li>
+					<li class="colorlib-active"><a href="http://127.0.0.1:5000/home ">Home</a></li>
 					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-					<li><a href="http://127.0.0.1:5000/shoppingCart">Shopping Cart</a></li>
+					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
 					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
-                    <li><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a></li>
                     <li><button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
@@ -52,7 +72,7 @@
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
-            	<button onclick="clickToLogout();">Log out at here</button>
+            	<button onclick="location.href='http://127.0.0.1:5000/main_page'">Log out at here</button>
             </div>
           </form>
 				</div>
@@ -70,33 +90,20 @@
 
 					      <div class="slider-item js-fullheight" style="background-image:url(../static/image/back2.jpg);">
 					      </div>
-
-
 					    </section>
 						</div>
 						<div class="author-info text p-3 p-md-5">
-
 							<div class="desc">
 								<h1 class="mb-4"><span>Personal Information:</span></h1>
 								<p class="mb-4">Name: {{user.user_name}}</p>
 								<p class="mb-4">Email: {{user.email}}</p>
-								<p class="mb-4">Collections: </p>
-								<p class="mb-4">Oder forms: </p>
+                                <p class="mb-4">Delivery address: {{ profile.address }}</p>
+                                <p class="mb-4">Phone number: {{ profile.phone_num }}</p>
+                                <p class="mb-4">Consignee name: {{ profile.name }}</p>
+                                <button onclick="location.href='http://127.0.0.1:5000/modify'">Modify the information</button>
 								<ul class="ftco-social mt-3">
-		            </ul>
-                            <div class="pic">
-
-                            {% if icon == "NULL" %}
-                                <img src='{{ avatars.default(size='l') }}' alt="" width=100% height=100%>
-                            {% else %}
-                                <img src= {{ icon }} alt="" width=100% height=100%>
-                            {% endif %}
-
-{#                            {% if user == current_user %} {# 判断用户是不是当前用户 #}
-
-{#                            {% endif %}#}
-                          </div>
-	            </div>
+		                        </ul>
+	                        </div>
 						</div>
 					</div>
 				</div>
@@ -174,22 +181,3 @@
 
   </body>
 </html>
-
-<script>
-    function clickToLogout(){
-             $.post('/api/logout',{
-        }).done(function (response) {
-            let server_code = response['returnValue']
-            if (server_code == 1) {
-            // success set done
-            alert("You have been logged out")
-            window.location.href='http://127.0.0.1:5000/main_page';
-            }else {
-            alert("You have not been logged out")
-            window.location.href='http://127.0.0.1:5000/home';
-            }
-       }).fail(function (){
-            console.log("Fail reset");
-    })
-    }
-</script>

@@ -99,6 +99,7 @@
                     target.previousSibling.value++;//数量那一栏的数字加一
                     tds[4].innerText=(tds[2].innerText*target.previousElementSibling.value).toFixed(2);
                     //修改小计里面的价格
+                    change(tds[1].innerText,'add',1);
                     break;
                 case 'reduce'://减少商品数量
                     var tr=target.parentNode.parentNode;//找到点击过那一行
@@ -107,18 +108,22 @@
                     //数量那一栏减一
                     tds[4].innerText=(tds[2].innerText*target.nextElementSibling.value).toFixed(2);
                     //修改小计里面的价格
+                    change(tds[1].innerText,'reduce',1);
                     break;
                 case 'text'://直接修改数量那一栏input的值
                     var tr=target.parentNode.parentNode;
                     var tds=tr.cells;
                     target.onblur=function () {//失去焦点时执行
                         tds[4].innerText=(tds[2].innerText*this.value).toFixed(2);
+                        change(tds[1].innerText,'change',this.value);
                         this.onblur=null;//销毁事件
                     };
                     break;
                 case 'del': //删除商品
                     var tr=target.parentNode.parentNode;
+                    var tds=tr.cells;
                     if (confirm('Are you sure to delete?'))
+                        change(tds[1].innerText,'delete',1);
                         tbody.removeChild(tr);
                     break;
                 case 'check'://复选框选择商品
@@ -126,6 +131,7 @@
                     break;
                 case 'delAll'://删除全部商品
                     if (confirm('Are you sure to delete all?'))
+                        change('','delAll',1);
                         tbody.innerHTML='';
                     break;
                 case 'cancel':
@@ -177,7 +183,12 @@
                 checkAll[0].checked = checkAll[1].checked = target.checked;
             }
         }
+        function change(name, type, num) {
+            jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
+                    });
+        }
     });
+
 
 
 

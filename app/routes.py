@@ -64,9 +64,31 @@ def get_cart():
         item['price'] = pd.price
         item['num'] = prod.commodity_num
         list.append(item)
-    print(list)
     return jsonify({'products': list})
 
+@app.route('/api/ShoppingCart/change', methods=['POST'])
+def change_cart():
+    commodity_name = request.form['name']
+    num = request.form['num']
+    type = request.form['type']
+    if type == 'delAll':
+        products = db.session.query(Cart).filter(Cart.user_id == session.get('uid')).all()
+        for prod in products:
+            db.session.delete(prod)
+        db.session.commit()
+        return jsonify({'returnValue': 1})
+    pd = Commodity.query.filter(Commodity.commodity_name == commodity_name).first()
+    product = db.session.query(Cart).filter(and_(Cart.user_id == session.get('uid'), Cart.commodity_id == pd.id)).first()
+    if type == 'add':
+        product.commodity_num = product.commodity_num+1
+    elif type == 'reduce':
+        product.commodity_num = product.commodity_num - 1
+    elif type == 'change':
+        product.commodity_num = num
+    elif type == 'delete':
+        db.session.delete(product)
+    db.session.commit()
+    return jsonify({'returnValue':1})
 
 @app.route('/index')
 def index():
@@ -90,7 +112,7 @@ def product():
                                                                          per_page=5,
                                                                          error_out=False)
     if islogined():
-        authority = session['authority']
+        authority = session.get('authority')
     else:
         authority = 0
 
@@ -112,7 +134,8 @@ def typography():
 @app.route('/shop', methods=['GET', 'POST'])
 def shop():
     if islogined():
-        authority = session['authority']
+        authority = session.get('authority')
+        # authority = session['authority']
     else:
         authority = 0
     commodities = Commodity.query.all()
@@ -152,7 +175,7 @@ def adjust_icon():
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
     if islogined():
-        authority = session['authority']
+        authority = session.get('authority')
         session['cid'] = id
     else:
         authority = 0
