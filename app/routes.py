@@ -111,14 +111,23 @@ def product():
     products = Commodity.query.filter_by(type=all_type[types]).paginate(page,
                                                                          per_page=5,
                                                                          error_out=False)
+    user_id = session.get('uid')
+    for commodity in products.items:
+        collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
+        if collections:
+            commodity.is_collected = True
+        else:
+            commodity.is_collected = False
+
+
     if islogined():
         authority = session.get('authority')
     else:
         authority = 0
 
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    return render_template('product.html', products=products, types=all_type, type_value=all_type.values(),
-                           authority=authority, new_commodities=new_commodities, type=types)
+    return render_template('product.html',islogin=islogined(), products=products, types=all_type, type_value=all_type.values(),
+                           authority=authority, new_commodities=new_commodities, type=types, user_id=user_id)
 
 
 @app.route('/service')
