@@ -118,6 +118,14 @@ def shop():
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     user_id = session.get('uid')
+
+    for commodity in commodities:
+        collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
+        if collections:
+            commodity.is_collected = True
+        else:
+            commodity.is_collected = False
+
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), user_id=user_id,authority=authority)
 
