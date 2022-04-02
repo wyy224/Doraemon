@@ -299,6 +299,11 @@
                                                            id="commodity_id">
                                                     <button id="button_collect{{ commodity.id }}"
                                                             class="toys-cart ptoys-cart"
+                                                            {% if commodity.is_collected %}
+                                                            style="background: rgb(255, 193, 7)"
+                                                            {% else %}
+                                                            style="background: #00b9ff"
+                                                            {% endif %}
                                                             onclick=collect("{{ commodity.id }}")>
                                                         <i class="fas fa-star"></i>
                                                     </button>
@@ -493,22 +498,6 @@
             $().UItoTop({
                 easingType: 'easeOutQuart'
             });
-
-
-            var sendData = {
-                "user_id": document.getElementById("user_id").value,
-                "commodity_id": document.getElementById("commodity_id").value,
-
-            };
-            if ("{{ user_id }}" !== "None") {
-                Ajax('post', '/adjust_icon', sendData, function (data) {
-                    {#document.getElementById("button_collect{{ commodity.id }}").style.background = data#}
-                    {#console.log("123");#}
-                    {#location.reload();#}
-                }, function (error) {
-                    console.log(error);
-                });
-            }
 
 
         });

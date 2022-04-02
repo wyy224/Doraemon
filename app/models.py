@@ -45,6 +45,8 @@ class Commodity(db.Model):
     price = db.Column(db.Integer, nullable=False)
     introduction = db.Column(db.String(64), nullable=True)
     type = db.Column(db.String(32), nullable=False)
+    is_collect = db.Column(db.Boolean, default=False, nullable=False)
+
 
 
 # A table of shopping cart
