@@ -47,6 +47,13 @@ def set_db():
 
     db.session.commit()
 
+    # add cart
+    cart1 = Cart(commodity_id=2, user_id=1, commodity_num=2)
+
+    db.session.add(cart1)
+
+    db.session.commit()
+
 # This function is use to check whether the user is login
 def islogined():
     # Check whether the user is logged into the web
