@@ -312,6 +312,14 @@
                             </a>
                         </li>
 
+                        {% if  products.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="/product?type={{ type }}&page={{ products.page-1 }}">
+                                    {{ products.page-1 }}</a>
+                            </li>
+                        {% endif %}
+
 
                         <li class="page-item">
                             <a class="page-link"
@@ -319,15 +327,14 @@
                                style="background: #adb5bd">{{ products. page }}</a>
                         </li>
 
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="/product?type={{ type }}&page={{ products. page+1 }}">{{ products. page+1 }}</a>
-                        </li>
 
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="/product?type={{ type }}&page={{ products. page+2 }}">{{ products. page+2 }}</a>
-                        </li>
+                        {% if  products.has_next %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="/product?type={{ type }}&page={{ products. page+1 }}">
+                                    {{ products. page+1 }}</a>
+                            </li>
+                        {% endif %}
 
 
                         <li class="page-item">
