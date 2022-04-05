@@ -14,7 +14,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
 from sqlalchemy import and_
 
-
 from app import app, db, Config
 
 # from app.forms import LoginForm, SignupForm, YearForm, UpdateForm
@@ -66,6 +65,7 @@ def get_cart():
         list.append(item)
     return jsonify({'products': list})
 
+
 @app.route('/api/ShoppingCart/change', methods=['POST'])
 def change_cart():
     commodity_name = request.form['name']
@@ -78,9 +78,10 @@ def change_cart():
         db.session.commit()
         return jsonify({'returnValue': 1})
     pd = Commodity.query.filter(Commodity.commodity_name == commodity_name).first()
-    product = db.session.query(Cart).filter(and_(Cart.user_id == session.get('uid'), Cart.commodity_id == pd.id)).first()
+    product = db.session.query(Cart).filter(
+        and_(Cart.user_id == session.get('uid'), Cart.commodity_id == pd.id)).first()
     if type == 'add':
-        product.commodity_num = product.commodity_num+1
+        product.commodity_num = product.commodity_num + 1
     elif type == 'reduce':
         product.commodity_num = product.commodity_num - 1
     elif type == 'change':
@@ -88,7 +89,8 @@ def change_cart():
     elif type == 'delete':
         db.session.delete(product)
     db.session.commit()
-    return jsonify({'returnValue':1})
+    return jsonify({'returnValue': 1})
+
 
 @app.route('/index')
 def index():
@@ -109,8 +111,8 @@ def product():
         return redirect(url_for('base'))
     page = request.args.get('page', 1, type=int)
     products = Commodity.query.filter_by(type=all_type[types]).paginate(page,
-                                                                         per_page=5,
-                                                                         error_out=False)
+                                                                        per_page=5,
+                                                                        error_out=False)
     user_id = session.get('uid')
     for commodity in products.items:
         collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
@@ -119,14 +121,14 @@ def product():
         else:
             commodity.is_collected = False
 
-
     if islogined():
         authority = session.get('authority')
     else:
         authority = 0
 
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    return render_template('product.html',islogin=islogined(), products=products, types=all_type, type_value=all_type.values(),
+    return render_template('product.html', islogin=islogined(), products=products, types=all_type,
+                           type_value=all_type.values(),
                            authority=authority, new_commodities=new_commodities, type=types, user_id=user_id)
 
 
@@ -159,7 +161,7 @@ def shop():
             commodity.is_collected = False
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values(), user_id=user_id,authority=authority)
+                           types=all_type, type_value=all_type.values(), user_id=user_id, authority=authority)
 
 
 @app.route('/collect', methods=['GET', 'POST'])
@@ -198,13 +200,30 @@ def single(id):
         authority = 0
     commodity = Commodity.query.get(int(id))
     form = ReviewForm()
+    reviews = get_reviews(commodity.id)
     if form.validate_on_submit():
         if session.get('uid') is not None:
-            review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title = form.title.data, text = form.text.data)
+            review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
+                            text=form.text.data)
             db.session.add(review)
             db.session.commit()
-    return render_template('single.html', islogin=islogined(), form = form, commodity=commodity, types=all_type,
+    return render_template('single.html', islogin=islogined(), form=form, reviews=reviews, commodity=commodity, types=all_type,
                            type_value=all_type.values(), authority=authority)
+
+
+def get_reviews(p):
+    reviews = db.session.query(Review).filter(Review.commodity_id == p).order_by(Review.created.desc()).all()
+    list = []
+    for review in reviews:
+        item = dict()
+        user = db.session.query(User).filter(User.id == review.user_id).first()
+        item['ava'] = url_for('static', filename='uploaded_AVA/' + user.icon)
+        item['user'] = user.user_name
+        item['title'] = review.title
+        item['text'] = review.text
+        list.append(item)
+
+    return list
 
 
 # determine if user is logged in or not, if not, jump to login page
@@ -250,11 +269,13 @@ def Orders():
     user_icon = setIcon()
     return render_template('order.html', user=user, icon=user_icon, islogin=islogined())
 
+
 @app.route('/singleOrder')
 def singleOrder():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined())
+
 
 @app.route('/home')
 def home():
@@ -409,7 +430,6 @@ def get_commodity():
 # @app.route('/division', methods=['GET', 'POST'])
 # def division():
 #     return render_template("base.html", types=all_type)
-
 
 
 # reset the database

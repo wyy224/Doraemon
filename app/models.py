@@ -100,3 +100,4 @@ class Review(db.Model):
     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
     title = db.Column(db.String(32), nullable=False)
     text = db.Column(db.String(128), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.now)
