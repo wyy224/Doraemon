@@ -13,7 +13,7 @@
         <td>{price}</td>
 
         <td>
-            <span class="reduce">-</span><input class="text" value={num}><span class="add">+</span>
+            <span class="reduce">-</span><input class="text" value="1"><span class="add">+</span>
         </td>
         <td>{subtotal}</td>
         <td>
@@ -25,6 +25,10 @@
 <div class="box" id="box">
     <table>
         <thead>
+        <tr style="background-color: black;color: white;">
+            <th><a href="main_page" style="color: white"> < Home </a></th>
+            <th colspan="5"> My Shopping Cart </th>
+        </tr>
         <tr>
             <th>
                 <label>
@@ -51,10 +55,10 @@
         </label>
         <span class="delAll">&nbsp;Delete All&nbsp;</span>
         <div>items selected:
-            <span class="selected" id="num"></span>pcs
+            <span class="selected" id="num">0</span>pcs
         </div>
         <div>Total: $
-            <span class="total" id="total"></span>
+            <span class="total" id="total">0</span>
         </div>
         <div class="js">&nbsp;Pay&nbsp;</div>
     </div>

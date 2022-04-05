@@ -31,6 +31,36 @@
     <link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all">
     <!--//stylesheets-->
     <!-- banner -->
+    <link href="../static/css/style-per.css" rel='stylesheet' type='text/css' media="all">
+    <style>
+      .page-selected{
+          position: relative;
+          display: block;
+          padding: 0.5rem 0.75rem;
+          margin-left: -1px;
+          line-height: 1.25;
+          color: black;
+          background-color: #fff;
+          border: 1px solid #dee2e6;
+          text-decoration: none;
+          color: black;
+          background-color: rgba(179 ,179, 179, 0.7);
+          outline: none !important;
+      }
+      .page-link-arrows{
+          position: relative;
+          display: block;
+          padding: 0.5rem 0.75rem;
+          margin-left: -1px;
+          line-height: 1.25;
+          color: black;
+          background-color: #fff;
+          border: 1px solid #dee2e6;
+      }
+      .page-include{
+          display: flex;
+      }
+      </style>
     <div class="inner_page-banner one-img">
     </div>
     <!--//banner -->
@@ -279,7 +309,7 @@
                                                             {% if product.is_collected %}
                                                             style="background: rgb(255, 193, 7)"
                                                             {% else %}
-                                                            style="background: #00b9ff"
+                                                            style="background: #ea1d5d"
                                                             {% endif %}
                                                             onclick=collect("{{ product.id }}")>
                                                         <i class="fas fa-star"></i>
@@ -297,66 +327,66 @@
                         </div>
                     {% endfor %}
 
-                    <ul class="pagination">
-                        <li class="page-item">
-                            {% if  products.has_prev %}
-                                <a class="page-link" href="/product?type={{ type }}&page={{ products.page-1 }}"
-                                   aria-label="Previous">
-                            {% endif %}
-                            {% if  not products.has_prev %}
-                                <a class="page-link" href="/product?type={{ type }}&page={{ products.page }}"
-                                   aria-label="Previous">
-                            {% endif %}
-                            <span aria-hidden="true">«</span>
-                            <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-
-                        {% if  products.has_prev %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                   href="/product?type={{ type }}&page={{ products.page-1 }}">
-                                    {{ products.page-1 }}</a>
-                            </li>
-                        {% endif %}
-
-
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="/product?type={{ type }}&page={{ products. page }}"
-                               style="background: #adb5bd">{{ products. page }}</a>
-                        </li>
-
-
-                        {% if  products.has_next %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                   href="/product?type={{ type }}&page={{ products. page+1 }}">
-                                    {{ products. page+1 }}</a>
-                            </li>
-                        {% endif %}
-
-
-                        <li class="page-item">
-                            {% if  products.has_next %}
-                                <a class="page-link" href="/product?type={{ type }}&page={{ products.page+1 }}"
-                                   aria-label="Next">
-                            {% endif %}
-                            {% if not products.has_next %}
-                                <a class="page-link" href="/product?type={{ type }}&page={{ products.page }}"
-                                   aria-label="Next">
-                            {% endif %}
-
-                            <span aria-hidden="true">»</span>
-                            <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-
                 </div>
             </div>
         </div>
     </section>
+    <ul class="pagination-nav">
+        <li class="page-item-nav">
+            {% if  products.has_prev %}
+                <a class="page-link-nav" href="/product?type={{ type }}&page={{ products.page-1 }}"
+                   aria-label="Previous">
+            {% endif %}
+            {% if  not products.has_prev %}
+                <a class="page-link-nav" href="/product?type={{ type }}&page={{ products.page }}"
+                   aria-label="Previous">
+            {% endif %}
+            <span aria-hidden="true">«</span>
+            </a>
+        </li>
+
+        {% if  products.has_prev %}
+            <li class="page-item-nav">
+                <a class="page-link-nav"
+                   href="/product?type={{ type }}&page={{ products.page-1 }}">
+                    {{ products.page-1 }}</a>
+            </li>
+        {% endif %}
+
+
+        <li class="page-item-nav">
+            <a class="page-link-nav"
+               href="/product?type={{ type }}&page={{ products. page }}"
+               style="background: #adb5bd">{{ products. page }}</a>
+        </li>
+
+
+        {% if  products.has_next %}
+            <li class="page-item-nav">
+                <a class="page-link-nav"
+                   href="/product?type={{ type }}&page={{ products. page+1 }}">
+                    {{ products. page+1 }}</a>
+            </li>
+        {% endif %}
+
+
+        <li class="page-item-nav">
+            {% if  products.has_next %}
+                <a class="page-link-nav" href="/product?type={{ type }}&page={{ products.page+1 }}"
+                   aria-label="Next">
+            {% endif %}
+            {% if not products.has_next %}
+                <a class="page-link-nav" href="/product?type={{ type }}&page={{ products.page }}"
+                   aria-label="Next">
+            {% endif %}
+
+            <span aria-hidden="true">»</span>
+            </a>
+        </li>
+    </ul>
+    <ul style="display: flex;justify-content: center">
+        <span>Total: {{ products.pages }} pages</span>
+    </ul>
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
@@ -599,7 +629,7 @@
                 Ajax('post', '/collect', sendData, function (data) {
                     if (document.getElementById("button_collect" + product).style.background === "rgb(255, 193, 7)") {
                         console.log("12")
-                        document.getElementById("button_collect" + product).style.background = "#00b9ff"
+                        document.getElementById("button_collect" + product).style.background = "#ea1d5d"
                     } else {
                         console.log("123")
                         document.getElementById("button_collect" + product).style.background = "rgb(255, 193, 7)"
