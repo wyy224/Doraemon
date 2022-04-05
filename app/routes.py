@@ -244,6 +244,12 @@ def Orders():
     user_icon = setIcon()
     return render_template('order.html', user=user, icon=user_icon, islogin=islogined())
 
+@app.route('/singleOrder')
+def singleOrder():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined())
+
 @app.route('/home')
 def home():
     if islogined():
