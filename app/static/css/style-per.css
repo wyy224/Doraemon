@@ -3592,11 +3592,13 @@ input[type="button"].btn-block {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  max-height: 750px;
   min-width: 0;
+  max-width: 450px;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: #d4edda;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 5px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem; }
   .card > hr {
     margin-right: 0;

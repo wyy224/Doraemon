@@ -238,6 +238,12 @@ def newsingle():
         return render_template('newsingle.html', islogin=islogined())
 
 
+@app.route('/Orders')
+def Orders():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined())
+
 @app.route('/home')
 def home():
     if islogined():
