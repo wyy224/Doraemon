@@ -90,3 +90,12 @@ class Collections(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
     commodity = db.relationship('Commodity', backref=db.backref('Commodity', lazy='dynamic'))
+
+# A table of review
+class Review(db.Model):
+    __tablename__ = "collections"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    text = db.Column(db.String(128), nullable=False)
