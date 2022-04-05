@@ -51,6 +51,11 @@ def ShoppingCart():
     return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
 
 
+@app.route('/SearchResults')
+def SearchResults():
+    return render_template('SearchResults.html', types=all_type, type_value=all_type.values())
+
+
 @app.route('/api/ShoppingCart/get_pro', methods=['GET'])
 def get_cart():
     products = db.session.query(Cart).filter(Cart.user_id == session.get('uid')).all()
@@ -207,7 +212,8 @@ def single(id):
                             text=form.text.data)
             db.session.add(review)
             db.session.commit()
-    return render_template('single.html', islogin=islogined(), form=form, reviews=reviews, commodity=commodity, types=all_type,
+    return render_template('single.html', islogin=islogined(), form=form, reviews=reviews, commodity=commodity,
+                           types=all_type,
                            type_value=all_type.values(), authority=authority)
 
 
