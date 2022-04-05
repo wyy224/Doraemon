@@ -6,7 +6,7 @@ from sqlalchemy import true, false
 
 from app.functions import *
 from app.models import *
-from app.forms import UpdateForm
+from app.forms import UpdateForm, ReviewForm
 import calendar
 from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
@@ -197,7 +197,13 @@ def single(id):
     else:
         authority = 0
     commodity = Commodity.query.get(int(id))
-    return render_template('single.html', islogin=islogined(), commodity=commodity, types=all_type,
+    form = ReviewForm()
+    if form.validate_on_submit():
+        if session.get('uid') is not None:
+            review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title = form.title.data, text = form.text.data)
+            db.session.add(review)
+            db.session.commit()
+    return render_template('single.html', islogin=islogined(), form = form, commodity=commodity, types=all_type,
                            type_value=all_type.values(), authority=authority)
 
 

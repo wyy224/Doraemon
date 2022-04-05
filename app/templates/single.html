@@ -210,17 +210,31 @@
                                     </div>
                                     <div class="add-review">
                                        <h4>add a review</h4>
-                                       <form action="#" method="post">
+                                       <form action="" method="post" enctype="multipart/form-data" novalidate>
+                                           {{ form.hidden_tag() }}
                                           <div class="row">
                                              <div class="col-md-6">
-                                                <input type="text" name="Name" required="">
+{#                                                <input type="text" name="Name" required="" placeholder="Title">#}
+                                                 {{ form.title.label }}<br>
+                                                 {{ form.title }}
+
+                                                 {% for error in form.title.errors %}
+                                                     <span style="color: red;">[{{ error }}]</span>
+                                                 {% endfor %}
                                              </div>
-                                             <div class="col-md-6">
-                                                <input type="email" name="Email" required="">
-                                             </div>
+{#                                             <div class="col-md-6">#}
+{#                                                <input type="email" name="Email" required="">#}
+{#                                             </div>#}
                                           </div>
-                                          <textarea name="Message" required=""></textarea>
-                                          <input type="submit" value="SEND">
+{#                                          <textarea name="Message" required="" placeholder="Your comment ..."></textarea>#}
+                                                {{ form.text.label }}<br>
+                                                {{ form.text(size=128) }}
+
+                                                {% for error in form.text.errors %}
+                                                <span style="color: red;">[{{ error }}]</span>
+                                                {% endfor %}
+{#                                          <input type="submit" value="SEND">#}
+                                                {{ form.send }}
                                        </form>
                                     </div>
                                  </div>

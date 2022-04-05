@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, RadioField, FileField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, RadioField, FileField, TextAreaField
 from wtforms.validators import DataRequired, Regexp
 from flask_wtf.file import FileRequired, FileAllowed
 
@@ -13,6 +13,11 @@ class UpdateForm(FlaskForm):
 	phone_num = StringField('Phone number')
 	name = StringField('Name')
 	submit = SubmitField('Submit')
+
+class ReviewForm(FlaskForm):
+	title = StringField('TITLE', validators=[DataRequired()])
+	text = TextAreaField('YOUR COMMENT ...', validators=[DataRequired()])
+	send = SubmitField('SEND')
 	
 
 	
