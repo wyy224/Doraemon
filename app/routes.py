@@ -304,7 +304,7 @@ def newsingle():
         db.session.commit()
         session['cid'] = newcommodity.id
         print("22222222")
-        return redirect(url_for('upload_commodity'))
+        return redirect(url_for('upload'))
     else:
         return render_template('newsingle.html', islogin=islogined())
 
@@ -501,7 +501,7 @@ def reset_db():
 # Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/uploaded_AVA')),
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
                                filename, as_attachment=True)
 
 
@@ -511,7 +511,7 @@ def upload():
         f = request.files.get('file')
         raw_filename = avatars.save_avatar(f)
         session['raw_filename'] = raw_filename
-        print("app/static/uploaded_AVA/" + session['raw_filename'])
+        print("app/static/commodity/" + session['raw_filename'])
         print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
         u = session['uid']
         avatar = User.query.filter(User.id == u).first()
@@ -539,13 +539,13 @@ def crop():
         db.session.commit()
         flash('Change avatar successfully', 'success')
 
-        return redirect("/home")
+        return redirect("/shop")
     return render_template('crop.html')
 
 
 # add commodity
 @app.route('/img_commodity/<path:filename>', endpoint="commodity_pic")
-def get_commodity(filename):
+def get_NewCommodity(filename):
     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
                                filename, as_attachment=True)
 
@@ -561,7 +561,7 @@ def upload_commodity():
         commodity = Commodity.query.filter(Commodity.id == c).first()
         commodity.pic_path = "../static/commodity/" + session['c_filename']
         db.session.commit()
-        return redirect("/shop")
+        return redirect("/change-commodity/crop/")
     return render_template('upload.html')
 
 

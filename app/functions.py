@@ -34,6 +34,12 @@ def set_db():
     profile4 = Profile(user_id=4)
     db.session.add(profile4)
 
+    rich = User(user_name='rich', email='richrich@gmail.com', money=10000000)
+    rich.set_password('666666')
+    db.session.add(rich)
+    profile5 = Profile(user_id=5)
+    db.session.add(profile5)
+
 
     # add commodity
 
