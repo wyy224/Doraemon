@@ -57,7 +57,8 @@ def about():
         user_icon = setIcon()
     else:
         user_icon = 'NULL'
-    return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
+    return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type,
+                           type_value=all_type.values())
 
 
 @app.route('/contact')
@@ -66,7 +67,8 @@ def contact():
         user_icon = setIcon()
     else:
         user_icon = 'NULL'
-    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
+                           type_value=all_type.values())
 
 
 @app.route('/ShoppingCart')
@@ -158,7 +160,8 @@ def product():
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     return render_template('product.html', islogin=islogined(), products=products, types=all_type,
                            type_value=all_type.values(),
-                           authority=authority, new_commodities=new_commodities, icon=user_icon, type=types, user_id=user_id)
+                           authority=authority, new_commodities=new_commodities, icon=user_icon, type=types,
+                           user_id=user_id)
 
 
 @app.route('/service')
@@ -167,7 +170,8 @@ def service():
         user_icon = setIcon()
     else:
         user_icon = 'NULL'
-    return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
+    return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type,
+                           type_value=all_type.values())
 
 
 @app.route('/typography')
@@ -196,7 +200,8 @@ def shop():
             commodity.is_collected = False
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id, authority=authority)
+                           types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
+                           authority=authority)
 
 
 @app.route('/collect', methods=['GET', 'POST'])
@@ -246,7 +251,8 @@ def single(id):
                             text=form.text.data)
             db.session.add(review)
             db.session.commit()
-    return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews, commodity=commodity,
+    return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews,
+                           commodity=commodity,
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
 
@@ -311,13 +317,15 @@ def Orders():
     return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=orders)
 
 
-
-
-@app.route('/singleOrder')
-def singleOrder():
+@app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])
+def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+
     user_icon = setIcon()
-    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined())
+    order = Order.query.get(int(id))
+
+    user1 = User.query.filter(User.id == session.get('uid')).first()
+    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
 
 @app.route('/home')
@@ -439,7 +447,7 @@ def reg_mes():
             user = User(user_name=request.form["username1"], email=request.form["email"], password_hash=passw_hash)
             db.session.add(user)
             db.session.commit()
-            profile = Profile(user_id= user.id)
+            profile = Profile(user_id=user.id)
             db.session.add(profile)
             db.session.commit()
             flash('User registered with username:{}'.format(request.form["username1"]))
