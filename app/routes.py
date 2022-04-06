@@ -53,12 +53,20 @@ def search():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', islogin=islogined(), types=all_type, type_value=all_type.values())
+    if islogined():
+        user_icon = setIcon()
+    else:
+        user_icon = 'NULL'
+    return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
 
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html', types=all_type, type_value=all_type.values())
+    if islogined():
+        user_icon = setIcon()
+    else:
+        user_icon = 'NULL'
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
 
 
 @app.route('/ShoppingCart')
@@ -143,18 +151,23 @@ def product():
 
     if islogined():
         authority = session.get('authority')
+        user_icon = setIcon()
     else:
         authority = 0
-
+        user_icon = 'NULL'
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     return render_template('product.html', islogin=islogined(), products=products, types=all_type,
                            type_value=all_type.values(),
-                           authority=authority, new_commodities=new_commodities, type=types, user_id=user_id)
+                           authority=authority, new_commodities=new_commodities, icon=user_icon, type=types, user_id=user_id)
 
 
 @app.route('/service')
 def service():
-    return render_template('service.html', islogin=islogined(), types=all_type, type_value=all_type.values())
+    if islogined():
+        user_icon = setIcon()
+    else:
+        user_icon = 'NULL'
+    return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type, type_value=all_type.values())
 
 
 @app.route('/typography')
@@ -166,9 +179,11 @@ def typography():
 def shop():
     if islogined():
         authority = session.get('authority')
+        user_icon = setIcon()
         # authority = session['authority']
     else:
         authority = 0
+        user_icon = 'NULL'
     commodities = Commodity.query.all()
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     user_id = session.get('uid')
@@ -181,7 +196,7 @@ def shop():
             commodity.is_collected = False
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
-                           types=all_type, type_value=all_type.values(), user_id=user_id, authority=authority)
+                           types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id, authority=authority)
 
 
 @app.route('/collect', methods=['GET', 'POST'])
