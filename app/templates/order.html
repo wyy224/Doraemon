@@ -98,7 +98,9 @@
                 <div class="row">
                     {% for order in orders %}
                     <div class="card">
-                    <a href="singleOrder/{{ order.id }}"><img class="card-img-top" src="{{ order.commodity.pic_path }}" alt="Card image cap" height="400px"></a>
+                        <a href="singleOrder/{{ order.id }}">
+                            <img class="card-img-top" src="{{ order.commodity.pic_path }}" alt="Card image cap" height="400px"></a>
+                            <span class="product-new-top">Arrived</span>
                          <div class="card-body">
                             <h5 class="card-title"><a href="singleOrder/{{ order.id }}">{{ order.commodity.commodity_name }} </a></h5>
                             <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
