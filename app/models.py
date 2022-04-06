@@ -14,7 +14,7 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     register_time = db.Column(db.DateTime, default=datetime.now)
     gender = db.Column(db.String(10), nullable=True)
-    icon = db.Column(db.LargeBinary, nullable=True)
+    icon = db.Column(db.String(128), nullable=True)
     # delete pic_path and use icon
     # pic_path = db.Column(db.String(64), nullable=True)
     introduction = db.Column(db.String(64), nullable=True)
