@@ -229,6 +229,10 @@ def adjust_icon():
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
     if islogined():
+        user_icon = setIcon()
+    else:
+        user_icon = 'NULL'
+    if islogined():
         authority = session.get('authority')
         session['cid'] = id
     else:
@@ -242,7 +246,7 @@ def single(id):
                             text=form.text.data)
             db.session.add(review)
             db.session.commit()
-    return render_template('single.html', islogin=islogined(), form=form, reviews=reviews, commodity=commodity,
+    return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews, commodity=commodity,
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
 
