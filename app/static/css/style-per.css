@@ -7711,6 +7711,37 @@ h1, h2, h3, h4, h5,
       color: #b3b3b3;
       border-bottom: 2px solid #b3b3b3; }
 
+.product-new-top {
+    background: #fb383b;
+    color: #fff;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 90px;
+    font-size: 16px;
+    height: 34px;
+    text-align: center;
+    line-height: 2.3;
+}
+.product-new-top-big {
+    background: #fb383b;
+    color: #fff;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 120px;
+    font-size: 19px;
+    height: 40px;
+    text-align: center;
+    line-height: 2.3;
+}
+
+.cancel{
+  position: absolute;
+  left: 230px;
+}
+
+
 .photography-entry {
   height: 250px;
   display: block;
