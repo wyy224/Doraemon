@@ -55,16 +55,20 @@
       }
       </style>
       <template id="item">
+          {% for search_results in final_search %}
             <div class="result-list">
-                <img href="main_page" src="{src}" alt=" " class="img-items">
+
+                <img href="main_page" src="{{ search_results.pic_path }}" alt=" " class="img-items">
                 <div class="item-info">
-                    <a style="font-size: 35px;cursor: pointer"><b>{item-title}</b></a>
-                    <p style="font-size: 20px"><b>price: </b>{price} <b>$</b></p>
+                    <a style="font-size: 35px;cursor: pointer"><b>{{ search_results.commodity_name }}</b></a>
+                    <p style="font-size: 20px"><b>price: </b>{{ search_results.price }} <b>$</b></p>
                     <p class="show-text">
-                        {description}
+                        {{ search_results.introduction }}
                     </p>
                 </div>
+
             </div>
+      {% endfor %}
       </template>
 
       <!-- banner -->
@@ -88,6 +92,22 @@
 
       <!-- results show -->
       <div id="results">
+
+                {% for search_results in final_search %}
+            <div class="result-list">
+
+                <img href="main_page" src="{{ search_results.pic_path }}" alt=" " class="img-items">
+                <div class="item-info">
+                    <a style="font-size: 35px;cursor: pointer"><b>{{ search_results.commodity_name }}</b></a>
+                    <p style="font-size: 20px"><b>price: </b>{{ search_results.price }} <b>$</b></p>
+                    <p class="show-text">
+                        {{ search_results.introduction }}
+                    </p>
+                </div>
+
+            </div>
+      {% endfor %}
+
 
       </div>
       <!--//results show-->
@@ -200,13 +220,13 @@
       <script src="../static/js/minicart.js"></script>
       <script>
          toys.render();
-         
+
          toys.cart.on('toys_checkout', function (evt) {
          	var items, len, i;
-         
+
          	if (this.subtotal() > 0) {
          		items = this.items();
-         
+
          		for (i = 0, len = items.length; i < len; i++) {}
          	}
          });
@@ -230,15 +250,15 @@
       <script>
          $(document).ready(function () {
 
-            var arr = [];/*表单的数据*/
-            arr[arr.length] = {src:'../static/instruments/clarionet.jpg',url:'main_page',item_title: 'Clarionet', price: '2333', description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'};
-            arr[arr.length] = {src:'../static/instruments/erhu.jpg',url:'main_page',item_title: 'Erhu', price: '1111', description: 'bbbbbbbbbbbbbb'};
-            var temp=document.getElementById('item').innerHTML;
-            var tbody=document.getElementById('results');
-            for(var i=0;i<arr.length;i++){
-                tbody.innerHTML += temp.replace("{src}", arr[i].src).replace("{item-title}", arr[i].item_title).replace("{price}", arr[i].price)
-                    .replace("{description}", arr[i].description);
-            }
+            {#var arr = [];/*表单的数据*/#}
+            {#arr[arr.length] = {src:'../static/instruments/clarionet.jpg',url:'main_page',item_title: 'Clarionet', price: '2333', description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'};#}
+            {#arr[arr.length] = {src:'../static/instruments/erhu.jpg',url:'main_page',item_title: 'Erhu', price: '1111', description: 'bbbbbbbbbbbbbb'};#}
+            {#var temp=document.getElementById('item').innerHTML;#}
+            {#var tbody=document.getElementById('results');#}
+            {#for(var i=0;i<arr.length;i++){#}
+            {#    tbody.innerHTML += temp.replace("{src}", arr[i].src).replace("{item-title}", arr[i].item_title).replace("{price}", arr[i].price)#}
+            {#        .replace("{description}", arr[i].description);#}
+            {#}#}
 
          	var defaults = {
          		containerID: 'toTop', // fading element id
@@ -246,7 +266,7 @@
          		scrollSpeed: 1200,
          		easingType: 'linear'
          	};
-         
+
          
          	$().UItoTop({
          		easingType: 'easeOutQuart'

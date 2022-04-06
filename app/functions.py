@@ -54,6 +54,13 @@ def set_db():
 
     db.session.commit()
 
+    #add order
+
+    order1 = Order(commodity_id=1, user_id=1, commodity_num=1, address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
+
+    db.session.add(order1)
+
+    db.session.commit()
 # This function is use to check whether the user is login
 def islogined():
     # Check whether the user is logged into the web

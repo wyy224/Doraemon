@@ -72,6 +72,7 @@ class Order(db.Model):
     address = db.Column(db.String(64), nullable=False)
     transport = db.Column(db.String(64),nullable=False)
 
+
 # A table of more user information
 class Profile(db.Model):
     __tablename__ = "profile"
@@ -102,13 +103,13 @@ class Review(db.Model):
     text = db.Column(db.String(128), nullable=False)
     created = db.Column(db.DateTime, default=datetime.now)
 
-# A table of review
-class Review(db.Model):
-    __tablename__ = "review"
-    __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
-    title = db.Column(db.String(32), nullable=False)
-    text = db.Column(db.String(128), nullable=False)
-    created = db.Column(db.DateTime, default=datetime.now)
+# # A table of review
+# class Review(db.Model):
+#     __tablename__ = "review"
+#     __table_args__ = {'extend_existing': True}
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+#     title = db.Column(db.String(32), nullable=False)
+#     text = db.Column(db.String(128), nullable=False)
+#     created = db.Column(db.DateTime, default=datetime.now)

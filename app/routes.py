@@ -36,6 +36,18 @@ def base():
                            icon=user_icon)
 
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    search_result = request.form.get("search_result")
+
+    if search_result == '' or search_result is None:
+        return redirect(url_for('base'))
+
+    final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
+
+    return render_template('SearchResults.html', final_search=final_search)
+
+
 @app.route('/about')
 def about():
     return render_template('about.html', islogin=islogined(), types=all_type, type_value=all_type.values())
@@ -73,7 +85,7 @@ def get_cart():
 
 @app.route('/api/ShoppingCart/change', methods=['POST'])
 def change_cart():
-    commodity_name = request.form['name']
+    commodity_name = request.form.get('result')
     num = request.form['num']
     type = request.form['type']
     if type == 'delAll':
