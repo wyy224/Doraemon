@@ -16,7 +16,7 @@ def set_db():
     db.session.add(profile1)
 
     # create users
-    user1 = User(user_name='user1', email='12345678@qq.com', icon='82f58fa4a973419d9a997abb07ad02fd_l.png')
+    user1 = User(user_name='user1', email='12345678@qq.com', icon='user1_AVA.jpeg')
     user1.set_password('000000')
     db.session.add(user1)
     profile2 = Profile(user_id=2)

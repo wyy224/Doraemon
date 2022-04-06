@@ -307,7 +307,10 @@ def newsingle():
 def Orders():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined())
+    orders = Order.query.filter(User.id == session.get('uid'))
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=orders)
+
+
 
 
 @app.route('/singleOrder')
