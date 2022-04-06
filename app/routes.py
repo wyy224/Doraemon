@@ -31,7 +31,10 @@ avatars = Avatars()
 @app.route('/')
 def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
+    if islogined():
+        user_icon = setIcon()
+    else:
+        user_icon = 'NULL'
     return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
                            icon=user_icon)
 
@@ -341,9 +344,13 @@ def modify():
         if form.avatar.data:
             file_obj = form.avatar.data
             ava_filename = session.get("USERNAME") + '_AVA.jpeg'
-            file_obj.save(os.path.join(ava_dir, ava_filename))
+            if user.icon == None:
+                file_obj.save(os.path.join(ava_dir, ava_filename))
+                user.icon = ava_filename.encode()
+            else:
+                os.remove(os.path.join(ava_dir, ava_filename))
+                file_obj.save(os.path.join(ava_dir, ava_filename))
             flash('AVA uploaded and saved')
-            user.icon = ava_filename.encode()
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form)
@@ -410,6 +417,9 @@ def reg_mes():
             user = User(user_name=request.form["username1"], email=request.form["email"], password_hash=passw_hash)
             db.session.add(user)
             db.session.commit()
+            profile = Profile(user_id= user.id)
+            db.session.add(profile)
+            db.session.commit()
             flash('User registered with username:{}'.format(request.form["username1"]))
             session['USERNAME'] = user.user_name
             session['uid'] = user.id
@@ -434,6 +444,7 @@ def main_page():
         user_icon = setIcon()
     else:
         name = "visitor"
+        user_icon = 'NULL'
     return render_template('index.html', islogin=islogined(), username=name, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
 
