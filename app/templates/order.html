@@ -73,7 +73,7 @@
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
-            	<button onclick="location.href='http://127.0.0.1:5000/main_page'">Log out at here</button>
+            	<button onclick="clickToLogout();">Log out at here</button>
             </div>
           </form>
 				</div>
@@ -177,6 +177,7 @@
 <script>
     function clickToLogout() {
         $.post('/api/logout', {}).done(function (response) {
+            alert("run")
             let server_code = response['returnValue']
             if (server_code == 1) {
                 // success set done
