@@ -3,13 +3,13 @@
       <!--meta tags -->
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="keywords" content="Toys Shop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+      <meta name="keywords" content="Toys Shop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
          Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design">
       <script>
          addEventListener("load", function () {
          	setTimeout(hideURLbar, 0);
          }, false);
-         
+
          function hideURLbar() {
          	window.scrollTo(0, 1);
          }
@@ -98,7 +98,7 @@
 
                 <img href="main_page" src="{{ search_results.pic_path }}" alt=" " class="img-items">
                 <div class="item-info">
-                    <a style="font-size: 35px;cursor: pointer"><b>{{ search_results.commodity_name }}</b></a>
+                    <a href="single/{{ search_results.id }}" style="font-size: 35px;cursor: pointer; color: black" ><b>{{ search_results.commodity_name }}</b></a>
                     <p style="font-size: 20px"><b>price: </b>{{ search_results.price }} <b>$</b></p>
                     <p class="show-text">
                         {{ search_results.introduction }}
@@ -150,10 +150,10 @@
                   <li><a href="#"><span class="fas fa-rss"></span></a></li>
                   <li><a href="#"><span class="fab fa-vk"></span></a></li>
                </ul>
-               <p class="my-3">velit sagittis vehicula. Duis posuere 
+               <p class="my-3">velit sagittis vehicula. Duis posuere
                   ex in mollis iaculis. Suspendisse tincidunt
-                  velit sagittis vehicula. Duis posuere 
-                  velit sagittis vehicula. Duis posuere 
+                  velit sagittis vehicula. Duis posuere
+                  velit sagittis vehicula. Duis posuere
                </p>
             </div>
             <div class="email-sub-agile">
@@ -172,7 +172,7 @@
       <!-- footer -->
       <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
          <div class="copy-agile-right">
-            <p> 
+            <p>
                Copyright &copy; 2022.Company name All rights reserved.<a target="_blank" href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
             </p>
          </div>
@@ -267,11 +267,11 @@
          		easingType: 'linear'
          	};
 
-         
+
          	$().UItoTop({
          		easingType: 'easeOutQuart'
          	});
-         
+
          });
       </script>
       <!-- //here ends scrolling icon -->
