@@ -327,6 +327,14 @@ def singleOrder(id):
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
+@app.route('/singleOrder/order/delete/<int:id>',methods=['GET', 'POST'])
+def deleteOrder(id):
+    order_del = Order.query.get(id)
+    db.session.delete(order_del)
+    db.session.commit()
+    return redirect(url_for('Orders'))
+
+
 
 @app.route('/home')
 def home():
@@ -334,7 +342,6 @@ def home():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         profile = Profile.query.filter(Profile.user_id == user.id).first()
         user_icon = setIcon()
-        print(user_icon)
         if profile.address == None:
             profile.address = ''
         if profile.phone_num == None:
