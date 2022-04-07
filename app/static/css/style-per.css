@@ -7737,9 +7737,9 @@ h1, h2, h3, h4, h5,
 }
 
 .cancel{
-  position: absolute;
-  top: 406px;
-  left: 230px;
+  position: relative;
+  left: 180px;
+  top: -38px;
 }
 
 
