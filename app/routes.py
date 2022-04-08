@@ -327,13 +327,21 @@ def singleOrder(id):
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
-@app.route('/singleOrder/order/delete/<int:id>',methods=['GET', 'POST'])
+
+@app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
     order_del = Order.query.get(id)
     db.session.delete(order_del)
     db.session.commit()
     return redirect(url_for('Orders'))
 
+
+@app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
+def receiveOder(id):
+    order_rec = Order.query.get(id)
+    order_rec.is_receive = 1
+    db.session.commit()
+    return redirect(url_for('singleOrder', id=id))
 
 
 @app.route('/home')

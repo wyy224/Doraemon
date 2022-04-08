@@ -69,6 +69,7 @@ class Order(db.Model):
     commodity_num = db.Column(db.Integer, default=0, nullable=False)
     address = db.Column(db.String(64), nullable=False)
     transport = db.Column(db.String(64),nullable=False)
+    is_receive = db.Column(db.Boolean, default=False, nullable=False)
     commodity = db.relationship('Commodity', backref=db.backref('Order', lazy='dynamic'))
 
 

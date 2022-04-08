@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <title>Personal information</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{#    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">#}
-{#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">#}
-{#    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">#}
 
     <link rel="stylesheet" href="../static/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/animate.css">
@@ -27,67 +27,70 @@
     <link rel="stylesheet" href="../static/css/flaticon.css">
     <link rel="stylesheet" href="../static/css/icomoon.css">
     <link rel="stylesheet" href="../static/css/style-per.css">
-  </head>
-  <body>
+</head>
+<body>
 
-      <div class="pic">
+<div class="pic">
 
-{#      这边要改到下面放头像的地方去#}
-{#          {% if icon == "NULL" %}#}
-{#              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>#}
-{#          {% else %}#}
-{#              <img src= {{ icon }} alt="" width=10% height=10%>#}
-{#          {% endif %}#}
-{#      这边要改到下面放头像的地方去#}
+    {#      这边要改到下面放头像的地方去#}
+    {#          {% if icon == "NULL" %}#}
+    {#              <img src='{{ avatars.default(size='l') }}' alt="" width=10% height=10%>#}
+    {#          {% else %}#}
+    {#              <img src= {{ icon }} alt="" width=10% height=10%>#}
+    {#          {% endif %}#}
+    {#      这边要改到下面放头像的地方去#}
 
-          {% if user == current_user %} {# 判断用户是不是当前用户 #}
-              <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span class="fa fa-edit"></span></a>
-          {% endif %}
-      </div>
+    {% if user == current_user %} {# 判断用户是不是当前用户 #}
+        <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span
+            class="fa fa-edit"></span></a>
+    {% endif %}
+</div>
 
-	<div id="colorlib-page">
-		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
-		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+<div id="colorlib-page">
+    <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+    <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
+        <h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
                     {% else %}
                         <img src='{{ icon }}' alt="" width=100 height=100>
                     {% endif %}
-                </span><br>{{user.user_name}}</a>
-            </h1>
-			<nav id="colorlib-main-menu" role="navigation">
-				<ul>
-					<li><a href="http://127.0.0.1:5000/home ">Home</a></li>
-					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
-					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
-                    <li class="colorlib-active"><a href="http://127.0.0.1:5000/Orders">Orders</a></li>
-                    <li><button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button> </li>
-				</ul>
-			</nav>
+                </span><br>{{ user.user_name }}</a>
+        </h1>
+        <nav id="colorlib-main-menu" role="navigation">
+            <ul>
+                <li><a href="http://127.0.0.1:5000/home ">Home</a></li>
+                <li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
+                <li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
+                <li><a href="http://127.0.0.1:5000/contact">Services</a></li>
+                <li class="colorlib-active"><a href="http://127.0.0.1:5000/Orders">Orders</a></li>
+                <li>
+                    <button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button>
+                </li>
+            </ul>
+        </nav>
 
-			<div class="colorlib-footer">
-				<h3>You can click here ~</h3>
-				<div class="d-flex justify-content-center">
-					<form action="#" class="colorlib-subscribe-form">
-            <div class="form-group d-flex">
-            	<button onclick="clickToLogout();">Log out at here</button>
+        <div class="colorlib-footer">
+            <h3>You can click here ~</h3>
+            <div class="d-flex justify-content-center">
+                <form action="#" class="colorlib-subscribe-form">
+                    <div class="form-group d-flex">
+                        <button onclick="clickToLogout();">Log out at here</button>
+                    </div>
+                </form>
             </div>
-          </form>
-				</div>
-			</div>
-		</aside> <!-- END COLORLIB-ASIDE -->
-        <div id="colorlib-main">
+        </div>
+    </aside> <!-- END COLORLIB-ASIDE -->
+    <div id="colorlib-main">
         <section class="ftco-section ftco-bread">
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
                         <p class="breadcrumbs"><span class="mr-2"><a href="http://127.0.0.1:5000/home">Home</a></span>
-                        <span class="mr-2"><a href="http://127.0.0.1:5000/collection">Collection</a></span>
-                        <span class="mr-2"><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></span>
-                        <span>Orders</span></p>
+                            <span class="mr-2"><a href="http://127.0.0.1:5000/collection">Collection</a></span>
+                            <span class="mr-2"><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></span>
+                            <span>Orders</span></p>
                         <h1 class="bread">My Orders</h1>
                     </div>
                 </div>
@@ -97,19 +100,29 @@
             <div class="photograhy">
                 <div class="row">
                     {% for order in orders %}
-                    <div class="card">
-                        <a href="singleOrder/{{ order.id }}">
-                            <img class="card-img-top" src="{{ order.commodity.pic_path }}" alt="Card image cap" height="400px"></a>
-                            <span class="product-new-top">Arrived</span>
-                         <div class="card-body">
-                            <h5 class="card-title"><a href="singleOrder/{{ order.id }}">{{ order.commodity.commodity_name }} </a></h5>
-                            <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
-                            <p class="card-text">Product information: {{ order.commodity.introduction }}</p>
-                         </div>
-                    </div>
+                        <div class="card">
+                            <a href="singleOrder/{{ order.id }}">
+                                <img class="card-img-top" src="{{ order.commodity.pic_path }}" alt="Card image cap"
+                                     height="400px"></a>
+                            {% if order.is_receive %}
+                                <span class="product-new-top"
+                                      style="background: #28a745"
+                                >received</span>
+                            {% else %}
+                                <span class="product-new-top"
+                                      style="background: #dc3545"
+                                >Arrived</span>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title"><a
+                                        href="singleOrder/{{ order.id }}">{{ order.commodity.commodity_name }} </a></h5>
+                                <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
+                                <p class="card-text">Product information: {{ order.commodity.introduction }}</p>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
-                </div>
+            </div>
         </section>
 
     </div><!-- END COLORLIB-MAIN -->

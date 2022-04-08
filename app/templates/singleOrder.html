@@ -113,7 +113,15 @@
                     <section class="home-slider js-fullheight owl-carousel">
                         <div class="slider-item js-fullheight"
                              style="background-image: url({{ order.commodity.pic_path }});">
-                            <span class="product-new-top-big">Arrived</span>
+                            {% if order.is_receive %}
+                                <span class="product-new-top"
+                                      style="background: #28a745"
+                                >received</span>
+                            {% else %}
+                                <span class="product-new-top"
+                                      style="background: #dc3545"
+                                >Arrived</span>
+                            {% endif %}
                         </div>
 
                         {#					      <div class="slider-item js-fullheight" style="background-image:url(../static/image/back2.jpg);">#}
@@ -132,11 +140,14 @@
                         <ul class="ftco-social mt-3" style="color: #e83e8c">
                             if you want to modify the delivery address, you need to contact with the service.
                         </ul>
-                        <form>
-                            <button onclick="alert('a')">Confirm receipt</button>
+                        <form action="order/receive/{{ order.id }}" method="post">
+                            <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}">Confirm receipt</button>
                         </form>
                         <form action="order/delete/{{ order.id }}" method="post">
-                            <button class="cancel" onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}">Cancel order</button>
+                            <button class="cancel"
+                                    onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}">
+                                Cancel order
+                            </button>
                         </form>
 
                     </div>
