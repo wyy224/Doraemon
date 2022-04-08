@@ -147,3 +147,22 @@
             color: #0b97ff;
             text-decoration: none;
         }
+
+
+
+        .toumingzi {
+            position: absolute;
+            left: 50%;
+            margin-left: -350px;
+
+            background: #baccec;
+            /*透明度*/
+            opacity: 0.9;
+            /*字体居中*/
+            text-align: center;
+            /*div标签上移*/
+            top: 0.1px;
+            width: 700px;
+            height: 700px;
+        }
+
