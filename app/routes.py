@@ -168,6 +168,7 @@ def product():
 def purchase():
     if islogined():
         commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
+        profile = Profile.query.filter(Profile.user_id == session['uid']).first()
         if request.method == 'POST':
             neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
                              commodity_num=request.form['quantity'], address=request.form['address'],
@@ -175,7 +176,7 @@ def purchase():
             db.session.add(neworder)
             db.session.commit()
             return redirect('/purchase/addOrder')
-        return render_template('pay.html', commodity=commodity)
+        return render_template('pay.html', commodity=commodity, profile=profile)
     else:
         return redirect('/login')
 
