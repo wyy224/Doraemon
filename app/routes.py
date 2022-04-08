@@ -164,6 +164,28 @@ def product():
                            user_id=user_id)
 
 
+@app.route('/purchase', methods=['GET', 'POST'])
+def purchase():
+    if islogined():
+        commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
+        if request.method == 'POST':
+            neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
+                             commodity_num=request.form['quantity'], address=request.form['address'],
+                             transport=request.form['transport'])
+            db.session.add(neworder)
+            db.session.commit()
+            return redirect('/purchase/addOrder')
+        return render_template('pay.html', commodity=commodity)
+    else:
+        return redirect('/login')
+
+
+@app.route('/purchase/addOrder')
+def addOrder():
+    return redirect('/home')
+
+
+
 @app.route('/service')
 def service():
     if islogined():
@@ -520,56 +542,11 @@ def get_avatar(filename):
                                filename, as_attachment=True)
 
 
-@app.route('/change-avatar/', methods=['GET', 'POST'])
+@app.route('/change-commodity/', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         f = request.files.get('file')
         raw_filename = avatars.save_avatar(f)
-        session['raw_filename'] = raw_filename
-        print("app/static/commodity/" + session['raw_filename'])
-        print(os.path.join(os.path.abspath(os.path.dirname(__file__))))
-        u = session['uid']
-        avatar = User.query.filter(User.id == u).first()
-        # avatar.icon = "app/static/uploaded_AVA/" + session['raw_filename']
-        avatar.icon = session['raw_filename']
-        db.session.commit()
-        return redirect("/change-avatar/crop/")
-    return render_template('upload.html')
-
-
-@app.route('/change-avatar/crop/', methods=['GET', 'POST'])
-def crop():
-    if request.method == 'POST':
-        x = request.form.get('x')
-        y = request.form.get('y')
-        w = request.form.get('w')
-        h = request.form.get('h')
-        user = User.query.filter(User.user_name == session["USERNAME"]).first()
-        filenames = avatars.crop_avatar(session['raw_filename'], x, y, w, h)
-        url_s = filenames[0]
-        url_m = filenames[1]
-        url_l = filenames[2]
-        # user.icon = "app/static/uploaded_AVA/" + url_l
-        user.icon = url_l
-        db.session.commit()
-        flash('Change avatar successfully', 'success')
-
-        return redirect("/shop")
-    return render_template('crop.html')
-
-
-# add commodity
-@app.route('/img_commodity/<path:filename>', endpoint="commodity_pic")
-def get_NewCommodity(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
-                               filename, as_attachment=True)
-
-
-@app.route('/change-commodity/', methods=['GET', 'POST'])
-def upload_commodity():
-    if request.method == 'POST':
-        f = request.files.get('file')
-        raw_filename = save_commodity_pic(f)
         session['c_filename'] = raw_filename
         print("../static/commodity/" + session['c_filename'])
         c = session['cid']
@@ -581,91 +558,23 @@ def upload_commodity():
 
 
 @app.route('/change-commodity/crop/', methods=['GET', 'POST'])
-def commodity_crop():
+def crop():
     if request.method == 'POST':
-        print("555")
         x = request.form.get('x')
         y = request.form.get('y')
         w = request.form.get('w')
         h = request.form.get('h')
         commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
-        filenames = crop_commodity_pic(avatars, session['c_filename'], x, y, w, h)
+        filenames = avatars.crop_avatar(session['c_filename'], x, y, w, h)
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
-        commodity.pic_path = url_l
+        commodity.pic_path = "../static/commodity/" + url_l
         db.session.commit()
+        flash('Upload picture successfully', 'success')
 
         return redirect("/shop")
-    print("666")
-    return render_template('cropCommodity.html')
-
-
-def save_commodity_pic(image):
-    """Save an avatar as raw image, return new filename.
-
-    :param image: The image that needs to be saved.
-    """
-    path = current_app.config['COMMODITY_SAVE_PATH']
-    filename = uuid4().hex + '_raw.png'
-    image.save(os.path.join(path, filename))
-    return filename
-
-
-def crop_commodity_pic(self, filename, x, y, w, h):
-    """Crop avatar with given size, return a list of file name: [filename_s, filename_m, filename_l].
-
-    :param filename: The raw image's filename.
-    :param x: The x-pos to start crop.
-    :param y: The y-pos to start crop.
-    :param w: The crop width.
-    :param h: The crop height.
-    """
-    x = int(x)
-    y = int(y)
-    w = int(w)
-    h = int(h)
-
-    print("1")
-
-    app.config.setdefault('AVATARS_SIZE_TUPLE', (30, 60, 150))
-    sizes = current_app.config['AVATARS_SIZE_TUPLE']
-
-    print("12")
-
-    path = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename)
-
-    print("123")
-    print(path)
-
-    raw_img = Image.open(path)
-
-    base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
-
-    if raw_img.size[0] >= base_width:
-        raw_img = self.resize_avatar(raw_img, base_width=base_width)
-
-    cropped_img = raw_img.crop((x, y, x + w, y + h))
-
-    filename = uuid4().hex
-
-    avatar_s = self.resize_avatar(cropped_img, base_width=sizes[0])
-    avatar_m = self.resize_avatar(cropped_img, base_width=sizes[1])
-    avatar_l = self.resize_avatar(cropped_img, base_width=sizes[2])
-
-    filename_s = filename + '_s.png'
-    filename_m = filename + '_m.png'
-    filename_l = filename + '_l.png'
-
-    path_s = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_s)
-    path_m = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_m)
-    path_l = os.path.join(current_app.config['COMMODITY_SAVE_PATH'], filename_l)
-
-    avatar_s.save(path_s, optimize=True, quality=85)
-    avatar_m.save(path_m, optimize=True, quality=85)
-    avatar_l.save(path_l, optimize=True, quality=85)
-
-    return [filename_s, filename_m, filename_l]
+    return render_template('crop.html')
 
 
 # modify commodity page
