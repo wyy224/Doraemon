@@ -98,9 +98,10 @@ def get_cart():
 
 @app.route('/api/ShoppingCart/change', methods=['POST'])
 def change_cart():
-    commodity_name = request.form.get('result')
+    commodity_name = request.form.get('name')
     num = request.form['num']
     type = request.form['type']
+    print(type)
     if type == 'delAll':
         products = db.session.query(Cart).filter(Cart.user_id == session.get('uid')).all()
         for prod in products:
@@ -108,8 +109,7 @@ def change_cart():
         db.session.commit()
         return jsonify({'returnValue': 1})
     pd = Commodity.query.filter(Commodity.commodity_name == commodity_name).first()
-    product = db.session.query(Cart).filter(
-        and_(Cart.user_id == session.get('uid'), Cart.commodity_id == pd.id)).first()
+    product = db.session.query(Cart).filter(Cart.user_id == session.get('uid'), Cart.commodity_id == pd.id).first()
     if type == 'add':
         product.commodity_num = product.commodity_num + 1
     elif type == 'reduce':
