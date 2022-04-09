@@ -180,10 +180,6 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
-        if session['cart_num'] != None:
-            print(session['cart_num'])
-        else:
-            session['cart_num'] = 1
         commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
         profile = Profile.query.filter(Profile.user_id == session['uid']).first()
         if request.method == 'POST':
@@ -194,7 +190,7 @@ def purchase():
             db.session.commit()
             return redirect('/purchase/addOrder')
         print("hhh")
-        return render_template('pay.html', commodity=commodity, profile=profile, quantity=session['cart_num'])
+        return render_template('pay.html', commodity=commodity, profile=profile)
     else:
         return redirect('/login')
 
