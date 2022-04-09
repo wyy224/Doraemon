@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 from uuid import uuid4
 from PIL import Image
 from sqlalchemy import true, false
@@ -121,12 +122,16 @@ def change_cart():
     db.session.commit()
     return jsonify({'returnValue': 1})
 
-@app.route('/ShoppingCart/purchase', methods=['POST'])
+@app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
 def pay_from_cart():
-    commodity_name = request.form.get('name')
-    commodity = Commodity.query.filter(Commodity.commodity_name == commodity_name).first()
+    data = request.get_data()
+    print(data)
+    json_data = json.loads(data.decode("utf-8"))
+    c_name = json_data.get("name")
+    commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
     session['cid'] = commodity.id
-    session['cart_num'] = request.form['num']
+    print(json_data.get("num"))
+    session['cart_num'] = json_data.get("num")
     return redirect('/ShoppingCart/purchase/going')
 
 

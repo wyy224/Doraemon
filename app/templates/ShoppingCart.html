@@ -138,7 +138,7 @@
                 case 'pay_for': //付款
                     var tr=target.parentNode.parentNode;
                     var tds=tr.cells;
-                    purchase(tds[1].innerText,tds[3].innerText);
+                    purchase(tds[1].innerText,target.previousSibling.value);
                     break;
                 case 'check'://复选框选择商品
                     chk(target);//执行复选框函数
@@ -202,8 +202,16 @@
                     });
         }
         function purchase(name, num) {
-            jQuery.post('/ShoppingCart/purchase',{'name':name, 'num':num}).done();
-            return false;
+            data={'name':name,'num':num}
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/ShoppingCart/purchase", true);
+            httpRequest.setRequestHeader("Content-Type", "application/json");
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                  alert('Pay for it!');
+                }
+            }
+            httpRequest.send(JSON.stringify(data));
         }
     });
 
