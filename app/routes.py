@@ -121,6 +121,19 @@ def change_cart():
     db.session.commit()
     return jsonify({'returnValue': 1})
 
+@app.route('/ShoppingCart/purchase', methods=['POST'])
+def pay_from_cart():
+    commodity_name = request.form.get('name')
+    commodity = Commodity.query.filter(Commodity.commodity_name == commodity_name).first()
+    session['cid'] = commodity.id
+    session['cart_num'] = request.form['num']
+    return redirect('/ShoppingCart/purchase/going')
+
+
+@app.route('/ShoppingCart/purchase/going')
+def going():
+    return redirect('/purchase')
+
 
 @app.route('/index')
 def index():
@@ -167,6 +180,10 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
+        if session['cart_num'] != None:
+            print(session['cart_num'])
+        else:
+            session['cart_num'] = 1
         commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
         profile = Profile.query.filter(Profile.user_id == session['uid']).first()
         if request.method == 'POST':
@@ -176,7 +193,8 @@ def purchase():
             db.session.add(neworder)
             db.session.commit()
             return redirect('/purchase/addOrder')
-        return render_template('pay.html', commodity=commodity, profile=profile)
+        print("hhh")
+        return render_template('pay.html', commodity=commodity, profile=profile, quantity=session['cart_num'])
     else:
         return redirect('/login')
 

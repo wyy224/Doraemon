@@ -19,6 +19,9 @@
         <td>
             <span class="del">Delete</span>
         </td>
+        <td>
+            <span class="pay_for">Pay!</span>
+        </td>
     </tr>
 </template>
 <link href="../static/css/shopping_cart.css" rel='stylesheet' type='text/css' media="all">
@@ -27,7 +30,7 @@
         <thead>
         <tr style="background-color: black;color: white;">
             <th><a href="main_page" style="color: white"> < Home </a></th>
-            <th colspan="5"> My Shopping Cart </th>
+            <th colspan="6"> My Shopping Cart </th>
         </tr>
         <tr>
             <th>
@@ -40,6 +43,7 @@
             <th>Number of units</th>
             <th>Sum</th>
             <th>Operations</th>
+            <th>Purchase</th>
         </tr>
         </thead>
         <tbody id="tbody">
@@ -60,8 +64,8 @@
         <div>Total: $
             <span class="total" id="total">0</span>
         </div>
-        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay
-                </button> </div>
+{#        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay#}
+{#                </button> </div>#}
     </div>
 </div>
 
@@ -131,6 +135,11 @@
                         change(tds[1].innerText,'delete',1);
                         tbody.removeChild(tr);
                     break;
+                case 'pay_for': //付款
+                    var tr=target.parentNode.parentNode;
+                    var tds=tr.cells;
+                    purchase(tds[1].innerText,tds[3].innerText);
+                    break;
                 case 'check'://复选框选择商品
                     chk(target);//执行复选框函数
                     break;
@@ -191,6 +200,10 @@
         function change(name, type, num) {
             jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
                     });
+        }
+        function purchase(name, num) {
+            jQuery.post('/ShoppingCart/purchase',{'name':name, 'num':num}).done();
+            return false;
         }
     });
 
