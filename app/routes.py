@@ -200,7 +200,7 @@ def purchase():
                 db.session.commit()
                 return redirect('/purchase/addOrder')
             else:
-                return redirect('/home')
+                return render_template("payfail.html")
         print("hhh")
         return render_template('pay.html', commodity=commodity, profile=profile)
     else:
