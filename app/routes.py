@@ -188,12 +188,19 @@ def purchase():
         commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
         profile = Profile.query.filter(Profile.user_id == session['uid']).first()
         if request.method == 'POST':
-            neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
-                             commodity_num=request.form['quantity'], address=request.form['address'],
-                             transport=request.form['transport'])
-            db.session.add(neworder)
-            db.session.commit()
-            return redirect('/purchase/addOrder')
+            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+            quantity = int(request.form['quantity'])
+            priceNeed = int(commodity.price)
+            if user.money >= priceNeed*quantity:
+                neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
+                                 commodity_num=quantity, address=request.form['address'],
+                                 transport=request.form['transport'])
+                user.money = user.money - priceNeed*quantity
+                db.session.add(neworder)
+                db.session.commit()
+                return redirect('/purchase/addOrder')
+            else:
+                return redirect('/home')
         print("hhh")
         return render_template('pay.html', commodity=commodity, profile=profile)
     else:
@@ -202,7 +209,7 @@ def purchase():
 
 @app.route('/purchase/addOrder')
 def addOrder():
-    return redirect('/home')
+    return redirect('/Orders')
 
 
 
