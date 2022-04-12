@@ -40,14 +40,14 @@ def set_db():
     profile5 = Profile(user_id=5)
     db.session.add(profile5)
 
-
     # add commodity
 
     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
                       price=3000, introduction='piano', type='piano', )
     db.session.add(piano)
 
-    drum = Commodity(commodity_name='drum', cargo_quantity=100, pic_path='../static/instruments/drumps.jpg',
+    drum = Commodity(commodity_name='drum', cargo_quantity=100,
+                     pic_path='../static/commodity/41c96128e047461eb9ab72e3cefa0830_l.png',
                      price=3000, introduction='drum', type='drum')
     db.session.add(drum)
 
@@ -60,13 +60,16 @@ def set_db():
 
     db.session.commit()
 
-    #add order
+    # add order
 
-    order1 = Order(commodity_id=1, user_id=1, commodity_num=1, address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
+    order1 = Order(commodity_id=1, user_id=1, commodity_num=1,
+                   address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
 
     db.session.add(order1)
 
     db.session.commit()
+
+
 # This function is use to check whether the user is login
 def islogined():
     # Check whether the user is logged into the web
@@ -74,7 +77,6 @@ def islogined():
         return True
     else:
         return False
-
 
 
 def create_app():

@@ -359,7 +359,7 @@ def newsingle():
         print("22222222")
         return redirect(url_for('upload'))
     else:
-        return render_template('newsingle.html', islogin=islogined())
+        return render_template('newsingle.html', islogin=islogined(), types=all_type, type_value=all_type.values())
 
 
 @app.route('/Orders')
