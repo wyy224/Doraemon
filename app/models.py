@@ -63,16 +63,20 @@ class Order(db.Model):
     __tablename__ = "order"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     purchase_time = db.Column(db.DateTime, default=datetime.now)
-    commodity_num = db.Column(db.Integer, default=0, nullable=False)
     address = db.Column(db.String(64), nullable=False)
     transport = db.Column(db.String(64),nullable=False)
     is_receive = db.Column(db.Boolean, default=False, nullable=False)
-    commodity = db.relationship('Commodity', backref=db.backref('Order', lazy='dynamic'))
 
-
+# A table of order detail
+class OrderDetail(db.Model):
+        __tablename__ = "orderdetail"
+        __table_args__ = {'extend_existing': True}
+        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+        order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+        commodity_num = db.Column(db.Integer, default=0, nullable=False)
 
 # A table of more user information
 class Profile(db.Model):
