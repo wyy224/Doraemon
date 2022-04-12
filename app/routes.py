@@ -22,7 +22,11 @@ from app import app, db, Config
 
 all_type = dict({
     '1': 'drum',
-    '2': 'piano'
+    '2': 'piano',
+    '3': 'horn',
+    '4': 'trombone',
+    '5': 'trumpet',
+    '6': 'violin',
 })
 
 avatars = Avatars()
