@@ -88,13 +88,17 @@
             color: white;
         }
 
-        div.box div.bottom div.js {
+        div.box div.bottom .js {
             padding: 0 10px;
-            height: 22px;
             background-color: black;
             color: white;
             margin-right: 10px;
             cursor: pointer;
+            font-size: 17px;
+        }
+
+        div.box div.bottom {
+            height: 22px;
         }
 
         div.box div.bottom aside div {

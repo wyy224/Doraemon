@@ -195,11 +195,11 @@ def purchase():
             user = User.query.filter(User.user_name == session.get('USERNAME')).first()
             quantity = int(request.form['quantity'])
             priceNeed = int(commodity.price)
-            if user.money >= priceNeed*quantity:
+            if user.money >= priceNeed * quantity:
                 neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
                                  commodity_num=quantity, address=request.form['address'],
                                  transport=request.form['transport'])
-                user.money = user.money - priceNeed*quantity
+                user.money = user.money - priceNeed * quantity
                 db.session.add(neworder)
                 db.session.commit()
                 return redirect('/purchase/addOrder')
@@ -214,7 +214,6 @@ def purchase():
 @app.route('/purchase/addOrder')
 def addOrder():
     return redirect('/Orders')
-
 
 
 @app.route('/service')
