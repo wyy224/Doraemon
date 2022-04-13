@@ -101,7 +101,7 @@
                 <div class="row">
                     {% for order in orders %}
                         <div class="card">
-                            <a href="singleOrder/{{ order.id }}">
+                            <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
                             {% if order.is_receive %}

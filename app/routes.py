@@ -397,6 +397,7 @@ def Orders():
     list = [];
     for o in orders:
         list = get_orders(o,list)
+    session.pop('orders',None)
     session['orders'] = list
     return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list)
 
@@ -408,7 +409,6 @@ def singleOrder(id):
     user_icon = setIcon()
     list = session.get('orders')
     order = list[int(id)-1]
-
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
@@ -419,10 +419,12 @@ def get_orders(p,list):
         item = dict()
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
         item['id'] = p.id
+        item['detail'] = od.id
         item['pic_path'] = c.pic_path
         item['is_receive'] = p.is_receive
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
+        item['address'] = p.address
         item['introduction'] = c.introduction
         item['price']=c.price*od.commodity_num
         list.append(item)
