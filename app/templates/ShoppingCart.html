@@ -3,7 +3,7 @@
 </head>
 <body onselectstart="return false;">
 <template id="temp">
-    <tr>
+    <tr id="{id}">
         <td>
             <input type="checkbox" class="check" checked>
         </td>
@@ -25,7 +25,7 @@
     </tr>
 </template>
 <template id="temp1">
-    <tr>
+    <tr id="{id}">
         <td>
             <img src="{src}" style="vertical-align: middle">{txt}
         </td>
@@ -159,9 +159,9 @@
         var tbody=$('#tbody');
         var tbody1=$('#tbody1')
         arr.forEach(function (el) {//把数据插入到HTML中
-            tbody.innerHTML += temp.replace("{src}", el.src).replace("{txt}", el.txt).replace("{price}", el.price)
+            tbody.innerHTML += temp.replace("{src}", el.src).replace("{id}",el.txt).replace("{txt}", el.txt).replace("{price}", el.price)
                 .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
-            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{txt}", el.txt).replace("{price}", el.price)
+            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{id}",el.txt+'_checked').replace("{txt}", el.txt).replace("{price}", el.price)
                 .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
         });
         var trs=$('#tbody tr');
@@ -213,7 +213,8 @@
                     purchase(tds[1].innerText,target.previousSibling.value);
                     break;
                 case 'check'://复选框选择商品
-                    chk(target);//执行复选框函数
+                    var tr=target.parentNode.parentNode;
+                    chk(target,tr);//执行复选框函数
                     break;
                 case 'delAll'://删除全部商品
                     if (confirm('Are you sure to delete all?'))
@@ -241,6 +242,7 @@
                 if (tds[0].children[0].checked){
                     sum+=parseFloat(tds[4].innerText);
                     number+=parseInt(tds[3].children[1].value);
+
                     // str+=`<div><img src="images/${i+1}.jpg"><span class="cancel" data-index="${i}">Cancel</span></div>`
                 }
                 total_all.innerText=sum.toFixed(2);
@@ -248,10 +250,16 @@
                 aside.innerHTML=str;
             })
         }
-        function chk(target) {//复选框判断
+        function chk(target,tr) {//复选框判断
             var cls=target.className;
             var flag = true;
             if (cls==='check'){//点击非全选复选框
+                var id=tr.id+'_checked'
+                var unshow=document.getElementById(id);
+                if(!target.checked) unshow.style.setProperty('display','none');
+                else {
+                    unshow.style.removeProperty('display','none');
+                }
                 /*当存在一个复选框未选中，全选框为false*/
                 for (var i = 0; i < trs.length; i++) {
                     var checkbox = trs[i].cells[0].children[0];
