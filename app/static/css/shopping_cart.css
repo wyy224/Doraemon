@@ -39,7 +39,6 @@
         div.box table tbody tr td:nth-child(4) span {
             display: inline-block;
             width: 15px;
-            line-height: 30px;
             background-color: #666;
             color: #eee;
             vertical-align: middle;
@@ -55,7 +54,7 @@
 
         div.box table tbody tr td:nth-child(6) span {
             padding: 4px 10px;
-            background-color: #999;
+            background-color: black;
             color: white;
         }
 
