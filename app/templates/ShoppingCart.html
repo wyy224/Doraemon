@@ -130,7 +130,7 @@
             </tbody>
         </table>
         <div class="pay_cancel">
-            <a style="background: black;color: white;padding: 10px" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay</a>
+            <a style="background: black;color: white;padding: 10px" onclick="purchase()">Pay</a>
             <a style="background: black;color: white;padding: 10px" onclick = "closeDialog()">Cancel</a>
         </div>
     </div>
@@ -281,19 +281,8 @@
             jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
                     });
         }
-        function purchase(name, num) {
-            data={'name':name,'num':num}
-            var httpRequest = new XMLHttpRequest();
-            httpRequest.open("POST", "/ShoppingCart/purchase", true);
-            httpRequest.setRequestHeader("Content-Type", "application/json");
-            httpRequest.onreadystatechange = function () {
-                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-                  alert('Pay for it!');
-                }
-            }
-            httpRequest.send(JSON.stringify(data));
-        }
     });
+
 
 </script>
 
@@ -307,5 +296,21 @@
         function closeDialog(){
             document.getElementById('light').style.display='none';
             document.getElementById('fade').style.display='none'
+        }
+        function purchase() {
+            var trs=$('#tbody1 tr');
+            var name = new Array();
+            var num = new Array();
+            var price = 0;
+            trs.forEach(function (tr) {
+                var tds=tr.cells;
+                name.push(tds[0].innerText);
+                num.push(tds[2].innerText);
+                price = price+parseInt(tds[3].innerText);
+            })
+            jQuery.post('/api/ShoppingCart/purchase',{'name':JSON.stringify(name),'num':JSON.stringify(num), 'price':price}).done(function (response) {
+
+            });
+            window.location.href='http://127.0.0.1:5000/purchase';
         }
 </script>

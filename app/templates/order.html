@@ -102,7 +102,7 @@
                     {% for order in orders %}
                         <div class="card">
                             <a href="singleOrder/{{ order.id }}">
-                                <img class="card-img-top" src="{{ order.commodity.pic_path }}" alt="Card image cap"
+                                <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
                             {% if order.is_receive %}
                                 <span class="product-new-top"
@@ -115,9 +115,9 @@
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title"><a
-                                        href="singleOrder/{{ order.id }}">{{ order.commodity.commodity_name }} </a></h5>
+                                        href="singleOrder/{{ order.id }}">{{ order.commodity_name }} </a></h5>
                                 <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
-                                <p class="card-text">Product information: {{ order.commodity.introduction }}</p>
+                                <p class="card-text">Product information: {{ order.introduction }}</p>
                             </div>
                         </div>
                     {% endfor %}

@@ -112,7 +112,7 @@
                 <div class="author-image text img d-flex">
                     <section class="home-slider js-fullheight owl-carousel">
                         <div class="slider-item js-fullheight"
-                             style="background-image: url({{ order.commodity.pic_path }});">
+                             style="background-image: url({{ order.pic_path }});">
                             {% if order.is_receive %}
                                 <span class="product-new-top"
                                       style="background: #28a745"
@@ -132,8 +132,8 @@
                 <div class="author-info text p-3 p-md-5">
                     <div class="desc">
                         <h1 class="mb-4"><span>Order Details:</span></h1>
-                        <p class="mb-4"><b>Product:</b> {{ order.commodity.commodity_name }}</p>
-                        <p class="mb-4"><b>Price:</b> ${{ order.commodity.price }} </p>
+                        <p class="mb-4"><b>Product:</b> {{ order.commodity_name }}</p>
+                        <p class="mb-4"><b>Price:</b> ${{ order.price }} </p>
                         <p class="mb-4"><b>Delivery address: </b>{{ order.address }}</p>
                         {#                                <p class="mb-4"><b>Phone number: </b>010-12345678</p>#}
                         <p class="mb-4"><b>Consignee name: </b>{{ user1.user_name }}</p>

@@ -126,22 +126,22 @@ def change_cart():
     db.session.commit()
     return jsonify({'returnValue': 1})
 
-@app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
-def pay_from_cart():
-    data = request.get_data()
-    print(data)
-    json_data = json.loads(data.decode("utf-8"))
-    c_name = json_data.get("name")
-    commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-    session['cid'] = commodity.id
-    print(json_data.get("num"))
-    session['cart_num'] = json_data.get("num")
-    return redirect('/ShoppingCart/purchase/going')
-
-
-@app.route('/ShoppingCart/purchase/going')
-def going():
-    return redirect('/purchase')
+# @app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
+# def pay_from_cart():
+#     data = request.get_data()
+#     print(data)
+#     json_data = json.loads(data.decode("utf-8"))
+#     c_name = json_data.get("name")
+#     commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+#     session['cid'] = commodity.id
+#     print(json_data.get("num"))
+#     session['cart_num'] = json_data.get("num")
+#     return redirect('/ShoppingCart/purchase/going')
+#
+#
+# @app.route('/ShoppingCart/purchase/going')
+# def going():
+#     return redirect('/purchase')
 
 
 @app.route('/index')
@@ -189,26 +189,54 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
-        commodity = Commodity.query.filter(Commodity.id == session['cid']).first()
-        profile = Profile.query.filter(Profile.user_id == session['uid']).first()
+        commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+        if session.get('price') is not None:
+            price = session.get('price')
+        else:
+            price = commodity.price
+        profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
-            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-            quantity = int(request.form['quantity'])
-            priceNeed = int(commodity.price)
-            if user.money >= priceNeed * quantity:
-                neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
-                                 commodity_num=quantity, address=request.form['address'],
+            neworder = Order(user_id=session.get('uid'), address=request.form['address'],
                                  transport=request.form['transport'])
-                user.money = user.money - priceNeed * quantity
-                db.session.add(neworder)
-                db.session.commit()
-                return redirect('/purchase/addOrder')
+            db.session.add(neworder)
+            db.session.commit()
+            if session.get('order_list') is not None:
+                for c in session.get('order_list'):
+                    c_name = c['name']
+                    c_num = c['num']
+                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                    orderdetail = OrderDetail(commodity_id=com.id,order_id=neworder.id,commodity_num=c_num)
+                    db.session.add(orderdetail)
+                    session.pop('order_list',None)
+                    session.pop('price', None)
             else:
-                return render_template("payfail.html")
-        print("hhh")
-        return render_template('pay.html', commodity=commodity, profile=profile)
+                orderdetail = OrderDetail(commodity_id=session.get('cid'),order_id=neworder.id,commodity_num=1)
+                db.session.add(orderdetail)
+                session.pop('cid',None)
+            db.session.commit()
+            return redirect(url_for('main_page'))
+        return render_template('pay.html', price=price, profile = profile)
     else:
         return redirect('/login')
+
+@app.route('/api/ShoppingCart/purchase', methods=['POST'])
+def pay_order():
+    name = json.loads(request.form.get('name'))
+    num = json.loads(request.form.get('num'))
+    commodity_list = []
+    i = 0
+    for n in name:
+        item = dict()
+        item['name'] = n
+        item['num'] = num[i]
+        i = i+1
+        commodity_list.append(item)
+    print(commodity_list)
+    price = request.form.get('price')
+    session['order_list'] = commodity_list
+    session.pop('price', None)
+    session['price'] = price
+    return jsonify({'returnValue': 1})
 
 
 @app.route('/purchase/addOrder')
@@ -366,7 +394,11 @@ def Orders():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     orders = Order.query.filter(User.id == session.get('uid'))
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=orders)
+    list = [];
+    for o in orders:
+        list = get_orders(o,list)
+    session['orders'] = list
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list)
 
 
 @app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])
@@ -374,11 +406,28 @@ def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
 
     user_icon = setIcon()
-    order = Order.query.get(int(id))
+    list = session.get('orders')
+    order = list[int(id)-1]
 
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
+
+def get_orders(p,list):
+    order_detail = db.session.query(OrderDetail).filter(OrderDetail.order_id == p.id).all()
+    for od in order_detail:
+        item = dict()
+        c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
+        item['id'] = p.id
+        item['pic_path'] = c.pic_path
+        item['is_receive'] = p.is_receive
+        item['commodity_name'] = c.commodity_name
+        item['purchase_time'] = p.purchase_time
+        item['introduction'] = c.introduction
+        item['price']=c.price*od.commodity_num
+        list.append(item)
+
+    return list
 
 @app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
@@ -393,7 +442,7 @@ def receiveOder(id):
     order_rec = Order.query.get(id)
     order_rec.is_receive = 1
     db.session.commit()
-    return redirect(url_for('singleOrder', id=id))
+    return redirect(url_for('Orders'))
 
 
 @app.route('/home')
