@@ -126,6 +126,7 @@ def change_cart():
     db.session.commit()
     return jsonify({'returnValue': 1})
 
+
 # @app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
 # def pay_from_cart():
 #     data = request.get_data()
@@ -197,7 +198,7 @@ def purchase():
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                                 transport=request.form['transport'])
+                             transport=request.form['transport'])
             db.session.add(neworder)
             db.session.commit()
             if session.get('order_list') is not None:
@@ -205,19 +206,23 @@ def purchase():
                     c_name = c['name']
                     c_num = c['num']
                     com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-                    orderdetail = OrderDetail(commodity_id=com.id,order_id=neworder.id,commodity_num=c_num)
+                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
-                    session.pop('order_list',None)
+                    session.pop('order_list', None)
                     session.pop('price', None)
+                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                    for a in cart:
+                        db.session.delete(a)
             else:
-                orderdetail = OrderDetail(commodity_id=session.get('cid'),order_id=neworder.id,commodity_num=1)
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
                 db.session.add(orderdetail)
-                session.pop('cid',None)
+                session.pop('cid', None)
             db.session.commit()
             return redirect(url_for('main_page'))
-        return render_template('pay.html', price=price, profile = profile)
+        return render_template('pay.html', price=price, profile=profile)
     else:
         return redirect('/login')
+
 
 @app.route('/api/ShoppingCart/purchase', methods=['POST'])
 def pay_order():
@@ -229,7 +234,7 @@ def pay_order():
         item = dict()
         item['name'] = n
         item['num'] = num[i]
-        i = i+1
+        i = i + 1
         commodity_list.append(item)
     print(commodity_list)
     price = request.form.get('price')
@@ -396,7 +401,8 @@ def Orders():
     orders = Order.query.filter(User.id == session.get('uid'))
     list = [];
     for o in orders:
-        list = get_orders(o,list)
+        list = get_orders(o, list)
+    session.pop('orders', None)
     session['orders'] = list
     return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list)
 
@@ -407,27 +413,29 @@ def singleOrder(id):
 
     user_icon = setIcon()
     list = session.get('orders')
-    order = list[int(id)-1]
-
+    order = list[int(id) - 1]
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
 
 
-def get_orders(p,list):
+def get_orders(p, list):
     order_detail = db.session.query(OrderDetail).filter(OrderDetail.order_id == p.id).all()
     for od in order_detail:
         item = dict()
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
         item['id'] = p.id
+        item['detail'] = od.id
         item['pic_path'] = c.pic_path
         item['is_receive'] = p.is_receive
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
+        item['address'] = p.address
         item['introduction'] = c.introduction
-        item['price']=c.price*od.commodity_num
+        item['price'] = c.price * od.commodity_num
         list.append(item)
 
     return list
+
 
 @app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
