@@ -24,6 +24,18 @@
 {#        </td>#}
     </tr>
 </template>
+<template id="temp1">
+    <tr>
+        <td>
+            <img src="{src}" style="vertical-align: middle">{txt}
+        </td>
+        <td>{price}</td>
+        <td>
+            <span class="text">{num}</span>
+        </td>
+        <td>{subtotal}</td>
+    </tr>
+</template>
 <link href="../static/css/shopping_cart.css" rel='stylesheet' type='text/css' media="all">
  <style>
         .black_overlay{
@@ -43,11 +55,21 @@
             display: none;
             position: absolute;
             width: 80%;
-            height: 300px;
+            height: 50%;
+            top: 25%;
             padding: 20px;
             background-color: white;
             z-index:1002;
             overflow: auto;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .pay_cancel{
+            display: flex;
+            justify-content: space-evenly;
+            padding: 10px;
         }
  </style>
 
@@ -94,26 +116,25 @@
 {#                </button> </div>#}
         <button type="button" class="js" onclick="openDialog()">&nbsp;Pay&nbsp;</button>
 
-        <div id="light" class="white_content">
-            <table>
-                <tr>
-                    <td>fffff</td>
-                    <td>dddddd</td>
-                </tr>
-                <tr>
-                    <td>fffff</td>
-                    <td>dddddd</td>
-                </tr>
-                <tr>
-                    <td>fffff</td>
-                    <td>dddddd</td>
-                </tr>
-            </table>
-            <a href = "javascript:void(0)" onclick = "closeDialog()">Click Here to Close</a>
-        </div>
-        <div id="fade" class="black_overlay"></div>
-
     </div>
+        <div id="light" class="white_content">
+            <span style="font-size: 25px;font-family: fantasy;">Confirm Orders</span>
+        <table>
+            <thead style="background-color: black;color: white;">
+                <th>Items</th>
+                <th>Unit price</th>
+                <th>Number of units</th>
+                <th>Sum</th>
+            </thead>
+            <tbody id="tbody1">
+            </tbody>
+        </table>
+        <div class="pay_cancel">
+            <a style="background: black;color: white;padding: 10px" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay</a>
+            <a style="background: black;color: white;padding: 10px" onclick = "closeDialog()">Cancel</a>
+        </div>
+    </div>
+    <div id="fade" class="black_overlay"></div>
 </div>
 
 <script src='../static/js/shopping_cart.js'></script>
@@ -134,9 +155,13 @@
             arr[arr.length] = {src: element['pic'], txt: element['name'], price: element['price'], num: element['num']};
         });
         var temp=$('#temp').innerHTML;
+        var temp1=$('#temp1').innerHTML;
         var tbody=$('#tbody');
+        var tbody1=$('#tbody1')
         arr.forEach(function (el) {//把数据插入到HTML中
             tbody.innerHTML += temp.replace("{src}", el.src).replace("{txt}", el.txt).replace("{price}", el.price)
+                .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
+            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{txt}", el.txt).replace("{price}", el.price)
                 .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
         });
         var trs=$('#tbody tr');
