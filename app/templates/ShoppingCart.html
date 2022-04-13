@@ -252,8 +252,8 @@
         }
         function chk(target,tr) {//复选框判断
             var cls=target.className;
-            var flag = true;
             if (cls==='check'){//点击非全选复选框
+                var flag = true;
                 var id=tr.id+'_checked'
                 var unshow=document.getElementById(id);
                 if(!target.checked) unshow.style.setProperty('display','none');
@@ -263,7 +263,7 @@
                 /*当存在一个复选框未选中，全选框为false*/
                 for (var i = 0; i < trs.length; i++) {
                     var checkbox = trs[i].cells[0].children[0];
-                    if (!checkbox.checked) {
+                    if (checkbox.checked==false) {
                         flag = false;
                         break
                     }
