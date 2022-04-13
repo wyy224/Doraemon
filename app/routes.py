@@ -218,7 +218,7 @@ def purchase():
                 db.session.add(orderdetail)
                 session.pop('cid', None)
             db.session.commit()
-            return redirect(url_for('main_page'))
+            return redirect(url_for('Orders'))
         return render_template('pay.html', price=price, profile=profile)
     else:
         return redirect('/login')

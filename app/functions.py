@@ -62,10 +62,13 @@ def set_db():
 
     # add order
 
-    order1 = Order(commodity_id=1, user_id=1, commodity_num=1,
-                   address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
+    order1 = Order(user_id=1, address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
 
     db.session.add(order1)
+
+    orderD = OrderDetail(commodity_id=1, order_id=1, commodity_num=1)
+
+    db.session.add(orderD)
 
     db.session.commit()
 
