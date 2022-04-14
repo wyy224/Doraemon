@@ -60,6 +60,39 @@
                 </button>
 
             {% endif %}
+         <nav class="navbar navbar-expand-lg navbar-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent" style="background: rgb(230,230,230)">
+                <ul class="navbar-nav ">
+                    <li id="1">
+                        <a class="nav-link" onclick="selection(1) ">0-1000</a>
+                    </li>
+
+                    <li id="2">
+                        <a onclick="selection(2)" class="nav-link">1000-2500</a>
+                    </li>
+                    <li id="3">
+                        <a onclick="selection(3)" class="nav-link">2500-4000</a>
+                    </li>
+                    <li id="4">
+                        <a onclick="selection(4)" class="nav-link">4000-5500</a>
+                    </li>
+                    <li id="5">
+                        <a onclick="selection(5)" class="nav-link">5500-7000</a>
+                    </li>
+                    <li id="6">
+                        <a onclick="selection(6)" class="nav-link">7000-</a>
+                    </li>
+                </ul>
+            </div>
+
+         </nav>
+        </div>
+
+        </nav>
             <div class="row">
                 <div class="side-bar col-lg-3">
                     <div class="search-hotel">
@@ -471,6 +504,18 @@
                 }, function (error) {
                     console.log(error);
                 });
+        }
+        function selection(id){
+            var li = document.getElementById(id);
+            li.setAttribute("class", "nav-item active");
+            var i =1;
+            while (i<7){
+                var el = document.getElementById(i);
+                if(i != id && el.hasAttribute("class")){
+                    el.removeAttribute("class","nav-item active")
+                }
+                i++;
+            }
         }
     </script>
 

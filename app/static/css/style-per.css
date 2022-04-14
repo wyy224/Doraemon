@@ -3291,7 +3291,8 @@ input[type="button"].btn-block {
   list-style: none; }
   .navbar-nav .nav-link {
     padding-right: 0;
-    padding-left: 0; }
+    padding-left: 0; 
+  font-size: 12px}
   .navbar-nav .dropdown-menu {
     position: static;
     float: none; }
@@ -3530,6 +3531,34 @@ input[type="button"].btn-block {
     color: rgba(0, 0, 0, 0.7); }
   .navbar-light .navbar-nav .nav-link.disabled {
     color: rgba(0, 0, 0, 0.3); }
+
+.price{
+		 	margin: 30px auto;
+			width: 600px;
+			height: 350px;
+			padding: 0px;
+			border:1px solid #000;
+		}
+.price-li{
+			list-style-type: none;
+			float: left;
+		}
+.price-a{
+			display: block;
+			width: 100px;
+			height: 50px;
+			line-height: 50px;
+			background-color: #2f4f4f;
+			margin: 0px 0px;
+			color: #fff;
+			text-align: center;
+			text-decoration: none;
+			font-size: 15px;
+		}
+a:hover{
+			background-color: #2f6f4f;
+		}
+
 
 .navbar-light .navbar-nav .show > .nav-link,
 .navbar-light .navbar-nav .active > .nav-link,
