@@ -255,9 +255,19 @@ def pay_order():
     return jsonify({'returnValue': 1})
 
 
-@app.route('/purchase/addOrder')
-def addOrder():
-    return redirect('/Orders')
+@app.route('/top_up', methods=['GET', 'POST'])
+def topup():
+    if islogined():
+        username = session['USERNAME']
+        if request.method == 'POST':
+            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+            user.money = user.money + int(request.form['money'])
+            db.session.commit()
+            return redirect(url_for('home'))
+        else:
+            return render_template('topup.html', username=username)
+    else:
+        return redirect('/login')
 
 
 @app.route('/service')
