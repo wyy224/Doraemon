@@ -124,7 +124,8 @@
                             </div>
                             <div class="col-xs-8 img-deal1">
                                 <h3>{{ commodity.commodity_name }}</h3>
-                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
+                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
+                                <span>release_time:{{ commodity.release_time}}</span>
                             </div>
                             <div class="clearfix"></div>
 
@@ -140,7 +141,7 @@
 
                     <h3 class="agileits-sear-head">The Hot commodities</h3>
 
-                    {% for commodity in new_commodities %}
+                    {% for commodity in collect_commodities %}
                         <div class="row special-sec1">
 
                             <div class="col-xs-4 img-deals">
@@ -148,7 +149,8 @@
                             </div>
                             <div class="col-xs-8 img-deal1">
                                 <h3>{{ commodity.commodity_name }}</h3>
-                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
+                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
+                                <span>collect_num:{{ commodity.collect_num }}</span>
                             </div>
                             <div class="clearfix"></div>
 

@@ -43,7 +43,7 @@ def set_db():
     # add commodity
 
     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
-                      price=3000, introduction='piano', type='piano', )
+                      price=3000, introduction='piano', type='piano')
     db.session.add(piano)
 
     drum = Commodity(commodity_name='drum', cargo_quantity=100,

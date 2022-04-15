@@ -302,6 +302,7 @@ def shop():
     session.pop('price_section_start',None)
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
     user_id = session.get('uid')
 
     for commodity in commodities:
@@ -313,7 +314,7 @@ def shop():
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
-                           authority=authority)
+                           authority=authority, collect_commodities=collect_commodities)
 @app.route('/api/shop/price_section',methods=['POST'])
 def get_price_section():
     p = int(request.form.get('price'))
