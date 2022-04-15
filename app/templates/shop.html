@@ -532,6 +532,10 @@
                 }
                 i++;
             }
+            jQuery.post('/api/shop/price_section',{'price':id}).done(function (response) {
+            });
+            location.reload();
+            {#window.location.href='http://127.0.0.1:5000/shop';#}
         }
     </script>
 

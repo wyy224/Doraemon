@@ -294,7 +294,13 @@ def shop():
     else:
         authority = 0
         user_icon = 'NULL'
-    commodities = Commodity.query.all()
+    print(session.get('price_section_start'))
+    if session.get('price_section_start') is None:
+        commodities = Commodity.query.all()
+    else:
+        commodities = Commodity.query.filter(Commodity.price.between(session.get('price_section_start'),session.get('price_section_end')))
+    session.pop('price_section_start',None)
+    session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     user_id = session.get('uid')
 
@@ -308,7 +314,21 @@ def shop():
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
                            authority=authority)
-
+@app.route('/api/shop/price_section',methods=['POST'])
+def get_price_section():
+    p = int(request.form.get('price'))
+    # session.pop('price_section_start',None)
+    # session.pop('price_section_end', None)
+    if p == 1:
+        session['price_section_start'] = 0
+        session['price_section_end'] = 1000
+    elif 2 <= p < 7:
+        session['price_section_start'] = 1000 + (p-2)*1500
+        session['price_section_end'] = 1000 + (p-1)*1500
+    elif p >= 7:
+        session['price_section_start'] = 7000
+        session['price_section_end'] = 100000000
+    return jsonify({'returnValue': 1})
 
 @app.route('/collect', methods=['GET', 'POST'])
 def collect():
