@@ -335,11 +335,14 @@ def collect():
     user_id = request.form.get("user_id")
     commodity_id = request.form.get("commodity")
     exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+    commodity5 = Commodity.query.filter_by(id=commodity_id).first()
     if exist is not None:
+        commodity5.collect_num = commodity5.collect_num - 1
         db.session.delete(exist)
         db.session.commit()
         return "cancel collect"
     else:
+        commodity5.collect_num = commodity5.collect_num + 1
         collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
         db.session.add(collect1)
         db.session.commit()

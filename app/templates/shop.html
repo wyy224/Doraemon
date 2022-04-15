@@ -60,205 +60,209 @@
                 </button>
 
             {% endif %}
-         <nav class="navbar navbar-expand-lg navbar-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent" style="background: rgb(230,230,230)">
-                <ul class="navbar-nav ">
-                    <li id="1">
-                        <a class="nav-link" onclick="selection(1) ">0-1000</a>
-                    </li>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent"
+                     style="background: rgb(230,230,230)">
+                    <ul class="navbar-nav ">
+                        <li id="1">
+                            <a class="nav-link" onclick="selection(1) ">0-1000</a>
+                        </li>
 
-                    <li id="2">
-                        <a onclick="selection(2)" class="nav-link">1000-2500</a>
-                    </li>
-                    <li id="3">
-                        <a onclick="selection(3)" class="nav-link">2500-4000</a>
-                    </li>
-                    <li id="4">
-                        <a onclick="selection(4)" class="nav-link">4000-5500</a>
-                    </li>
-                    <li id="5">
-                        <a onclick="selection(5)" class="nav-link">5500-7000</a>
-                    </li>
-                    <li id="6">
-                        <a onclick="selection(6)" class="nav-link">7000-</a>
-                    </li>
-                </ul>
-            </div>
+                        <li id="2">
+                            <a onclick="selection(2)" class="nav-link">1000-2500</a>
+                        </li>
+                        <li id="3">
+                            <a onclick="selection(3)" class="nav-link">2500-4000</a>
+                        </li>
+                        <li id="4">
+                            <a onclick="selection(4)" class="nav-link">4000-5500</a>
+                        </li>
+                        <li id="5">
+                            <a onclick="selection(5)" class="nav-link">5500-7000</a>
+                        </li>
+                        <li id="6">
+                            <a onclick="selection(6)" class="nav-link">7000-</a>
+                        </li>
+                    </ul>
+                </div>
 
-         </nav>
+            </nav>
         </div>
 
         </nav>
-            <div class="row">
-                <div class="side-bar col-lg-3">
-{#                    <!-- price range -->#}
-{#                    <div class="range">#}
-{#                        <h3 class="agileits-sear-head">Price range</h3>#}
-{#                        <ul class="dropdown-menu6">#}
-{#                            <li>#}
-{##}
-{#                                <div id="slider-range"></div>#}
-{#                                <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;">#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <!-- //price range -->#}
+        <div class="row">
+            <div class="side-bar col-lg-3">
+                {#                    <!-- price range -->#}
+                {#                    <div class="range">#}
+                {#                        <h3 class="agileits-sear-head">Price range</h3>#}
+                {#                        <ul class="dropdown-menu6">#}
+                {#                            <li>#}
+                {##}
+                {#                                <div id="slider-range"></div>#}
+                {#                                <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;">#}
+                {#                            </li>#}
+                {#                        </ul>#}
+                {#                    </div>#}
+                {#                    <!-- //price range -->#}
 
-                    <!-- deals -->
+                <!-- deals -->
 
-                    <div class="left-side">
+                <div class="left-side">
 
-                        <h3 class="agileits-sear-head">The Newest commodities</h3>
+                    <h3 class="agileits-sear-head">The Newest commodities</h3>
 
-                        {% for commodity in new_commodities %}
-                            <div class="row special-sec1">
+                    {% for commodity in new_commodities %}
+                        <div class="row special-sec1">
 
-                                <div class="col-xs-4 img-deals">
-                                    <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
-                                </div>
-                                <div class="col-xs-8 img-deal1">
-                                    <h3>{{ commodity.commodity_name }}</h3>
-                                    <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
-                                </div>
-                                <div class="clearfix"></div>
-
+                            <div class="col-xs-4 img-deals">
+                                <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
                             </div>
-                        {% endfor %}
-
-
-                    </div>
-
-                    <!-- //deals -->
-
-                    <div class="deal-leftmk left-side">
-
-                        <h3 class="agileits-sear-head">The Hot commodities</h3>
-
-                        {% for commodity in new_commodities %}
-                            <div class="row special-sec1">
-
-                                <div class="col-xs-4 img-deals">
-                                    <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
-                                </div>
-                                <div class="col-xs-8 img-deal1">
-                                    <h3>{{ commodity.commodity_name }}</h3>
-                                    <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
-                                </div>
-                                <div class="clearfix"></div>
-
+                            <div class="col-xs-8 img-deal1">
+                                <h3>{{ commodity.commodity_name }}</h3>
+                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
                             </div>
-                        {% endfor %}
+                            <div class="clearfix"></div>
 
-
-                    </div>
-
-                </div>
-                <div class="left-ads-display col-lg-9">
-                    {% for commodity in commodities %}
-                        <div class="row">
-
-                            <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
-                                <div class="product-toys-info">
-
-                                    <div class="men-pro-item">
-
-                                        <div class="men-thumb-item">
-
-
-                                            <img src="{{ commodity.pic_path }}" class="img-thumbnail img-fluid" alt="">
-
-
-                                            <div class="men-cart-pro">
-                                                <div class="inner-men-cart-pro">
-                                                    <a href="single/{{ commodity.id }}" class="link-product-add-cart">Quick
-                                                        View</a>
-                                                </div>
-                                            </div>
-
-                                            <span class="product-new-top">New</span>
-
-                                        </div>
-
-
-                                        <div class="item-info-product">
-                                            <div class="info-product-price">
-                                                <div class="grid_meta">
-
-                                                    <div class="product_price">
-                                                        <h4>
-
-                                                            <a href="single/{{ commodity.id }}">{{ commodity.commodity_name }}</a>
-
-                                                        </h4>
-                                                        <div class="grid-price mt-2">
-                                                            <span class="money ">${{ commodity.price }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <ul class="stars">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fas fa-star"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fas fa-star"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fas fa-star"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fas fa-star"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="far fa-star-half-o"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="toys single-item hvr-outline-out">
-                                                    {#                                                    <form action="#" method="post">#}
-                                                    <input type="hidden" name="cmd" value="_cart">
-                                                    <input type="hidden" name="add" value="1">
-                                                    <input type="hidden" name="toys_item" value="toys(barbie)">
-                                                    <input type="hidden" name="amount" value="575.00">
-                                                    <input type="hidden" id="user_id"
-                                                           value="{{ user_id }}"/>
-                                                    <input type="hidden" value="{{ commodity.id }}"
-                                                           id="commodity_id">
-                                                    <button id="button_collect{{ commodity.id }}"
-                                                            class="toys-cart ptoys-cart"
-                                                            {% if commodity.is_collected %}
-                                                            style="background: rgb(255, 193, 7)"
-                                                            {% else %}
-                                                            style="background: #00b9ff"
-                                                            {% endif %}
-                                                            onclick=collect("{{ commodity.id }}")>
-                                                        <i class="fas fa-star"></i>
-                                                    </button>
-                                                    {#                                                    </form>#}
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
                     {% endfor %}
+
+
                 </div>
+
+                <!-- //deals -->
+
+                <div class="deal-leftmk left-side">
+
+                    <h3 class="agileits-sear-head">The Hot commodities</h3>
+
+                    {% for commodity in new_commodities %}
+                        <div class="row special-sec1">
+
+                            <div class="col-xs-4 img-deals">
+                                <img src="{{ commodity.pic_path }}" alt="" class="img-fluid">
+                            </div>
+                            <div class="col-xs-8 img-deal1">
+                                <h3>{{ commodity.commodity_name }}</h3>
+                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a>
+                            </div>
+                            <div class="clearfix"></div>
+
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+
             </div>
+            <div class="left-ads-display col-lg-9">
+                {% for commodity in commodities %}
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
+                            <div class="product-toys-info">
+
+                                <div class="men-pro-item">
+
+                                    <div class="men-thumb-item">
+
+
+                                        <img src="{{ commodity.pic_path }}" class="img-thumbnail img-fluid" alt="">
+
+
+                                        <div class="men-cart-pro">
+                                            <div class="inner-men-cart-pro">
+                                                <a href="single/{{ commodity.id }}" class="link-product-add-cart">Quick
+                                                    View</a>
+                                            </div>
+                                        </div>
+
+                                        <span class="product-new-top">New</span>
+
+                                    </div>
+
+
+                                    <div class="item-info-product">
+                                        <div class="info-product-price">
+                                            <div class="grid_meta">
+
+                                                <div class="product_price">
+                                                    <h4>
+
+                                                        <a href="single/{{ commodity.id }}">{{ commodity.commodity_name }}</a>
+
+                                                    </h4>
+                                                    <div class="grid-price mt-2">
+                                                        <span class="money ">${{ commodity.price }}</span><br>
+                                                        <span>collect_num:</span>
+                                                        <span id="collect_num">{{ commodity.collect_num }}</span>
+                                                    </div>
+                                                </div>
+                                                <ul class="stars">
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fas fa-star"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fas fa-star"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fas fa-star"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fas fa-star"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="far fa-star-half-o"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="toys single-item hvr-outline-out">
+                                                {#                                                    <form action="#" method="post">#}
+                                                <input type="hidden" name="cmd" value="_cart">
+                                                <input type="hidden" name="add" value="1">
+                                                <input type="hidden" name="toys_item" value="toys(barbie)">
+                                                <input type="hidden" name="amount" value="575.00">
+                                                <input type="hidden" id="user_id"
+                                                       value="{{ user_id }}"/>
+                                                <input type="hidden" value="{{ commodity.id }}"
+                                                       id="commodity_id">
+                                                <button id="button_collect{{ commodity.id }}"
+                                                        class="toys-cart ptoys-cart"
+                                                        {% if commodity.is_collected %}
+                                                        style="background: rgb(255, 193, 7)"
+                                                        {% else %}
+                                                        style="background: #00b9ff"
+                                                        {% endif %}
+                                                        onclick=collect("{{ commodity.id }}")>
+                                                    <i class="fas fa-star"></i>
+                                                </button>
+                                                {#                                                    </form>#}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         </div>
 
     </section>
@@ -507,11 +511,17 @@
             } else
                 Ajax('post', '/collect', sendData, function (data) {
                     if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
-                        console.log("12")
                         document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a-0)-1;
+                        var c =document.getElementById("collect_num").innerHTML=b;
+
+
                     } else {
-                        console.log("123")
                         document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a-0)+1;
+                        var c =document.getElementById("collect_num").innerHTML=b;
                     }
                     alert(data)
                     {#console.log("123");#}
@@ -521,18 +531,19 @@
                     console.log(error);
                 });
         }
-        function selection(id){
+
+        function selection(id) {
             var li = document.getElementById(id);
             li.setAttribute("class", "nav-item active");
-            var i =1;
-            while (i<7){
+            var i = 1;
+            while (i < 7) {
                 var el = document.getElementById(i);
-                if(i != id && el.hasAttribute("class")){
-                    el.removeAttribute("class","nav-item active")
+                if (i != id && el.hasAttribute("class")) {
+                    el.removeAttribute("class", "nav-item active")
                 }
                 i++;
             }
-            jQuery.post('/api/shop/price_section',{'price':id}).done(function (response) {
+            jQuery.post('/api/shop/price_section', {'price': id}).done(function (response) {
             });
             location.reload();
             {#window.location.href='http://127.0.0.1:5000/shop';#}
