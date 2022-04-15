@@ -7,29 +7,44 @@
 
 <div class="box" id="box" >
    <div class="toumingzi">
-                    <div class="desc">
-                        <form action="" method="post">
-                            <h1 class="payword1"><span>Order Details:</span></h1>
+            <div class="desc">
+                <form action="" method="post">
+                    <h1 class="payword1"><span>Order Details:</span></h1>
 {#                            <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>#}
 {#                            <p class="payword"><b>Product:</b> {{ commodity.commodity_name }}</p>#}
-                            <p class="payword"><b>Price:</b> ${{ price }} </p>
-                            <p class="payword"><b>Delivery address: </b><input class="form-control" style="font-size: 24px" type="text" name="address" placeholder="Please enter..." required="" value={{profile.address}} ></p>
-                            <p class="payword"><b>Phone number: </b><input class="form-control" style="font-size: 24px" type="text" name="phone_num" placeholder="Please enter..." required="" value={{profile.phone_num}} ></p>
-                            <p class="payword"><b>Quantity: </b><input class="form-control" style="font-size: 24px" type="text" name="quantity" placeholder="Please enter..." required="" value="1" ></p>
-                            <p class="payword"><b>Consignee name: </b><input class="form-control" style="font-size: 24px" type="text" name="consignee_name" placeholder="Please enter..." required="" value={{profile.name}} ></p>
-                            <p class="payword"><b>Transport: </b> <select class="form-control"  style="font-size: 24px" value="1" name="transport">
-                                    <option value="1">delivery home</option>
-                                    <option value="2">pich up at the store</option>
-                                </select></p>
+                    <p class="payword">
+                        <b>Price:</b> ${{ price }}
+                    </p>
+                    <p class="payword">
+                        <b>Delivery address: </b>
+                        <a style="font-size: 24px">{{profile.address}}</a>
+                    </p>
+                    <p class="payword">
+                        <b>Phone number: </b>
+                        <a style="font-size: 24px">{{profile.phone_num}}</a>
+                    </p>
+                    <p class="payword">
+                        <b>Quantity: </b>
+                        <input class="form-control" style="font-size: 24px" type="text"
+                               name="quantity" placeholder="Please enter..." required="" value="1" >
+                    </p>
+                    <p class="payword">
+                        <b>Consignee name: </b>
+                        <a style="font-size: 24px">{{profile.name}}</a>
+                    </p>
+                    <p class="payword">
+                        <b>Transport: </b>
+                        <select style="font-size: 24px" value="1" name="transport">
+                            <option value="1">delivery home</option>
+                            <option value="2">pick up at the store</option>
+                        </select>
+                    </p>
 
+                    <button class="paybt" type="submit">Confirm pay</button>
+                    <button class="paybt" onclick="javascript:history.back(-1);{return false}">Cancel pay</button>
 
-                            <button  class="paybt" type="submit">Confirm pay</button>
-                            <button class="paybt"  onclick="javascript:history.back(-1);{return false}">Cancel pay</button>
-                        </form>
+                </form>
 
-
-
-
-                    </div>
-                </div>
+            </div>
+        </div>
 </div>
