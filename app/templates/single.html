@@ -39,7 +39,7 @@
          <div class="inner_breadcrumb  ml-4">
             <ul class="short_ls">
                <li>
-                  <a href="index.html">Home</a>
+                  <a href="index">Home</a>
                   <span>/ /</span>
                </li>
                <li>Single Page</li>
@@ -128,9 +128,9 @@
                               Add to Cart
                               </button>
                               {% if authority ==1 %}
-                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='http://127.0.0.1:5000/modify_commodity'">edit product</button>
+                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/modify_commodity'">edit product</button>
                               {% else %}
-                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='http://127.0.0.1:5000/purchase'">buy product</button>
+                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/purchase'">buy product</button>
 
                               {% endif %}
                            </form>

@@ -45,12 +45,12 @@
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
                 <li><a href="http://127.0.0.1:5000/home">Home</a></li>
-                <li class="colorlib-active"><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-                <li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
-                <li><a href="http://127.0.0.1:5000/contact">Services</a></li>
-                <li><a href="http://127.0.0.1:5000/Orders">Orders</a></li>
+                <li class="colorlib-active"><a href="/collection">Collection</a></li>
+                <li><a  href="/ShoppingCart">Shopping Cart</a></li>
+                <li><a href="/contact">Services</a></li>
+                <li><a href="/Orders">Orders</a></li>
                 <li>
-                    <button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button>
+                    <button onclick="location.href='/main_page'">Come back to Home Page</button>
                 </li>
             </ul>
         </nav>
@@ -71,10 +71,10 @@
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="http://127.0.0.1:5000/home">Home</a></span>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home">Home</a></span>
                             <span>Collection</span>
-                        <span class="mr-2"><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></span>
-                        <span class="mr-2"><a href="http://127.0.0.1:5000/Orders">Orders</a></span>
+                        <span class="mr-2"><a href="/ShoppingCart">Shopping Cart</a></span>
+                        <span class="mr-2"><a href="/Orders">Orders</a></span>
                         </p>
                         <h1 class="bread">My Collection</h1>
                     </div>
@@ -86,7 +86,7 @@
                 <div class="row">
                     {% for collects in collects %}
                         <div class="col-md-4 ftco-animate">
-                            <a href="http://127.0.0.1:5000/single/{{collects.commodity.id}}"
+                            <a href="/single/{{collects.commodity.id}}"
                                class="photography-entry img  d-flex justify-content-start align-items-end"
                                style="background-image: url({{ collects.commodity.pic_path }});">
                                 <div class="overlay"></div>
@@ -143,10 +143,10 @@
             if (server_code == 1) {
                 // success set done
                 alert("You have been logged out")
-                window.location.href = 'http://127.0.0.1:5000/main_page';
+                window.location.href = '/main_page';
             } else {
                 alert("You have not been logged out")
-                window.location.href = 'http://127.0.0.1:5000/home';
+                window.location.href = '/home';
             }
         }).fail(function () {
             console.log("Fail reset");

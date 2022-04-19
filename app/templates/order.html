@@ -49,7 +49,7 @@
 <div id="colorlib-page">
     <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
     <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-        <h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+        <h1 id="colorlib-logo"><a href="/home">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
@@ -60,13 +60,13 @@
         </h1>
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
-                <li><a href="http://127.0.0.1:5000/home ">Home</a></li>
-                <li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-                <li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
-                <li><a href="http://127.0.0.1:5000/contact">Services</a></li>
-                <li class="colorlib-active"><a href="http://127.0.0.1:5000/Orders">Orders</a></li>
+                <li><a href="/home ">Home</a></li>
+                <li><a href="/collection">Collection</a></li>
+                <li><a href="/ShoppingCart">Shopping Cart</a></li>
+                <li><a href="/contact">Services</a></li>
+                <li class="colorlib-active"><a href="/Orders">Orders</a></li>
                 <li>
-                    <button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button>
+                    <button onclick="location.href='/main_page'">Come back to Home Page</button>
                 </li>
             </ul>
         </nav>
@@ -87,9 +87,9 @@
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="http://127.0.0.1:5000/home">Home</a></span>
-                            <span class="mr-2"><a href="http://127.0.0.1:5000/collection">Collection</a></span>
-                            <span class="mr-2"><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></span>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home">Home</a></span>
+                            <span class="mr-2"><a href="/collection">Collection</a></span>
+                            <span class="mr-2"><a href="/ShoppingCart">Shopping Cart</a></span>
                             <span>Orders</span></p>
                         <h1 class="bread">My Orders</h1>
                     </div>
@@ -167,10 +167,10 @@
             if (server_code == 1) {
                 // success set done
                 alert("You have been logged out")
-                window.location.href = 'http://127.0.0.1:5000/main_page';
+                window.location.href = '/main_page';
             } else {
                 alert("You have not been logged out")
-                window.location.href = 'http://127.0.0.1:5000/home';
+                window.location.href = '/home';
             }
         }).fail(function () {
             console.log("Fail reset");

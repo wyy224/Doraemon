@@ -48,7 +48,7 @@
 	<div id="colorlib-page">
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="http://127.0.0.1:5000/home">
+			<h1 id="colorlib-logo"><a href="/home">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
@@ -59,12 +59,12 @@
             </h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="http://127.0.0.1:5000/home ">Home</a></li>
-					<li><a href="http://127.0.0.1:5000/collection">Collection</a></li>
-					<li><a href="http://127.0.0.1:5000/ShoppingCart">Shopping Cart</a></li>
-					<li><a href="http://127.0.0.1:5000/contact">Services</a></li>
-                    <li><a href="http://127.0.0.1:5000/Orders">Orders</a></li>
-                    <li><button onclick="location.href='http://127.0.0.1:5000/main_page'">Come back to Home Page</button> </li>
+					<li class="colorlib-active"><a href="/home ">Home</a></li>
+					<li><a href="/collection">Collection</a></li>
+					<li><a href="/ShoppingCart">Shopping Cart</a></li>
+					<li><a href="/contact">Services</a></li>
+                    <li><a href="/Orders">Orders</a></li>
+                    <li><button onclick="location.href='/main_page'">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
 
@@ -102,8 +102,8 @@
                                 <p class="mb-4">Phone number: {{ profile.phone_num }}</p>
                                 <p class="mb-4">Consignee name: {{ profile.name }}</p>
                                 <p class="mb-4">remaining balance: {{ user.money }}</p>
-                                <button onclick="location.href='http://127.0.0.1:5000/top_up'">TOP UP</button>
-                                <button onclick="location.href='http://127.0.0.1:5000/modify'">Modify the information</button>
+                                <button onclick="location.href='/top_up'">TOP UP</button>
+                                <button onclick="location.href='/modify'">Modify the information</button>
 								<ul class="ftco-social mt-3">
 		                        </ul>
 	                        </div>
