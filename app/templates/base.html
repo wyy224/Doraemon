@@ -53,7 +53,7 @@
                             </li>
                             <li>
                                 {% if islogin %}
-                                    <button type="button" onclick="location.href='http://127.0.0.1:5000/home'">
+                                    <button type="button" onclick="location.href='/home'">
                                        <span class="far">
                                             {% if icon == "NULL" %}
                                                 <img src='{{ avatars.default(size='l') }}' alt="" width=33 height=33>
@@ -65,7 +65,7 @@
                                     </button>
 
                                 {% else %}
-                                    <button type="button" onclick="location.href='http://127.0.0.1:5000/login'">
+                                    <button type="button" onclick="location.href='/login'">
                                         <span class="far fa-user"></span></button>
                                 {% endif %}
                             </li>
