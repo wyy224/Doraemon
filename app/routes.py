@@ -70,10 +70,11 @@ def about():
 def contact():
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         user_icon = 'NULL'
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(), authority = authority)
 
 
 @app.route('/ShoppingCart')

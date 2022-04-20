@@ -11,6 +11,56 @@ body {
   width: 20px;
 }
 
+.black_overlay{
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index:1001;
+            -moz-opacity: 0.8;
+            opacity:.80;
+            filter: alpha(opacity=88);
+        }
+.white_content {
+    position: absolute;
+    width: 70%;
+    height: 40%;
+    top: 25%;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.9);
+    z-index:1002;
+    overflow: auto;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+a{
+  cursor: pointer;
+}
+.list{
+  border-radius: 5px;
+  position: absolute;
+  background-color: black;
+  width: 80px;
+  height: 35px;
+  color: white;
+  left: 25px;
+  top: 361px;
+}
+th{
+  font-size: 23px;
+  text-align: center;
+  width: 250px;
+}
+.pay_cancel{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
+    }
+
 .chat-thread::-webkit-scrollbar-track {
   background-color: rgba(25, 147, 147, 0.1);
 }
