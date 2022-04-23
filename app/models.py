@@ -18,6 +18,7 @@ class User(db.Model):
     introduction = db.Column(db.String(64), nullable=True)
     authority = db.Column(db.Integer, default=0, nullable=False)
     money = db.Column(db.Integer, default=0, nullable=False)
+    messages = db.relationship('Message', back_populates='author', cascade='all')
 
     def __repr__(self):
         return '<User {}>'.format(self.user_name)
@@ -29,6 +30,15 @@ class User(db.Model):
     # translate password
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+# A table of message list
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.Text, nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now, index=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', back_populates='messages')
 
 
 # A table of ranking list
@@ -45,7 +55,6 @@ class Commodity(db.Model):
     type = db.Column(db.String(32), nullable=False)
     collect_num = db.Column(db.Integer, default=0)
     is_collect = db.Column(db.Boolean, default=False, nullable=False)
-
 
 
 # A table of shopping cart
@@ -67,17 +76,19 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     purchase_time = db.Column(db.DateTime, default=datetime.now)
     address = db.Column(db.String(64), nullable=False)
-    transport = db.Column(db.String(64),nullable=False)
+    transport = db.Column(db.String(64), nullable=False)
     is_receive = db.Column(db.Boolean, default=False, nullable=False)
+
 
 # A table of order detail
 class OrderDetail(db.Model):
-        __tablename__ = "orderdetail"
-        __table_args__ = {'extend_existing': True}
-        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-        commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
-        order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-        commodity_num = db.Column(db.Integer, default=0, nullable=False)
+    __tablename__ = "orderdetail"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    commodity_num = db.Column(db.Integer, default=0, nullable=False)
+
 
 # A table of more user information
 class Profile(db.Model):
@@ -89,6 +100,7 @@ class Profile(db.Model):
     phone_num = db.Column(db.String(11), nullable=True)
     name = db.Column(db.String(11), nullable=True)
 
+
 # A table of collection list
 class Collections(db.Model):
     __tablename__ = "collections"
@@ -97,6 +109,7 @@ class Collections(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
     commodity = db.relationship('Commodity', backref=db.backref('Commodity', lazy='dynamic'))
+
 
 # A table of review
 class Review(db.Model):
