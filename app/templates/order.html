@@ -91,7 +91,12 @@
                             <span class="mr-2"><a href="/collection">Collection</a></span>
                             <span class="mr-2"><a href="/ShoppingCart">Shopping Cart</a></span>
                             <span>Orders</span></p>
-                        <h1 class="bread">My Orders</h1>
+                         {% if authority ==1 %}
+                            <h1 class="bread">All Orders</h1>
+                         {% else %}
+                             <h1 class="bread">My Orders</h1>
+                         {% endif %}
+
                     </div>
                 </div>
             </div>

@@ -450,7 +450,13 @@ def Orders():
         list = get_orders(o, list)
     session.pop('orders', None)
     session['orders'] = list
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list)
+    if islogined():
+        authority = session.get('authority')
+
+    else:
+        authority = 0
+
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,authority=authority)
 
 
 @app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])
