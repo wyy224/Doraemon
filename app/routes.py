@@ -2,6 +2,8 @@ import logging
 import os
 import json
 from uuid import uuid4
+
+from flask_socketio import SocketIO, join_room
 from PIL import Image
 from sqlalchemy import true, false
 
@@ -30,6 +32,9 @@ all_type = dict({
 })
 
 avatars = Avatars()
+
+socketio = SocketIO()
+socketio.init_app(app)
 
 
 # logger = logging.getLogger(__name__)
@@ -66,15 +71,75 @@ def about():
                            type_value=all_type.values())
 
 
+room_user = {}
+
+
 @app.route('/contact')
 def contact():
     if islogined():
         user_icon = setIcon()
         authority = session.get('authority')
+        username = session.get('USERNAME')
+        user = User.query.filter(User.user_name == username).first()
+        room = session.get('uid')
+
     else:
         user_icon = 'NULL'
+        return redirect(url_for('login'))
+
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority = authority)
+                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room)
+
+
+# # 连接
+@socketio.on('connect')
+def handle_connect():
+    username = session.get('USERNAME')
+    # online_user.append(username)
+    # print('connect info:  ' + f'{username}  connect')
+    # print(online_user)
+    # socketio.emit('connect info', f'{username}  connect')
+
+
+# 断开连接
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     username = session.get('USERNAME')
+#     print('connect info:  ' + f'{username}  disconnect')
+#     # socketio.emit('connect info', f'{username}  disconnect')
+
+
+# @socketio.on('connect info')
+# def handle_connect_info(info):
+#     print('connect info' + str(info))
+#     room = session.get('room')
+#     socketio.emit('connect info', info, to=room)
+
+
+@socketio.on('send msg')
+def handle_message(data):
+    print('sendMsg' + str(data))
+    room = str(session['uid'])
+    print(room)
+    data['message'] = data.get('message').replace('<', '&lt;').replace('>', '&gt;').replace(' ', '&nbsp;')
+    socketio.emit('send msg', data, to=room)
+
+
+@socketio.on('join')
+def on_join(data):
+    username = data.get('username')
+    room = data.get('room')
+    print('1111111111111111111111111111111111111')
+    try:
+        room_user[room].append(username)
+    except:
+        room_user[room] = []
+        room_user[room].append(username)
+
+    join_room(room)
+    print('join room:  ' + str(data))
+    print(room_user)
+    socketio.emit('connect info', username + '加入房间', to=room)
 
 
 @app.route('/ShoppingCart')
@@ -299,8 +364,9 @@ def shop():
     if session.get('price_section_start') is None:
         commodities = Commodity.query.all()
     else:
-        commodities = Commodity.query.filter(Commodity.price.between(session.get('price_section_start'),session.get('price_section_end')))
-    session.pop('price_section_start',None)
+        commodities = Commodity.query.filter(
+            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')))
+    session.pop('price_section_start', None)
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
@@ -316,7 +382,9 @@ def shop():
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
                            authority=authority, collect_commodities=collect_commodities)
-@app.route('/api/shop/price_section',methods=['POST'])
+
+
+@app.route('/api/shop/price_section', methods=['POST'])
 def get_price_section():
     p = int(request.form.get('price'))
     # session.pop('price_section_start',None)
@@ -325,12 +393,13 @@ def get_price_section():
         session['price_section_start'] = 0
         session['price_section_end'] = 1000
     elif 2 <= p < 7:
-        session['price_section_start'] = 1000 + (p-2)*1500
-        session['price_section_end'] = 1000 + (p-1)*1500
+        session['price_section_start'] = 1000 + (p - 2) * 1500
+        session['price_section_end'] = 1000 + (p - 1) * 1500
     elif p >= 7:
         session['price_section_start'] = 7000
         session['price_section_end'] = 100000000
     return jsonify({'returnValue': 1})
+
 
 @app.route('/collect', methods=['GET', 'POST'])
 def collect():
@@ -456,7 +525,8 @@ def Orders():
     else:
         authority = 0
 
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,authority=authority)
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,
+                           authority=authority)
 
 
 @app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])

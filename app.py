@@ -4,12 +4,12 @@ from socket import SocketIO
 from flask import Flask
 
 from app import app, db
+from app.routes import socketio
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123'
 
-socketio = SocketIO()
-socketio.init_app(app)
+
 
 
 if __name__ == '__main__':
