@@ -81,14 +81,26 @@ def contact():
         authority = session.get('authority')
         username = session.get('USERNAME')
         user = User.query.filter(User.user_name == username).first()
-        room = session.get('uid')
+        uid = session.get('uid')
+        if session.get('authority') == 0:
+            room = session.get('uid')
+            room_num = str(room)
+            message = Message.query.filter_by(room=room_num).all()
+        else:
+            list = []
+            message = Message.query.order_by(Message.create_time.desc()).distinct()
+            print(message)
+
+
+
 
     else:
         user_icon = 'NULL'
         return redirect(url_for('login'))
 
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room)
+                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
+                           message=message, uid=uid)
 
 
 # # 连接
@@ -121,7 +133,11 @@ def handle_message(data):
     print('sendMsg' + str(data))
     room = str(session['uid'])
     print(room)
+    message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
+    db.session.add(message)
+    db.session.commit()
     data['message'] = data.get('message').replace('<', '&lt;').replace('>', '&gt;').replace(' ', '&nbsp;')
+
     socketio.emit('send msg', data, to=room)
 
 
