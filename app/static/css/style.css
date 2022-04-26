@@ -113,7 +113,7 @@ margin: 0px;
     background:rgba(255, 255, 255, 0.7);	
 }
 .hedder-up,.info-top-grid,nav.navbar.navbar-expand-lg.navbar-light{
-	padding: 1em 3em;
+	padding: 1em 3em 1em 1.5em;
 }
 
 .info-contact-agile ul li{
