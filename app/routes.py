@@ -87,12 +87,7 @@ def contact():
             room_num = str(room)
             message = Message.query.filter_by(room=room_num).all()
         else:
-            list = []
             message = Message.query.order_by(Message.create_time.desc()).distinct()
-            print(message)
-
-
-
 
     else:
         user_icon = 'NULL'

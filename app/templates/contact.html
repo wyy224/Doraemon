@@ -65,12 +65,14 @@
                     <th>Count of messages</th>
                     <th>Situation</th>
                 </tr>
+                {% for m in message %}
                 <tr>
-                    <th>user1</th>
-                    <th>2022-04-20 19:31</th>
+                    <th>{{ m.username }}</th>
+                    <th>{{ m.create_time }}</th>
                     <th>10</th>
                     <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
                 </tr>
+                {% endfor %}
 
                 </thead>
                 <tbody id="tbody1">
