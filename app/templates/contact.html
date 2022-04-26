@@ -54,36 +54,6 @@
     </div>
     <!-- //short-->
     <!--show Now-->
-    {% if authority ==1 %}
-        <div id="light" class="white_content">
-            <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
-            <table style="margin: auto">
-                <thead style="background-color: pink;color: white;">
-                <tr>
-                    <th>Customer</th>
-                    <th>Time</th>
-                    <th>Count of messages</th>
-                    <th>Situation</th>
-                </tr>
-                {% for m in user %}
-                <tr>
-                    <th>{{ m.user_name }}</th>
-                    <th>2022/1/1</th>
-                    <th>10</th>
-                    <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
-                </tr>
-                {% endfor %}
-
-                </thead>
-                <tbody id="tbody1">
-                </tbody>
-            </table>
-            <div class="pay_cancel">
-                <a style="background: hotpink;color: white;padding: 10px" onclick="location.href='/home'">Home</a>
-            </div>
-        </div>
-        <div id="fade" class="black_overlay"></div>
-    {% endif %}
     <!--show Now-->
     <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
         <ul class="chat-thread">
@@ -247,7 +217,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
 
     <script>
-        let room = '{{ user.id }}'
+        let room = '{{ room }}'
         let username = '{{ username }}'
         let inp = document.querySelector('#send-msg-inp')
         let sendMsgBtn = document.querySelector('#send-msg-btn')

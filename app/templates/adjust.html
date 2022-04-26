@@ -54,35 +54,39 @@
     </div>
     <!-- //short-->
     <!--show Now-->
-        <div id="light" class="white_content">
-            <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
-            <table style="margin: auto">
-                <thead style="background-color: pink;color: white;">
-                <tr>
-                    <th>Customer</th>
-                    <th>Time</th>
-                    <th>Count of messages</th>
-                    <th>Situation</th>
-                </tr>
-                {% for u in user %}
+    <div id="light" class="white_content">
+        <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
+        <table style="margin: auto">
+            <thead style="background-color: pink;color: white;">
+            <tr>
+                <th>Customer</th>
+                <th>Time</th>
+                <th>Count of messages</th>
+                <th>Situation</th>
+            </tr>
+            {% for u in user %}
                 <tr>
 
-                    <th><img src="{{ u.pic_path }}" >{{ u.user_name }}</th>
+                    <th>{% if u.icon != None %}
+                        <img src="/static/uploaded_AVA/{{ u.icon }}" alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% endif %}<a href='contact_admin/{{ u.id }}'>{{ u.user_name }}</a></th>
                     <th>2022/1/1</th>
                     <th>10</th>
                     <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
                 </tr>
-                {% endfor %}
+            {% endfor %}
 
-                </thead>
-                <tbody id="tbody1">
-                </tbody>
-            </table>
-            <div class="pay_cancel">
-                <a style="background: hotpink;color: white;padding: 10px" onclick="location.href='/home'">Home</a>
-            </div>
+            </thead>
+            <tbody id="tbody1">
+            </tbody>
+        </table>
+        <div class="pay_cancel">
+            <a style="background: hotpink;color: white;padding: 10px" onclick="location.href='/home'">Home</a>
         </div>
-        <div id="fade" class="black_overlay"></div>
+    </div>
+    <div id="fade" class="black_overlay"></div>
     <!--show Now-->
     <!-- //show Now-->
     <!--subscribe-address-->
@@ -272,99 +276,8 @@
         });
     </script>
 
-    <script>
-        function Ajax(type, url, data, success, failed) {
-            // 创建ajax对象
-            var xhr = null;
-            if (window.XMLHttpRequest) {
-                xhr = new XMLHttpRequest();
-            } else {
-                xhr = new ActiveXObject('Microsoft.XMLHTTP')
-            }
-
-            var type = type.toUpperCase();
-            // 用于清除缓存
-            var random = Math.random();
-
-            if (typeof data == 'object') {
-                var str = '';
-                for (var key in data) {
-                    str += key + '=' + data[key] + '&';
-                }
-                data = str.replace(/&$/, '');
-            }
-
-            if (type == 'GET') {
-                if (data) {
-                    xhr.open('GET', url + '?' + data, true);
-                } else {
-                    xhr.open('GET', url + '?t=' + random, true);
-                }
-                xhr.send();
-
-            } else if (type == 'POST') {
-                xhr.open('POST', url, true);
-                // 如果需要像 html 表单那样 POST 数据，请使用 setRequestHeader() 来添加 http 头。
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send(data);
-            }
-
-            // 处理返回数据
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        success(xhr.responseText);
-                    } else {
-                        if (failed) {
-                            failed(xhr.status);
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <script>
-        function HideList(name) {
-            document.getElementById('light').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
-            situ = document.getElementById(name);
-            situ.innerText = "Read";
-        }
-
-        function ShowList() {
-            document.getElementById('light').style.display = 'block';
-            document.getElementById('fade').style.display = 'block';
-        }
 
 
-        function collect(commodity) {
-            var sendData = {
-                "user_id": document.getElementById("user_id").value,
-                "commodity_id": document.getElementById("commodity_id").value,
-                "commodity": commodity
-
-            };
-            if ("{{ user_id }}" == "None") {
-                alert("please login");
-            } else
-                Ajax('post', '/collect', sendData, function (data) {
-                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
-                        console.log("12")
-                        document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
-                    } else {
-                        console.log("123")
-                        document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
-                    }
-                    alert(data)
-                    {#console.log("123");#}
-                    {#location.reload();#}
-
-                }, function (error) {
-                    console.log(error);
-                });
-        }
-    </script>
 
     <!-- //here ends scrolling icon -->
     <!--bootstrap working-->

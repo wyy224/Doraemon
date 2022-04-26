@@ -85,6 +85,7 @@ def contact():
         if session.get('authority') == 0:
             room = session.get('uid')
             room_num = str(room)
+            session['room'] = room
             message = Message.query.filter_by(room=room_num).all()
         else:
             return redirect(url_for('adjust'))
@@ -93,6 +94,26 @@ def contact():
         user_icon = 'NULL'
         return redirect(url_for('login'))
 
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
+                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
+                           message=message, uid=uid)
+
+
+@app.route('/contact_admin/<int:id>', methods=['GET', 'POST'])
+def contact_admin(id):
+    if islogined():
+        user_icon = setIcon()
+        authority = session.get('authority')
+        username = session.get('USERNAME')
+        user = User.query.filter(User.authority == 0).all()
+        uid = session.get('uid')
+        room = id
+        room_num = str(id)
+        session['room'] = room
+        message = Message.query.filter_by(room=room_num).all()
+    else:
+        user_icon = 'NULL'
+        return redirect(url_for('login'))
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
                            type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
                            message=message, uid=uid)
@@ -132,7 +153,7 @@ def handle_connect():
 @socketio.on('send msg')
 def handle_message(data):
     print('sendMsg' + str(data))
-    room = str(session['uid'])
+    room = str(session['room'])
     print(room)
     message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
