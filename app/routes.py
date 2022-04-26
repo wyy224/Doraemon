@@ -15,7 +15,7 @@ from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
-from sqlalchemy import and_
+from sqlalchemy import and_, distinct
 
 from app import app, db, Config
 
@@ -87,7 +87,10 @@ def contact():
             room_num = str(room)
             message = Message.query.filter_by(room=room_num).all()
         else:
-            message = Message.query.order_by(Message.create_time.desc()).distinct()
+            room = session.get('uid')
+            b = db.session.query(Message.room).distinct().all()
+            for p in b:
+                message = Message.query.filter_by(room=p).order_by(Message.create_time.desc())
 
     else:
         user_icon = 'NULL'
