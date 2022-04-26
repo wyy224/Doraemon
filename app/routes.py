@@ -90,7 +90,7 @@ def contact():
             room = session.get('uid')
             b = db.session.query(Message.room).distinct().all()
             for p in b:
-                message = Message.query.filter_by(room=p).order_by(Message.create_time.desc())
+                message = Message.query.filter_by(room=p).order_by(Message.create_time.desc()).first()
 
     else:
         user_icon = 'NULL'
