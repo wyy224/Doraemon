@@ -36,8 +36,11 @@ class User(db.Model):
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.Text, nullable=False)
+    room = db.Column(db.String(64), nullable=False)
+    read = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime, default=datetime.now, index=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_name = db.Column(db.String(64), nullable=False)
     author = db.relationship('User', back_populates='messages')
 
 
