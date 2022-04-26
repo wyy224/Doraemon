@@ -54,53 +54,40 @@
     </div>
     <!-- //short-->
     <!--show Now-->
-    <!--show Now-->
-    <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
-        <ul class="chat-thread">
-            <div id="message-box" class="chat-thread" data-from="Sonu Joshi">
+    <div id="light" class="white_content">
+        <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
+        <table style="margin: auto">
+            <thead style="background-color: pink;color: white;">
+            <tr>
+                <th>Customer</th>
+                <th>Time</th>
+                <th>Count of messages</th>
+                <th>Situation</th>
+            </tr>
+            {% for u in user %}
+                <tr>
 
-                    {% for send in message %}
-                        {% if send.author_id == uid %}
-                            <li class="right">{{ send.content }}</li>
-                        {% else %}
-                            <li class="left">{{ send.content }}</li>
-                        {% endif %}
-                    {% endfor %}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-            </div>
-        </ul>
-        <div style="margin-top:20px;margin-left:10px;margin-right:10px;display: flex;flex-direction: row;">
-            <input id='send-msg-inp'
-                   style="width: 100%;
-                outline: none;
-                border: 1px solid #D2D2D2;
-                font-size: 15px;
-                resize: none;
-                color: #888;">
+                    <th>{% if u.icon != None %}
+                        <img src="/static/uploaded_AVA/{{ u.icon }}" alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% endif %}<a href='contact_admin/{{ u.id }}'>{{ u.user_name }}</a></th>
+                    <th>2022/1/1</th>
+                    <th>10</th>
+                    <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
+                </tr>
+            {% endfor %}
 
-            <button type="button" id='send-msg-btn'
-                    value="SEND" name="action" style="outline: none;
-                    cursor: pointer;
-                    padding: 14px 0;
-                    background: darkcyan;
-                    border: none;
-                    width: 10%;
-                    font-size: 1em;
-                    color: #fff;
-                    font-weight: 700;
-                    letter-spacing: 2px;"><i>Send</i></button>
+            </thead>
+            <tbody id="tbody1">
+            </tbody>
+        </table>
+        <div class="pay_cancel">
+            <a style="background: hotpink;color: white;padding: 10px" onclick="location.href='/home'">Home</a>
         </div>
-    </section>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    <!--show Now-->
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
@@ -216,75 +203,7 @@
     <script src="../static/js/minicart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
 
-    <script>
-        let room = '{{ room }}'
-        let username = '{{ username }}'
-        let inp = document.querySelector('#send-msg-inp')
-        let sendMsgBtn = document.querySelector('#send-msg-btn')
-        let messageBox = document.querySelector('#message-box')
-        let socket = io();
 
-        // 连接
-        socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-        // 加入房间
-        socket.emit('join', {
-            username: username,
-            room: room
-        })
-
-        // 发送消息
-        sendMsgBtn.onclick = function () {
-            let inp = document.querySelector('#send-msg-inp')
-            let msg = inp.value
-            let user = '{{ username }}'
-            inp.value = ''
-            if (msg) {
-                socket.emit('send msg', {
-                    user: user,
-                    message: msg,
-                })
-                messageBox.scrollTop = messageBox.scrollHeight
-            } else {
-                alert('消息不能为空')
-            }
-        }
-
-        // 回车发送消息
-        inp.addEventListener("keyup", function (event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                sendMsgBtn.click();
-            }
-        });
-
-        // 连接的信息
-        socket.on('connect info', function (data) {
-            console.log(data)
-            let connectInfo = document.createElement('div')
-            connectInfo.style = 'text-align: center'
-            let msg = `<li >${data}</li>`
-            connectInfo.innerHTML = msg
-            messageBox.appendChild(connectInfo)
-        })
-
-        // 接受消息
-        socket.on('send msg', function (data) {
-            console.log(data)
-            console.log(socket.id)
-            let msg = null
-            let msgbox = document.createElement('div')
-            msgbox.className = 'message'
-            if (data.user === '{{ username }}') {
-                msg = `<li class="right"><b>${data.message}</li>`
-            } else {
-                msg = `<li class="left" ><b>${data.user}</b>:  ${data.message}</li>`
-            }
-            msgbox.innerHTML = msg
-            messageBox.appendChild(msgbox)
-            messageBox.scrollTop = messageBox.scrollHeight
-        })
-    </script>
 
 
     <script>
@@ -357,99 +276,8 @@
         });
     </script>
 
-    <script>
-        function Ajax(type, url, data, success, failed) {
-            // 创建ajax对象
-            var xhr = null;
-            if (window.XMLHttpRequest) {
-                xhr = new XMLHttpRequest();
-            } else {
-                xhr = new ActiveXObject('Microsoft.XMLHTTP')
-            }
-
-            var type = type.toUpperCase();
-            // 用于清除缓存
-            var random = Math.random();
-
-            if (typeof data == 'object') {
-                var str = '';
-                for (var key in data) {
-                    str += key + '=' + data[key] + '&';
-                }
-                data = str.replace(/&$/, '');
-            }
-
-            if (type == 'GET') {
-                if (data) {
-                    xhr.open('GET', url + '?' + data, true);
-                } else {
-                    xhr.open('GET', url + '?t=' + random, true);
-                }
-                xhr.send();
-
-            } else if (type == 'POST') {
-                xhr.open('POST', url, true);
-                // 如果需要像 html 表单那样 POST 数据，请使用 setRequestHeader() 来添加 http 头。
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send(data);
-            }
-
-            // 处理返回数据
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        success(xhr.responseText);
-                    } else {
-                        if (failed) {
-                            failed(xhr.status);
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <script>
-        function HideList(name) {
-            document.getElementById('light').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
-            situ = document.getElementById(name);
-            situ.innerText = "Read";
-        }
-
-        function ShowList() {
-            document.getElementById('light').style.display = 'block';
-            document.getElementById('fade').style.display = 'block';
-        }
 
 
-        function collect(commodity) {
-            var sendData = {
-                "user_id": document.getElementById("user_id").value,
-                "commodity_id": document.getElementById("commodity_id").value,
-                "commodity": commodity
-
-            };
-            if ("{{ user_id }}" == "None") {
-                alert("please login");
-            } else
-                Ajax('post', '/collect', sendData, function (data) {
-                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
-                        console.log("12")
-                        document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
-                    } else {
-                        console.log("123")
-                        document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
-                    }
-                    alert(data)
-                    {#console.log("123");#}
-                    {#location.reload();#}
-
-                }, function (error) {
-                    console.log(error);
-                });
-        }
-    </script>
 
     <!-- //here ends scrolling icon -->
     <!--bootstrap working-->

@@ -15,7 +15,7 @@ from datetime import datetime
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
-from sqlalchemy import and_
+from sqlalchemy import and_, distinct
 
 from app import app, db, Config
 
@@ -80,19 +80,15 @@ def contact():
         user_icon = setIcon()
         authority = session.get('authority')
         username = session.get('USERNAME')
-        user = User.query.filter(User.user_name == username).first()
+        user = User.query.filter(User.authority == 0).all()
         uid = session.get('uid')
         if session.get('authority') == 0:
             room = session.get('uid')
             room_num = str(room)
+            session['room'] = room
             message = Message.query.filter_by(room=room_num).all()
         else:
-            list = []
-            message = Message.query.order_by(Message.create_time.desc()).distinct()
-            print(message)
-
-
-
+            return redirect(url_for('adjust'))
 
     else:
         user_icon = 'NULL'
@@ -101,6 +97,32 @@ def contact():
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
                            type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
                            message=message, uid=uid)
+
+
+@app.route('/contact_admin/<int:id>', methods=['GET', 'POST'])
+def contact_admin(id):
+    if islogined():
+        user_icon = setIcon()
+        authority = session.get('authority')
+        username = session.get('USERNAME')
+        user = User.query.filter(User.authority == 0).all()
+        uid = session.get('uid')
+        room = id
+        room_num = str(id)
+        session['room'] = room
+        message = Message.query.filter_by(room=room_num).all()
+    else:
+        user_icon = 'NULL'
+        return redirect(url_for('login'))
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
+                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
+                           message=message, uid=uid)
+
+
+@app.route('/adjust')
+def adjust():
+    user = User.query.filter_by(authority=0).all()
+    return render_template('adjust.html', user=user)
 
 
 # # 连接
@@ -131,7 +153,7 @@ def handle_connect():
 @socketio.on('send msg')
 def handle_message(data):
     print('sendMsg' + str(data))
-    room = str(session['uid'])
+    room = str(session['room'])
     print(room)
     message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
