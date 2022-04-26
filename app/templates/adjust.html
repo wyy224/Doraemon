@@ -54,7 +54,6 @@
     </div>
     <!-- //short-->
     <!--show Now-->
-    {% if authority ==1 %}
         <div id="light" class="white_content">
             <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
             <table style="margin: auto">
@@ -65,9 +64,10 @@
                     <th>Count of messages</th>
                     <th>Situation</th>
                 </tr>
-                {% for m in user %}
+                {% for u in user %}
                 <tr>
-                    <th>{{ m.user_name }}</th>
+
+                    <th><img src="{{ u.pic_path }}" >{{ u.user_name }}</th>
                     <th>2022/1/1</th>
                     <th>10</th>
                     <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
@@ -83,54 +83,7 @@
             </div>
         </div>
         <div id="fade" class="black_overlay"></div>
-    {% endif %}
     <!--show Now-->
-    <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
-        <ul class="chat-thread">
-            <div id="message-box" class="chat-thread" data-from="Sonu Joshi">
-
-                    {% for send in message %}
-                        {% if send.author_id == uid %}
-                            <li class="right">{{ send.content }}</li>
-                        {% else %}
-                            <li class="left">{{ send.content }}</li>
-                        {% endif %}
-                    {% endfor %}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-            </div>
-        </ul>
-        <div style="margin-top:20px;margin-left:10px;margin-right:10px;display: flex;flex-direction: row;">
-            <input id='send-msg-inp'
-                   style="width: 100%;
-                outline: none;
-                border: 1px solid #D2D2D2;
-                font-size: 15px;
-                resize: none;
-                color: #888;">
-
-            <button type="button" id='send-msg-btn'
-                    value="SEND" name="action" style="outline: none;
-                    cursor: pointer;
-                    padding: 14px 0;
-                    background: darkcyan;
-                    border: none;
-                    width: 10%;
-                    font-size: 1em;
-                    color: #fff;
-                    font-weight: 700;
-                    letter-spacing: 2px;"><i>Send</i></button>
-        </div>
-    </section>
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
@@ -246,75 +199,7 @@
     <script src="../static/js/minicart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
 
-    <script>
-        let room = '{{ user.id }}'
-        let username = '{{ username }}'
-        let inp = document.querySelector('#send-msg-inp')
-        let sendMsgBtn = document.querySelector('#send-msg-btn')
-        let messageBox = document.querySelector('#message-box')
-        let socket = io();
 
-        // 连接
-        socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-        // 加入房间
-        socket.emit('join', {
-            username: username,
-            room: room
-        })
-
-        // 发送消息
-        sendMsgBtn.onclick = function () {
-            let inp = document.querySelector('#send-msg-inp')
-            let msg = inp.value
-            let user = '{{ username }}'
-            inp.value = ''
-            if (msg) {
-                socket.emit('send msg', {
-                    user: user,
-                    message: msg,
-                })
-                messageBox.scrollTop = messageBox.scrollHeight
-            } else {
-                alert('消息不能为空')
-            }
-        }
-
-        // 回车发送消息
-        inp.addEventListener("keyup", function (event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                sendMsgBtn.click();
-            }
-        });
-
-        // 连接的信息
-        socket.on('connect info', function (data) {
-            console.log(data)
-            let connectInfo = document.createElement('div')
-            connectInfo.style = 'text-align: center'
-            let msg = `<li >${data}</li>`
-            connectInfo.innerHTML = msg
-            messageBox.appendChild(connectInfo)
-        })
-
-        // 接受消息
-        socket.on('send msg', function (data) {
-            console.log(data)
-            console.log(socket.id)
-            let msg = null
-            let msgbox = document.createElement('div')
-            msgbox.className = 'message'
-            if (data.user === '{{ username }}') {
-                msg = `<li class="right"><b>${data.message}</li>`
-            } else {
-                msg = `<li class="left" ><b>${data.user}</b>:  ${data.message}</li>`
-            }
-            msgbox.innerHTML = msg
-            messageBox.appendChild(msgbox)
-            messageBox.scrollTop = messageBox.scrollHeight
-        })
-    </script>
 
 
     <script>

@@ -80,17 +80,14 @@ def contact():
         user_icon = setIcon()
         authority = session.get('authority')
         username = session.get('USERNAME')
-        user = User.query.filter(User.user_name == username).first()
+        user = User.query.filter(User.authority == 0).all()
         uid = session.get('uid')
         if session.get('authority') == 0:
             room = session.get('uid')
             room_num = str(room)
             message = Message.query.filter_by(room=room_num).all()
         else:
-            room = session.get('uid')
-            b = db.session.query(Message.room).distinct().all()
-            for p in b:
-                message = Message.query.filter_by(room=p).order_by(Message.create_time.desc()).first()
+            return redirect(url_for('adjust'))
 
     else:
         user_icon = 'NULL'
@@ -99,6 +96,12 @@ def contact():
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
                            type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
                            message=message, uid=uid)
+
+
+@app.route('/adjust')
+def adjust():
+    user = User.query.filter_by(authority=0).all()
+    return render_template('adjust.html', user=user)
 
 
 # # 连接
