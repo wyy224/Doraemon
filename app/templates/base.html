@@ -43,7 +43,7 @@
                     <form class="form-inline my-lg-0" action="{{ url_for('search') }}" method="post">
                         <input class="form-control mr-sm-2" placeholder="Search" id="search_result"
                                name="search_result">
-                        <button class="btn">Search</button>
+                        <button class="btn i18n" contrastName="SEARCH">Search</button>
                     </form>
                 </div>
                 <div class="col-lg-4 col-md-3 right-side-cart">
@@ -51,7 +51,7 @@
                         <ul style="display: flex; justify-content: right">
 
                             <li class="enjoy" style="width: 270px;line-height: 33px">
-                                <u>Enjoy your own music!</u>
+                                <u class="i18n" contrastName="EYOM">Enjoy your own music!</u>
                             </li>
 
                             <li>
@@ -101,12 +101,12 @@
                     </li>
 
                     <li class="nav-item">
-                        <a onclick="location.href='/shop'" class="nav-link">Shop Now</a>
+                        <a onclick="location.href='/shop'" class="nav-link i18n" contrastName="SHOPNOW">Shop Now</a>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle i18n" href="#" id="navbarDropdown1" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" contrastName="PRODUCT">
                             Product
                         </a>
 
@@ -121,13 +121,13 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle i18n" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" contrastName="SERVICE">
                             Service
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a onclick="location.href='/contact'" class="nav-link">Contact</a>
-                            <a onclick="location.href='/about'" class="nav-link">About</a>
+                            <a onclick="location.href='/contact'" class="nav-link i18n" contrastName="CONTACT">Contact</a>
+                            <a onclick="location.href='/about'" class="nav-link i18n" contrastName="ABOUT">About</a>
 
                         </div>
                     </li>
