@@ -320,6 +320,7 @@ def purchase():
         else:
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
+        cart_pay = Cart.query.filter(Cart.user_id == session.get('uid') and Cart.commodity_id == session.get('cid')).first()
         if request.method == 'POST':
             # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
             # quantity = int(request.form['quantity'])
@@ -354,9 +355,11 @@ def purchase():
                 session.pop('cid', None)
             db.session.commit()
             return redirect(url_for('Orders'))
-        return render_template('pay.html', commodity=commodity, profile=profile, price=price)
+        return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay)
     else:
         return redirect('/login')
+
+
 
 
 @app.route('/api/ShoppingCart/purchase', methods=['POST'])
