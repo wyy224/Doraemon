@@ -3,7 +3,7 @@ import os
 import json
 from uuid import uuid4
 
-from flask_socketio import SocketIO, join_room
+from flask_socketio import SocketIO, join_room, leave_room
 from PIL import Image
 from sqlalchemy import true, false
 
@@ -140,6 +140,8 @@ def handle_connect():
     # socketio.emit('connect info', f'{username}  connect')
 
 
+
+
 # 断开连接
 # @socketio.on('disconnect')
 # def handle_disconnect():
@@ -176,7 +178,6 @@ def handle_message(data):
 def on_join(data):
     username = data.get('username')
     room = data.get('room')
-    print('1111111111111111111111111111111111111')
     try:
         room_user[room].append(username)
     except:
@@ -187,6 +188,16 @@ def on_join(data):
     print('join room:  ' + str(data))
     print(room_user)
     socketio.emit('connect info', username + ' join room', to=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data.get('username')
+    room = data.get('room')
+    room_user[room].remove(username)
+    leave_room(room)
+    print('leave room   ' + str(data))
+    print(room_user)
+    socketio.emit('connect info', username + ' leave room', to=room)
 
 
 @app.route('/ShoppingCart')
