@@ -143,6 +143,24 @@
                         <form action="order/receive/{{ order.id }}" method="post">
                             <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}">Confirm receipt</button>
                         </form>
+{#                        <form >#}
+{#                            <select id="country1"  class="frm-field required sect" >#}
+{#                              {% if = %}#}
+{#                                <option value="1" selected>1</option>#}
+{#                              {% else %}#}
+{#                                  <option value="1">1</option>#}
+{#                              {% endif %}  #}
+{#                              #}
+{#                              <option value="2">2</option>#}
+{#                              <option value="3">3</option>#}
+{#                              <option value="4">4</option>#}
+{#                              <option value="5">5</option>#}
+{#                              <option value="6">6</option>#}
+{#                               </span><input name="box" style="width:50px;position:absolute;left:20px;">#}
+{##}
+{#                           </select>#}
+{##}
+{#                        </form>#}
                         <form action="order/delete/{{ order.id }}" method="post">
                             <button class="cancel"
                                     onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}">
