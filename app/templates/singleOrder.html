@@ -161,6 +161,7 @@
 {#                           </select>#}
 {##}
 {#                        </form>#}
+{#                        <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/modify_commodity'">edit order</button>#}
                         <form action="order/delete/{{ order.id }}" method="post">
                             <button class="cancel"
                                     onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}">
