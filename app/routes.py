@@ -571,7 +571,7 @@ def newsingle():
 def Orders():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    orders = Order.query.filter(User.id == session.get('uid'))
+    orders = Order.query.filter(Order.user_id == session.get('uid'))
     list = [];
     for o in orders:
         list = get_orders(o, list)
