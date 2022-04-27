@@ -104,7 +104,8 @@
         <section class="ftco-section-3">
             <div class="photograhy">
                 <div class="row">
-                    {% for order in orders %}
+                    {% if authority ==1 %}
+                        {% for order in allorders %}
                         <div class="card">
                             <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
@@ -125,7 +126,32 @@
                                 <p class="card-text">Product information: {{ order.introduction }}</p>
                             </div>
                         </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% for order in orders %}
+                        <div class="card">
+                            <a href="singleOrder/{{ order.detail }}">
+                                <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
+                                     height="400px"></a>
+                            {% if order.is_receive %}
+                                <span class="product-new-top"
+                                      style="background: #28a745"
+                                >received</span>
+                            {% else %}
+                                <span class="product-new-top"
+                                      style="background: #dc3545"
+                                >Arrived</span>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title"><a
+                                        href="singleOrder/{{ order.id }}">{{ order.commodity_name }} </a></h5>
+                                <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
+                                <p class="card-text">Product information: {{ order.introduction }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
                 </div>
             </div>
         </section>
