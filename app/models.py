@@ -18,6 +18,9 @@ class User(db.Model):
     introduction = db.Column(db.String(64), nullable=True)
     authority = db.Column(db.Integer, default=0, nullable=False)
     money = db.Column(db.Integer, default=0, nullable=False)
+    new_time = db.Column(db.DateTime, nullable=True)
+    count = db.Column(db.Integer, default=0)
+    situation = db.Column(db.Boolean, nullable=True)
     messages = db.relationship('Message', back_populates='author', cascade='all')
 
     def __repr__(self):
