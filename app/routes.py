@@ -341,7 +341,7 @@ def purchase():
                     com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
                     orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
-                    com.cargo_quantity -= c_num
+                    com.cargo_quantity -= int(c_num)
                     session.pop('order_list', None)
                     session.pop('price', None)
                     cart = Cart.query.filter(Cart.commodity_id == com.id).all()
@@ -356,6 +356,54 @@ def purchase():
             db.session.commit()
             return redirect(url_for('Orders'))
         return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay)
+    else:
+        return redirect('/login')
+
+@app.route('/purchase_single', methods=['GET', 'POST'])
+def purchase_single():
+    if islogined():
+        commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+        if session.get('price') is not None:
+            price = session.get('price')
+        else:
+            price = commodity.price
+        profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
+        cart_pay = Cart.query.filter(Cart.user_id == session.get('uid') and Cart.commodity_id == session.get('cid')).first()
+        if request.method == 'POST':
+            # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+            # quantity = int(request.form['quantity'])
+            # priceNeed = int(commodity.price)
+            # if user.money >= priceNeed * quantity:
+            # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
+            #                  commodity_num=quantity, address=request.form['address'],
+            #                  transport=request.form['transport'])
+            neworder = Order(user_id=session.get('uid'), address=request.form['address'],
+                             transport=request.form['transport'])
+            # user.money = user.money - priceNeed * quantity
+            db.session.add(neworder)
+            db.session.commit()
+            if session.get('order_list') is not None:
+                for c in session.get('order_list'):
+                    c_name = c['name']
+                    c_num = c['num']
+                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
+                    db.session.add(orderdetail)
+                    com.cargo_quantity -= c_num
+                    session.pop('order_list', None)
+                    session.pop('price', None)
+                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                    for a in cart:
+                        db.session.delete(a)
+            else:
+                com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+                com.cargo_quantity -= 1
+                db.session.add(orderdetail)
+                session.pop('cid', None)
+            db.session.commit()
+            return redirect(url_for('Orders'))
+        return render_template('pay_single.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay)
     else:
         return redirect('/login')
 

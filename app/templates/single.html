@@ -99,8 +99,8 @@
 {#                        <div class="colr">#}
 {#                           <label class="radio"><input type="radio" name="radio"><i></i>Soft Teddy Bear (Brown)</label>#}
 {#                        </div>#}
-                           <button class="music"  type="button" onclick="alert(yes)" style="background: url(../static/image/sound.jpg); width: 60px; height: 60px">
-
+                           <audio id = "audio" src="/static/music/{{ commodity.commodity_name }}.mp3"></audio>
+                           <button class="music"  type="button" onclick="play_pause_music()" style="background: url(../static/image/sound.jpg); width: 60px; height: 60px">
                            </button>
 {#                        <div class="clearfix"> </div>#}
                      </div>
@@ -120,7 +120,7 @@
                               {% if authority ==1 %}
                                   <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/modify_commodity'">edit product</button>
                               {% else %}
-                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/purchase'">buy product</button>
+                                  <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/purchase_single'">buy product</button>
 
                               {% endif %}
                            </form>
@@ -429,6 +429,14 @@
          		}, 900);
          	});
          });
+         var audio = document.getElementById("audio");
+         function play_pause_music(){
+             if(audio.paused){
+				audio.play();
+             }else if(audio.played){
+                audio.pause();
+             }
+         }
       </script>
       <!-- start-smoth-scrolling -->
       <!-- here stars scrolling icon -->

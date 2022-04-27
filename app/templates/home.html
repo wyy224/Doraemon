@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        .translate_button{
+            background: transparent;
+            border: none;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .translate_button:focus{outline:0}
+    </style>
   <head>
     <title>Personal information</title>
     <meta charset="utf-8">
@@ -59,7 +69,7 @@
             </h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="/home ">Home</a></li>
+					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
 					<li><a href="/collection">Collection</a></li>
 					<li><a href="/ShoppingCart">Shopping Cart</a></li>
 					<li><a href="/contact">Services</a></li>
@@ -69,7 +79,9 @@
 			</nav>
 
 			<div class="colorlib-footer">
-				<h3>You can click here ~</h3>
+				<button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                            切换为中文
+                </button>
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
@@ -202,3 +214,6 @@
         })
     }
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>
