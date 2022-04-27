@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+        .translate_button{
+            background: transparent;
+            border: none;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .translate_button:focus{outline:0}
+    </style>
 <head>
     <title>Personal information</title>
     <meta charset="utf-8">
@@ -49,39 +59,39 @@
 <div id="colorlib-page">
     <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
     <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-        <h1 id="colorlib-logo"><a href="/home">
+			<h1 id="colorlib-logo"><a href="/home">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
                     {% else %}
                         <img src='{{ icon }}' alt="" width=100 height=100>
                     {% endif %}
-                </span><br>{{ user.user_name }}</a>
-        </h1>
-        <nav id="colorlib-main-menu" role="navigation">
-            <ul>
-                <li><a href="/home ">Home</a></li>
-                <li><a href="/collection">Collection</a></li>
-                <li><a href="/ShoppingCart">Shopping Cart</a></li>
-                <li><a href="/contact">Services</a></li>
-                <li class="colorlib-active"><a href="/Orders">Orders</a></li>
-                <li>
-                    <button onclick="location.href='/main_page'">Come back to Home Page</button>
-                </li>
-            </ul>
-        </nav>
+                </span><br>{{user.user_name}}</a>
+            </h1>
+			<nav id="colorlib-main-menu" role="navigation">
+				<ul>
+					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+					<li><a href="/collection">Collection</a></li>
+					<li><a href="/ShoppingCart">Shopping Cart</a></li>
+					<li><a href="/contact">Services</a></li>
+                    <li><a href="/Orders">Orders</a></li>
+                    <li><button onclick="location.href='/main_page'">Come back to Home Page</button> </li>
+				</ul>
+			</nav>
 
-        <div class="colorlib-footer">
-            <h3>You can click here ~</h3>
-            <div class="d-flex justify-content-center">
-                <form action="#" class="colorlib-subscribe-form">
-                    <div class="form-group d-flex">
-                        <button onclick="clickToLogout();">Log out at here</button>
-                    </div>
-                </form>
+			<div class="colorlib-footer">
+				<button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                            切换为中文
+                </button>
+				<div class="d-flex justify-content-center">
+					<form action="#" class="colorlib-subscribe-form">
+            <div class="form-group d-flex">
+            	<button onclick="clickToLogout();">Log out at here</button>
             </div>
-        </div>
-    </aside> <!-- END COLORLIB-ASIDE -->
+          </form>
+				</div>
+			</div>
+		</aside> <!-- END COLORLIB-ASIDE -->
     <div id="colorlib-main">
         <section class="ftco-section ftco-bread">
             <div class="container">
@@ -208,3 +218,6 @@
         })
     }
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>

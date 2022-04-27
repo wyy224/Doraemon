@@ -37,7 +37,7 @@
     </tr>
 </template>
 <link href="../static/css/shopping_cart.css" rel='stylesheet' type='text/css' media="all">
- <style>
+<style>
         .black_overlay{
             display: none;
             position: absolute;
@@ -72,18 +72,35 @@
             padding: 10px;
         }
  </style>
+<style>
+        .translate_button{
+            background: transparent;
+            border: none;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+        .translate_button:focus{outline:0}
+    </style>
 
 <div class="box" id="box">
     <table>
         <thead>
         <tr style="background-color: black;color: white;">
             <th><a href="main_page" style="color: white"> < Home </a></th>
-            <th colspan="6"> My Shopping Cart </th>
+            <th colspan="4"> My Shopping Cart </th>
+            <th>
+                <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                    切换为中文
+                </button>
+            </th>
         </tr>
         <tr>
             <th>
                 <label>
-                    <input type="checkbox" class="checkAll check" checked>Select All
+                    <input type="checkbox" class="checkAll check" checked>
+                    <span class="i18n" contrastName="SELECTALL">Select All</span>
                 </label>
             </th>
             <th>Items</th>
@@ -103,7 +120,8 @@
 
         </aside>
         <label>
-            <input type="checkbox" class="checkAll check" checked>Select All
+            <input type="checkbox" class="checkAll check" checked>
+            <span class="i18n" contrastName="SELECTALL">Select All</span>
         </label>
         <span class="delAll">&nbsp;Delete All&nbsp;</span>
         <div>items selected:
@@ -314,3 +332,6 @@
             window.location.href='/purchase';
         }
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>
