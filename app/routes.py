@@ -623,18 +623,24 @@ def Orders():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     orders = Order.query.filter(Order.user_id == session.get('uid'))
+    allorders = Order.query.all()
     list = [];
+    alllist = []
     for o in orders:
         list = get_orders(o, list)
     session.pop('orders', None)
     session['orders'] = list
+    for o2 in allorders:
+        alllist = get_orders(o2, alllist)
+    session.pop('allorders', None)
+    session['allorders'] = alllist
     if islogined():
         authority = session.get('authority')
 
     else:
         authority = 0
 
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,
+    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,allorders=alllist,
                            authority=authority)
 
 
