@@ -43,7 +43,11 @@
     <div class="using-border py-3">
         <div class="inner_breadcrumb  ml-4">
             <ul class="short_ls">
-                <button class="list" onclick="ShowList()">List</button>
+                {% if  authority == 1 %}
+                <a class="list" id="leaveroom" href="/adjust">Exit</a>
+                {% else %}
+                <a class="list" id="leaveroom" href="/main_page">Exit</a>
+                {% endif %}
                 <li>
                     <a href="/index">Home</a>
                     <span>/ /</span>
@@ -63,7 +67,7 @@
                         {% if send.author_id == uid %}
                             <li class="right">{{ send.content }}</li>
                         {% else %}
-                            <li class="left">{{ send.content }}</li>
+                            <li class="left">{{ send.user_name }}:{{ send.content }}</li>
                         {% endif %}
                     {% endfor %}
                     {#                <li>yes, what time suits you?</li>#}
@@ -222,6 +226,7 @@
         let inp = document.querySelector('#send-msg-inp')
         let sendMsgBtn = document.querySelector('#send-msg-btn')
         let messageBox = document.querySelector('#message-box')
+        let leaveroom = document.querySelector('#leaveroom')
         let socket = io();
 
         // 连接
@@ -232,6 +237,14 @@
             username: username,
             room: room
         })
+
+        // 退出房间
+        leaveroom.onclick = function () {
+            socket.emit('leave', {
+                username: username,
+                room: room
+            })
+        }
 
         // 发送消息
         sendMsgBtn.onclick = function () {

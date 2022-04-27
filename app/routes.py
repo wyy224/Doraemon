@@ -3,7 +3,7 @@ import os
 import json
 from uuid import uuid4
 
-from flask_socketio import SocketIO, join_room
+from flask_socketio import SocketIO, join_room, leave_room
 from PIL import Image
 from sqlalchemy import true, false
 
@@ -111,6 +111,10 @@ def contact_admin(id):
         room_num = str(id)
         session['room'] = room
         message = Message.query.filter_by(room=room_num).all()
+        choose1 = User.query.filter(User.id == id).first()
+        choose1.situation = True
+        db.session.commit()
+
     else:
         user_icon = 'NULL'
         return redirect(url_for('login'))
@@ -122,6 +126,7 @@ def contact_admin(id):
 @app.route('/adjust')
 def adjust():
     user = User.query.filter_by(authority=0).all()
+
     return render_template('adjust.html', user=user)
 
 
@@ -133,6 +138,8 @@ def handle_connect():
     # print('connect info:  ' + f'{username}  connect')
     # print(online_user)
     # socketio.emit('connect info', f'{username}  connect')
+
+
 
 
 # 断开连接
@@ -157,6 +164,10 @@ def handle_message(data):
     print(room)
     message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
+    user = User.query.filter_by(id=room).first()
+    user.new_time = datetime.now()
+    user.count = user.count + 1
+    user.situation = False
     db.session.commit()
     data['message'] = data.get('message').replace('<', '&lt;').replace('>', '&gt;').replace(' ', '&nbsp;')
 
@@ -167,7 +178,6 @@ def handle_message(data):
 def on_join(data):
     username = data.get('username')
     room = data.get('room')
-    print('1111111111111111111111111111111111111')
     try:
         room_user[room].append(username)
     except:
@@ -177,7 +187,17 @@ def on_join(data):
     join_room(room)
     print('join room:  ' + str(data))
     print(room_user)
-    socketio.emit('connect info', username + '加入房间', to=room)
+    socketio.emit('connect info', username + ' join room', to=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data.get('username')
+    room = data.get('room')
+    room_user[room].remove(username)
+    leave_room(room)
+    print('leave room   ' + str(data))
+    print(room_user)
+    socketio.emit('connect info', username + ' leave room', to=room)
 
 
 @app.route('/ShoppingCart')
@@ -300,43 +320,46 @@ def purchase():
         else:
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
+        cart_pay = Cart.query.filter(Cart.user_id == session.get('uid') and Cart.commodity_id == session.get('cid')).first()
         if request.method == 'POST':
-            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-            quantity = int(request.form['quantity'])
-            priceNeed = int(commodity.price)
-            if user.money >= priceNeed * quantity:
-                # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
-                #                  commodity_num=quantity, address=request.form['address'],
-                #                  transport=request.form['transport'])
-                neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                                 transport=request.form['transport'])
-                user.money = user.money - priceNeed * quantity
-                db.session.add(neworder)
-                db.session.commit()
-                if session.get('order_list') is not None:
-                    for c in session.get('order_list'):
-                        c_name = c['name']
-                        c_num = c['num']
-                        com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-                        orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
-                        db.session.add(orderdetail)
-                        session.pop('order_list', None)
-                        session.pop('price', None)
-                        cart = Cart.query.filter(Cart.commodity_id == com.id).all()
-                        for a in cart:
-                            db.session.delete(a)
-                else:
-                    orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+            # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+            # quantity = int(request.form['quantity'])
+            # priceNeed = int(commodity.price)
+            # if user.money >= priceNeed * quantity:
+            # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
+            #                  commodity_num=quantity, address=request.form['address'],
+            #                  transport=request.form['transport'])
+            neworder = Order(user_id=session.get('uid'), address=request.form['address'],
+                             transport=request.form['transport'])
+            # user.money = user.money - priceNeed * quantity
+            db.session.add(neworder)
+            db.session.commit()
+            if session.get('order_list') is not None:
+                for c in session.get('order_list'):
+                    c_name = c['name']
+                    c_num = c['num']
+                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
-                    session.pop('cid', None)
-                db.session.commit()
-                return redirect(url_for('Orders'))
+                    com.cargo_quantity -= c_num
+                    session.pop('order_list', None)
+                    session.pop('price', None)
+                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                    for a in cart:
+                        db.session.delete(a)
             else:
-                return render_template("payfail.html")
-        print("hhh")
-        return render_template('pay.html', commodity=commodity, profile=profile, price=price)
+                com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+                com.cargo_quantity -= 1
+                db.session.add(orderdetail)
+                session.pop('cid', None)
+            db.session.commit()
+            return redirect(url_for('Orders'))
+        return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay)
     else:
         return redirect('/login')
+
+
 
 
 @app.route('/api/ShoppingCart/purchase', methods=['POST'])
@@ -551,7 +574,7 @@ def newsingle():
 def Orders():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    orders = Order.query.filter(User.id == session.get('uid'))
+    orders = Order.query.filter(Order.user_id == session.get('uid'))
     list = [];
     for o in orders:
         list = get_orders(o, list)
@@ -599,9 +622,31 @@ def get_orders(p, list):
 
 @app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
-    order_del = Order.query.get(id)
-    db.session.delete(order_del)
+    od_del = OrderDetail.query.get(id)
+    # check if one order has multiple details
+    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).all()
+    #if has only one detail then delete the order
+    if len(details) == 1:
+        order = Order.query.get(od_del.order_id)
+        o_id = order.id
+        db.session.delete(od_del)
+        db.session.delete(order)
+        orders = db.session.query(Order).filter(Order.id > o_id).all()
+        for s in orders:
+            s_od = db.session.query(OrderDetail).filter(OrderDetail.order_id == s.id).all()
+            s.id -= 1
+            for s_o in s_od:
+                s_o.order_id -= 1
+    else:
+        # delete order detail information
+        db.session.delete(od_del)
+        db.session.commit()
+    # let all orderdetail with id greater than this id, id minus 1
+    od = db.session.query(OrderDetail).filter(OrderDetail.id > id).all()
+    for o in od:
+        o.id -= 1
     db.session.commit()
+
     return redirect(url_for('Orders'))
 
 
@@ -785,7 +830,7 @@ def reset_db():
 # Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/instruments')),
                                filename, as_attachment=True)
 
 
@@ -795,10 +840,10 @@ def upload():
         f = request.files.get('file')
         raw_filename = avatars.save_avatar(f)
         session['c_filename'] = raw_filename
-        print("../static/commodity/" + session['c_filename'])
+        print("../static/instruments/" + session['c_filename'])
         c = session['cid']
         commodity = Commodity.query.filter(Commodity.id == c).first()
-        commodity.pic_path = "../static/commodity/" + session['c_filename']
+        commodity.pic_path = "../static/instruments/" + session['c_filename']
         db.session.commit()
         return redirect("/change-commodity/crop/")
     return render_template('upload.html')
@@ -816,7 +861,7 @@ def crop():
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
-        commodity.pic_path = "../static/commodity/" + url_l
+        commodity.pic_path = "../static/instruments/" + url_l
         db.session.commit()
         flash('Upload picture successfully', 'success')
 
