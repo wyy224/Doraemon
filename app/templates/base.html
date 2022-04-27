@@ -1,4 +1,13 @@
-<html>
+<style>
+    .translate_button{
+        background: transparent;
+        border: none;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .translate_button:focus{outline:0}
+</style>
 <head>
     <title>Doraemon Instrument Store</title>
 </head>
@@ -17,6 +26,9 @@
                         <p><a href="mailto:info@example.com">info@example1.com</a></p>
                     </li>
                     <li>
+                        <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                            切换为中文
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -25,7 +37,7 @@
             <div class="hedder-up row">
                 <div class="col-lg-3 col-md-3 logo-head" style="display: flex">
                     <img src='../static/logo/logo_white.png' alt="" style="height: 45px;margin-right: 15px;">
-                    <h1><a class="navbar-brand" href="main_page">Instrument-Shop</a></h1>
+                    <h1><a class="navbar-brand i18n" href="main_page" contrastName="SHOP_NAME">Instrument-Shop</a></h1>
                 </div>
                 <div class="col-lg-5 col-md-6 search-right">
                     <form class="form-inline my-lg-0" action="{{ url_for('search') }}" method="post">
@@ -43,9 +55,10 @@
                             </li>
 
                             <li>
-                                <span class="far fa-heart"></span>
+                                <button type="button" onclick="location.href='/collection'">
+                                    <span class="far fa-heart"></span>
+                                </button>
                             </li>
-
                             <li>
                                 <button class="top_toys_cart" type="button"
                                         onclick="location.href='/ShoppingCart'">
@@ -84,7 +97,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav ">
                     <li class="nav-item active">
-                        <a class="nav-link" onclick="location.href='/main_page'">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link i18n" onclick="location.href='/main_page'" contrastName="HOME">Home <span class="sr-only">(current)</span></a>
                     </li>
 
                     <li class="nav-item">
@@ -139,4 +152,7 @@
         },
         2000);
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>
 {#缺陷：导航栏中跳转到选择分类之后，相应区域标题并未变色#}
