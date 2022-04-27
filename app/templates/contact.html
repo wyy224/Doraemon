@@ -63,7 +63,7 @@
                         {% if send.author_id == uid %}
                             <li class="right">{{ send.content }}</li>
                         {% else %}
-                            <li class="left">{{ send.content }}</li>
+                            <li class="left">{{ send.user_name }}:{{ send.content }}</li>
                         {% endif %}
                     {% endfor %}
                     {#                <li>yes, what time suits you?</li>#}

@@ -111,6 +111,10 @@ def contact_admin(id):
         room_num = str(id)
         session['room'] = room
         message = Message.query.filter_by(room=room_num).all()
+        choose1 = User.query.filter(User.id == id).first()
+        choose1.situation = True
+        db.session.commit()
+
     else:
         user_icon = 'NULL'
         return redirect(url_for('login'))
@@ -122,7 +126,7 @@ def contact_admin(id):
 @app.route('/adjust')
 def adjust():
     user = User.query.filter_by(authority=0).all()
-    
+
     return render_template('adjust.html', user=user)
 
 
@@ -158,6 +162,10 @@ def handle_message(data):
     print(room)
     message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
+    user = User.query.filter_by(id=room).first()
+    user.new_time = datetime.now()
+    user.count = user.count + 1
+    user.situation = False
     db.session.commit()
     data['message'] = data.get('message').replace('<', '&lt;').replace('>', '&gt;').replace(' ', '&nbsp;')
 
@@ -178,7 +186,7 @@ def on_join(data):
     join_room(room)
     print('join room:  ' + str(data))
     print(room_user)
-    socketio.emit('connect info', username + '加入房间', to=room)
+    socketio.emit('connect info', username + ' join room', to=room)
 
 
 @app.route('/ShoppingCart')
@@ -306,12 +314,12 @@ def purchase():
             # quantity = int(request.form['quantity'])
             # priceNeed = int(commodity.price)
             # if user.money >= priceNeed * quantity:
-                # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
-                #                  commodity_num=quantity, address=request.form['address'],
-                #                  transport=request.form['transport'])
+            # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
+            #                  commodity_num=quantity, address=request.form['address'],
+            #                  transport=request.form['transport'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                                 transport=request.form['transport'])
-                # user.money = user.money - priceNeed * quantity
+                             transport=request.form['transport'])
+            # user.money = user.money - priceNeed * quantity
             db.session.add(neworder)
             db.session.commit()
             if session.get('order_list') is not None:
