@@ -204,10 +204,10 @@
             if (server_code == 1) {
                 // success set done
                 alert("You have been logged out")
-                window.location.href = 'http://127.0.0.1:5000/main_page';
+                window.location.href = '/main_page';
             } else {
                 alert("You have not been logged out")
-                window.location.href = 'http://127.0.0.1:5000/home';
+                window.location.href = '/home';
             }
         }).fail(function () {
             console.log("Fail reset");

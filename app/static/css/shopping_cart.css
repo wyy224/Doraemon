@@ -215,4 +215,23 @@
             outline:none;
             color: white;
         }
+        /* Small screens */
+@media all and  (max-width:1000px){
+    body{
+        zoom: 2;
+    }
+    .delAll{
+        width: 55px;
+    }
+    div.box{
+        width: 100%;
+    }
+    div.box div.bottom {
+    height: 25px;
+}
+
+}
+
+
+
 
