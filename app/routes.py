@@ -122,6 +122,7 @@ def contact_admin(id):
 @app.route('/adjust')
 def adjust():
     user = User.query.filter_by(authority=0).all()
+    
     return render_template('adjust.html', user=user)
 
 
@@ -788,7 +789,7 @@ def reset_db():
 # Icon
 @app.route('/img/<path:filename>')
 def get_avatar(filename):
-    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/commodity')),
+    return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/instruments')),
                                filename, as_attachment=True)
 
 
@@ -819,7 +820,7 @@ def crop():
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
-        commodity.pic_path = "../static/commodity/" + url_l
+        commodity.pic_path = "../static/instruments/" + url_l
         db.session.commit()
         flash('Upload picture successfully', 'success')
 
