@@ -72,9 +72,10 @@
                     {% else %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
                     {% endif %}<a href='contact_admin/{{ u.id }}'>{{ u.user_name }}</a></th>
-                    <th>11111111</th>
-                    <th>10</th>
-                    <th><a onclick="HideList(id)" id="situ1">Unread</a></th>
+                    <th>{{ u.new_time }}</th>
+                    <th>{{ u.count }}</th>
+                    <th><a href='contact_admin/{{ u.id }}'>{% if u.situation %}read{% elif u.situation is none %} no message {% else %}unread{% endif %}</a>
+                    </th>
                 </tr>
             {% endfor %}
 
