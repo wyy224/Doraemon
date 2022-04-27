@@ -340,13 +340,16 @@ def purchase():
                     com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
                     orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
+                    com.cargo_quantity -= c_num
                     session.pop('order_list', None)
                     session.pop('price', None)
                     cart = Cart.query.filter(Cart.commodity_id == com.id).all()
                     for a in cart:
                         db.session.delete(a)
             else:
+                com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
                 orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+                com.cargo_quantity -= 1
                 db.session.add(orderdetail)
                 session.pop('cid', None)
             db.session.commit()
@@ -616,9 +619,31 @@ def get_orders(p, list):
 
 @app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
-    order_del = Order.query.get(id)
-    db.session.delete(order_del)
+    od_del = OrderDetail.query.get(id)
+    # check if one order has multiple details
+    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).all()
+    #if has only one detail then delete the order
+    if len(details) == 1:
+        order = Order.query.get(od_del.order_id)
+        o_id = order.id
+        db.session.delete(od_del)
+        db.session.delete(order)
+        orders = db.session.query(Order).filter(Order.id > o_id).all()
+        for s in orders:
+            s_od = db.session.query(OrderDetail).filter(OrderDetail.order_id == s.id).all()
+            s.id -= 1
+            for s_o in s_od:
+                s_o.order_id -= 1
+    else:
+        # delete order detail information
+        db.session.delete(od_del)
+        db.session.commit()
+    # let all orderdetail with id greater than this id, id minus 1
+    od = db.session.query(OrderDetail).filter(OrderDetail.id > id).all()
+    for o in od:
+        o.id -= 1
     db.session.commit()
+
     return redirect(url_for('Orders'))
 
 
