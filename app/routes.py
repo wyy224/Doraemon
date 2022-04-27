@@ -301,39 +301,36 @@ def purchase():
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
-            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-            quantity = int(request.form['quantity'])
-            priceNeed = int(commodity.price)
-            if user.money >= priceNeed * quantity:
+            # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+            # quantity = int(request.form['quantity'])
+            # priceNeed = int(commodity.price)
+            # if user.money >= priceNeed * quantity:
                 # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
                 #                  commodity_num=quantity, address=request.form['address'],
                 #                  transport=request.form['transport'])
-                neworder = Order(user_id=session.get('uid'), address=request.form['address'],
+            neworder = Order(user_id=session.get('uid'), address=request.form['address'],
                                  transport=request.form['transport'])
-                user.money = user.money - priceNeed * quantity
-                db.session.add(neworder)
-                db.session.commit()
-                if session.get('order_list') is not None:
-                    for c in session.get('order_list'):
-                        c_name = c['name']
-                        c_num = c['num']
-                        com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-                        orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
-                        db.session.add(orderdetail)
-                        session.pop('order_list', None)
-                        session.pop('price', None)
-                        cart = Cart.query.filter(Cart.commodity_id == com.id).all()
-                        for a in cart:
-                            db.session.delete(a)
-                else:
-                    orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+                # user.money = user.money - priceNeed * quantity
+            db.session.add(neworder)
+            db.session.commit()
+            if session.get('order_list') is not None:
+                for c in session.get('order_list'):
+                    c_name = c['name']
+                    c_num = c['num']
+                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
-                    session.pop('cid', None)
-                db.session.commit()
-                return redirect(url_for('Orders'))
+                    session.pop('order_list', None)
+                    session.pop('price', None)
+                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                    for a in cart:
+                        db.session.delete(a)
             else:
-                return render_template("payfail.html")
-        print("hhh")
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
+                db.session.add(orderdetail)
+                session.pop('cid', None)
+            db.session.commit()
+            return redirect(url_for('Orders'))
         return render_template('pay.html', commodity=commodity, profile=profile, price=price)
     else:
         return redirect('/login')
@@ -801,10 +798,10 @@ def upload():
         f = request.files.get('file')
         raw_filename = avatars.save_avatar(f)
         session['c_filename'] = raw_filename
-        print("../static/commodity/" + session['c_filename'])
+        print("../static/instruments/" + session['c_filename'])
         c = session['cid']
         commodity = Commodity.query.filter(Commodity.id == c).first()
-        commodity.pic_path = "../static/commodity/" + session['c_filename']
+        commodity.pic_path = "../static/instruments/" + session['c_filename']
         db.session.commit()
         return redirect("/change-commodity/crop/")
     return render_template('upload.html')
