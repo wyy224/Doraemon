@@ -140,8 +140,6 @@ def handle_connect():
     # socketio.emit('connect info', f'{username}  connect')
 
 
-
-
 # 断开连接
 # @socketio.on('disconnect')
 # def handle_disconnect():
@@ -188,6 +186,7 @@ def on_join(data):
     print('join room:  ' + str(data))
     print(room_user)
     socketio.emit('connect info', username + ' join room', to=room)
+
 
 @socketio.on('leave')
 def on_leave(data):
@@ -314,6 +313,7 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
+        print(session.get('cid'))
         commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
         cart_pay = None
         showList = []
@@ -342,7 +342,6 @@ def purchase():
             # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
-            print(request.form['num'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
                              transport=request.form['transport'])
             # user.money = user.money - priceNeed * quantity
@@ -361,7 +360,8 @@ def purchase():
                         db.session.delete(a)
             else:
                 com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
-                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=request.form['num'])
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id,
+                                          commodity_num=request.form['num'])
                 print("before:", com.cargo_quantity)
                 com.cargo_quantity -= int(request.form['num'])
                 print("after:", com.cargo_quantity)
@@ -591,28 +591,29 @@ def newsingle():
 
 @app.route('/Orders')
 def Orders():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
-    orders = Order.query.filter(Order.user_id == session.get('uid'))
-    allorders = Order.query.all()
-    list = [];
-    alllist = []
-    for o in orders:
-        list = get_orders(o, list)
-    session.pop('orders', None)
-    session['orders'] = list
-    for o2 in allorders:
-        alllist = get_orders(o2, alllist)
-    session.pop('allorders', None)
-    session['allorders'] = alllist
     if islogined():
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        user_icon = setIcon()
+        orders = Order.query.filter(Order.user_id == session.get('uid'))
+        allorders = Order.query.all()
+        list = [];
+        alllist = []
+        for o in orders:
+            list = get_orders(o, list)
+        session.pop('orders', None)
+        session['orders'] = list
+        for o2 in allorders:
+            alllist = get_orders(o2, alllist)
+        session.pop('allorders', None)
+        session['allorders'] = alllist
         authority = session.get('authority')
 
-    else:
-        authority = 0
-
-    return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,allorders=alllist,
+        return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,
+                           allorders=alllist,
                            authority=authority)
+
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])
@@ -650,28 +651,12 @@ def deleteOrder(id):
     od_del = OrderDetail.query.get(id)
     # check if one order has multiple details
     details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).all()
-    #if has only one detail then delete the order
-    if len(details) == 1:
-        order = Order.query.get(od_del.order_id)
-        o_id = order.id
-        db.session.delete(od_del)
-        db.session.delete(order)
-        orders = db.session.query(Order).filter(Order.id > o_id).all()
-        for s in orders:
-            s_od = db.session.query(OrderDetail).filter(OrderDetail.order_id == s.id).all()
-            s.id -= 1
-            for s_o in s_od:
-                s_o.order_id -= 1
-    else:
-        # delete order detail information
-        db.session.delete(od_del)
-        db.session.commit()
-    # let all orderdetail with id greater than this id, id minus 1
-    od = db.session.query(OrderDetail).filter(OrderDetail.id > id).all()
-    for o in od:
-        o.id -= 1
+    # if has only one detail then delete the order
+    for a in details:
+        db.session.delete(a)
+    order = Order.query.filter(Order.id == od_del.order_id).first()
+    db.session.delete(order)
     db.session.commit()
-
     return redirect(url_for('Orders'))
 
 
