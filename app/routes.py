@@ -843,11 +843,11 @@ def reg_mes():
 # bug
 @app.route('/api/logout', methods=["GET", "POST"])
 def logout():
-    # session.pop("USERNAME", None)
-    # session.pop("uid", None)
-    # return jsonify({'returnValue': 1})
-    session.clear()
-    return redirect('/main_page')
+    session.pop("USERNAME", None)
+    session.pop("uid", None)
+    return jsonify({'returnValue': 1})
+    # session.clear()
+    # return redirect('/main_page')
 
 
 @app.route('/main_page')
