@@ -70,11 +70,11 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
-					<li><a href="/collection">Collection</a></li>
-					<li><a href="/ShoppingCart">Shopping Cart</a></li>
-					<li><a href="/contact">Services</a></li>
-                    <li><a href="/Orders">Orders</a></li>
-                    <li><button onclick="location.href='/main_page'">Come back to Home Page</button> </li>
+					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+					<li><a href="/ShoppingCart" class="i18n" contrastName="SHOPPINGCART">Shopping Cart</a></li>
+					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                    <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="CBTHP">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
 
@@ -85,7 +85,7 @@
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
-            	<button onclick="clickToLogout();">Log out at here</button>
+            	<button onclick="clickToLogout();" class="i18n" contrastName="LOAH">Log out at here</button>
             </div>
           </form>
 				</div>
@@ -107,15 +107,21 @@
 						</div>
 						<div class="author-info text p-3 p-md-5">
 							<div class="desc">
-								<h1 class="mb-4"><span>Personal Information:</span></h1>
-								<p class="mb-4">Name: {{user.user_name}}</p>
-								<p class="mb-4">Email: {{user.email}}</p>
-                                <p class="mb-4">Delivery address: {{ profile.address }}</p>
-                                <p class="mb-4">Phone number: {{ profile.phone_num }}</p>
-                                <p class="mb-4">Consignee name: {{ profile.name }}</p>
-                                <p class="mb-4">remaining balance: {{ user.money }}</p>
-                                <button onclick="location.href='/top_up'">TOP UP</button>
-                                <button onclick="location.href='/modify'">Modify the information</button>
+								<h1 class="mb-4" ><span class="i18n" contrastName="PI">Personal Information:</span></h1>
+								<a class="mb-4 i18n"  contrastName="NAME">Name: </a><a>{{user.user_name}}</a>
+                                <br><br>
+								<a class="mb-4 i18n" contrastName="EMAIL">Email: </a><a>Email: {{user.email}}</a>
+                                <br><br>
+                                <a class="mb-4 i18n" contrastName="DA">Delivery address: </a><a>{{ profile.address }}</a>
+                                <br><br>
+                                <a class="mb-4 i18n" contrastName="PN">Phone number: </a><a>{{ profile.phone_num }}</a>
+                                <br><br>
+                                <a class="mb-4 i18n" contrastName="CN">Consignee name: </a><a>{{ profile.name }}</a>
+                                <br><br>
+                                <a class="mb-4 i18n" contrastName="RB">remaining balance: </a><a>{{ user.money }}</a>
+                                <br><br>
+                                <button onclick="location.href='/top_up'" class="i18n" contrastName="TU">TOP UP</button>
+                                <button onclick="location.href='/modify'" class="i18n" contrastName="MTI">Modify the information</button>
 								<ul class="ftco-social mt-3">
 		                        </ul>
 	                        </div>
