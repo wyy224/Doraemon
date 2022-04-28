@@ -314,6 +314,7 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
+        print(session.get('cid'))
         commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
         cart_pay = None
         showList = []
@@ -342,7 +343,6 @@ def purchase():
             # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
-            print(request.form['num'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
                              transport=request.form['transport'])
             # user.money = user.money - priceNeed * quantity
