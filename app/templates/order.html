@@ -70,12 +70,12 @@
             </h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
-					<li><a href="/collection">Collection</a></li>
-					<li><a href="/ShoppingCart">Shopping Cart</a></li>
-					<li><a href="/contact">Services</a></li>
-                    <li><a href="/Orders">Orders</a></li>
-                    <li><button onclick="location.href='/main_page'">Come back to Home Page</button> </li>
+					<li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                    <li class="colorlib-active"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
 
@@ -86,7 +86,7 @@
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
-            	<button onclick="clickToLogout();">Log out at here</button>
+            	<button onclick="clickToLogout();" class="i18n" contrastName="LOG_OUT_HERE">Log out at here</button>
             </div>
           </form>
 				</div>
@@ -97,14 +97,14 @@
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="/home">Home</a></span>
-                            <span class="mr-2"><a href="/collection">Collection</a></span>
-                            <span class="mr-2"><a href="/ShoppingCart">Shopping Cart</a></span>
-                            <span>Orders</span></p>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n" contrastName="HOME">Home</a></span>
+                            <span class="mr-2"><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></span>
+                            <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
+                            <span class="i18n" contrastName="ORDERS">Orders</span></p>
                          {% if authority ==1 %}
-                            <h1 class="bread">All Orders</h1>
+                            <h1 class="bread i18n" contrastName="ALL_ORDERS">All Orders</h1>
                          {% else %}
-                             <h1 class="bread">My Orders</h1>
+                             <h1 class="bread i18n" contrastName="MY_ORDERS">My Orders</h1>
                          {% endif %}
 
                     </div>
@@ -132,8 +132,8 @@
                             <div class="card-body">
                                 <h5 class="card-title"><a
                                         href="singleOrder/{{ order.detail }}">{{ order.commodity_name }} </a></h5>
-                                <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
-                                <p class="card-text">Product information: {{ order.introduction }}</p>
+                                <p class="card-text"><span class="i18n" contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}</p>
+                                <p class="card-text"><span class="i18n" contrastName="PAY_INFO">Product information: </span>{{ order.introduction }}</p>
                             </div>
                         </div>
                         {% endfor %}
@@ -144,19 +144,21 @@
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
                             {% if order.is_receive %}
-                                <span class="product-new-top"
+                                <span class="product-new-top i18n"
                                       style="background: #28a745"
-                                >received</span>
+                                      contrastName="RECEIVED"
+                                >Received</span>
                             {% else %}
-                                <span class="product-new-top"
+                                <span class="product-new-top i18n"
                                       style="background: #dc3545"
+                                      contrastName="ARRIVED"
                                 >Arrived</span>
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title"><a
                                         href="singleOrder/{{ order.detail }}">{{ order.commodity_name }} </a></h5>
-                                <p class="card-text">Purchase time: {{ order.purchase_time }}</p>
-                                <p class="card-text">Product information: {{ order.introduction }}</p>
+                                <p class="card-text"><span class="i18n" contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}</p>
+                                <p class="card-text"><span class="i18n" contrastName="PAY_INFO">Product information: </span>{{ order.introduction }}</p>
                             </div>
                         </div>
                         {% endfor %}
