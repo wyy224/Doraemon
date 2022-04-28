@@ -64,7 +64,7 @@ var execI18n = function() {
 			console.log(i18nLanguage);
 			var insertEle = j(".i18n");
 			insertEle.each(function() {
-				//筛去其中的html语法
+				// 筛去其中的html语法
 				// var html = j(this).html();
 				// var reg = /<(.*)>/;
 				// if (reg.test(html)) {
