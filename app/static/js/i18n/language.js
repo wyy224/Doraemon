@@ -1,3 +1,5 @@
+var j = jQuery.noConflict();
+
 /**
  * 获取浏览器语言类型
  * @return {string} 浏览器国家语言
@@ -36,7 +38,7 @@ var execI18n = function() {
 	// var navLanguage = getNavLanguage();
 	// if(navLanguage) {
 	// 	// 判断是否在网站支持语言数组里
-	// 	var charSize = $.inArray(navLanguage, webLanguage);
+	// 	var charSize = j.inArray(navLanguage, webLanguage);
 	// 	if(charSize > -1) {
 	// 		i18nLanguage = navLanguage;
 	// 	};
@@ -45,7 +47,7 @@ var execI18n = function() {
 	// 	return false;
 	// }
 	/* 需要引入 i18n 文件*/
-	if($.i18n == undefined) {
+	if(j.i18n == undefined) {
 		return false;
 	};
 	/*
@@ -53,37 +55,37 @@ var execI18n = function() {
 	 */
 	//      i18nLanguage="zh_CN";
 	//      i18nLanguage="en_US";
-	$.i18n.properties({
+	j.i18n.properties({
 		name: "js", //资源文件名称
 		path: './static/js/i18n/', //资源文件路径
 		mode: 'map', //用Map的方式使用资源文件中的值
 		language: i18nLanguage,
 		callback: function() { //加载成功后设置显示内容
 			console.log(i18nLanguage);
-			var insertEle = $(".i18n");
+			var insertEle = j(".i18n");
 			insertEle.each(function() {
 				//筛去其中的html语法
-				// var html = $(this).html();
+				// var html = j(this).html();
 				// var reg = /<(.*)>/;
 				// if (reg.test(html)) {
 				// 	var htmlValue = reg.exec(html)[0];
-				// 	$(this).html(htmlValue + $.i18n.prop(contrastName));
+				// 	j(this).html(htmlValue + j.i18n.prop(contrastName));
 				// }
-				var contrastName = $(this).attr('contrastName');
+				var contrastName = j(this).attr('contrastName');
 				// 根据i18n元素的 contrastName 获取内容写入'
-				console.log($.i18n.prop(contrastName));
+				console.log(j.i18n.prop(contrastName));
 				// debugger
 				if(contrastName) {
-					$(this).html($.i18n.prop(contrastName));
+					j(this).html(j.i18n.prop(contrastName));
 				};
 			});
-			var insertInputEle = $(".i18n-input");
+			var insertInputEle = j(".i18n-input");
 			insertInputEle.each(function() {
-				var selectAttr = $(this).attr('selectattr');
+				var selectAttr = j(this).attr('selectattr');
 				if(!selectAttr) {
 					selectAttr = "value";
 				};
-				$(this).attr(selectAttr, $.i18n.prop($(this).attr('contrastName')));
+				j(this).attr(selectAttr, j.i18n.prop(j(this).attr('contrastName')));
 			});
 		}
 	});
@@ -95,11 +97,11 @@ var execI18n = function() {
 var execI18nProp = function(contrastName) {
 	var contrastValue = "";
 	/* 需要引入 i18n 文件*/
-	if($.i18n == undefined) {
+	if(j.i18n == undefined) {
 		return false;
 	};
 	if(contrastName) {
-		contrastValue = $.i18n.prop(contrastName);
+		contrastValue = j.i18n.prop(contrastName);
 	};
 	return contrastValue
 }
