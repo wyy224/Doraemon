@@ -12,17 +12,14 @@
                 <h1 class="payword1"><span>Order Details:</span></h1>
                 {#                            <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>#}
                 {#                            <p class="payword"><b>Product:</b> {{ commodity.commodity_name }}</p>#}
-                <p class="payword">
-                    <b>Price:</b> ${{ price }}
-                </p>
-                <p class="payword">
-                    <b>Number :</b>
-                    <input style="font-size: 24px" type="text"
-                           name="num" placeholder="Please enter..." required="" >
+{#                <p class="payword">#}
+{#                    <b>Number :</b>#}
+{#                    <input style="font-size: 24px" type="text"#}
+{#                           name="num" placeholder="Please enter..." required="" value="{{ cart_pay.commodity_num }}">#}
                         {#                               </span><input name="box" style="width:50px;position:absolute;left:20px;">#}
-
-                    </select>
-                </p>
+{##}
+{#                    #}
+{#                </p>#}
                 <p class="payword">
                     <b>Delivery address: </b>
                     <input style="font-size: 24px" type="text"
@@ -46,8 +43,8 @@
                     </select>
                 </p>
 
-                <button class="paybt" type="submit">Confirm pay</button>
-                <button class="paybt" onclick="javascript:history.back(-1);{return false}">Cancel pay</button>
+                <button class="paybt" type="submit">Confirm edit</button>
+                <button class="paybt" onclick="javascript:history.back(-1);{return false}">Cancel edit</button>
 
             </form>
 
