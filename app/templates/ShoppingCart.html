@@ -17,7 +17,7 @@
         </td>
         <td>{subtotal}</td>
         <td>
-            <span class="del">Delete</span>
+            <span class="del i18n" contrastName="DELETE">Delete</span>
         </td>
 {#        <td>#}
 {#            <span class="pay_for">Pay!</span>#}
@@ -88,8 +88,8 @@
     <table>
         <thead>
         <tr style="background-color: black;color: white;">
-            <th><a href="main_page" style="color: white"> < Home </a></th>
-            <th colspan="4"> My Shopping Cart </th>
+            <th><a href="main_page" style="color: white" class="i18n" contrastName="BACK"> < Home </a></th>
+            <th colspan="4" class="i18n" contrastName="MYCART"> My Shopping Cart </th>
             <th>
                 <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
                     切换为中文
@@ -103,11 +103,11 @@
                     <span class="i18n" contrastName="SELECTALL">Select All</span>
                 </label>
             </th>
-            <th>Items</th>
-            <th>Unit price</th>
-            <th>Number of units</th>
-            <th>Sum</th>
-            <th>Operations</th>
+            <th class="i18n" contrastName="ITEMS">Items</th>
+            <th class="i18n" contrastName="UNIT_P">Unit price</th>
+            <th class="i18n" contrastName="NUM_U">Number of units</th>
+            <th class="i18n" contrastName="SUM">Sum</th>
+            <th class="i18n" contrastName="OPERA">Operations</th>
 {#            <th>Purchase</th>#}
         </tr>
         </thead>
@@ -123,33 +123,36 @@
             <input type="checkbox" class="checkAll check" checked>
             <span class="i18n" contrastName="SELECTALL">Select All</span>
         </label>
-        <span class="delAll">&nbsp;Delete All&nbsp;</span>
-        <div>items selected:
-            <span class="selected" id="num">0</span>pcs
+        <span class="delAll i18n" contrastName="DELETEALL">&nbsp;Delete All&nbsp;</span>
+        <div>
+            <span class="i18n" contrastName="ITEMS_SELECTED">items selected:</span>
+            <span class="selected" id="num">0</span>
+            <span class="i18n" contrastName="PCS">pcs</span>
         </div>
-        <div>Total: $
+        <div>
+            <span class="i18n" contrastName="TOTAL">Total: $</span>
             <span class="total" id="total">0</span>
         </div>
 {#        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay#}
 {#                </button> </div>#}
-        <button type="button" class="js" onclick="openDialog()">&nbsp;Pay&nbsp;</button>
+        <button type="button" class="js i18n" onclick="openDialog()" contrastName="PAY">&nbsp;Pay&nbsp;</button>
 
     </div>
         <div id="light" class="white_content">
-            <span style="font-size: 25px;font-family: fantasy;">Confirm Orders</span>
+            <span style="font-size: 25px;font-family: fantasy;" class="i18n" contrastName="CONFIRM_ORDER">Confirm Orders</span>
         <table>
             <thead style="background-color: black;color: white;">
-                <th>Items</th>
-                <th>Unit price</th>
-                <th>Number of units</th>
-                <th>Sum</th>
+                <th class="i18n" contrastName="ITEMS">Items</th>
+                <th class="i18n" contrastName="UNIT_P">Unit price</th>
+                <th class="i18n" contrastName="NUM_U">Number of units</th>
+                <th class="i18n" contrastName="SUM">Sum</th>
             </thead>
             <tbody id="tbody1">
             </tbody>
         </table>
         <div class="pay_cancel">
-            <a style="background: black;color: white;padding: 10px" onclick="purchase()">Pay</a>
-            <a style="background: black;color: white;padding: 10px" onclick = "closeDialog()">Cancel</a>
+            <a style="background: black;color: white;padding: 10px" onclick="purchase()" class="i18n" contrastName="PAY">Pay</a>
+            <a style="background: black;color: white;padding: 10px" onclick = "closeDialog()" class="i18n" contrastName="CANCEL">Cancel</a>
         </div>
     </div>
     <div id="fade" class="black_overlay"></div>
