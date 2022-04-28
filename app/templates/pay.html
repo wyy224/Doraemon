@@ -10,12 +10,25 @@
         <div class="desc">
             <form action="" method="post">
                 <h1 class="payword1"><span>Order Details:</span></h1>
-                {#                            <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>#}
-                {#                            <p class="payword"><b>Product:</b> {{ commodity.commodity_name }}</p>#}
-                <p class="payword">
-                    <b>Number :</b>
-                    <input style="font-size: 24px" type="text"
-                           name="num" placeholder="Please enter..." required="" value="{{ cart_pay.commodity_num }}">
+                    {% if cart_pay is not none %}
+                        {% for s in showlist %}
+                            <p class="payword"> <img src='{{ s.commodity.pic_path }}' alt="" width=100 height=100></p>
+                            <p class="payword"><b>Product:</b> {{ s.commodity.commodity_name }}</p>
+                            <b>Number :</b>
+                            <input style="font-size: 24px" type="text" name="num" placeholder="Please enter..." required=""
+                                   value="{{ s.num }}">
+                        {% endfor %}
+                    {% else %}
+                        <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>
+                        <p class="payword"><b>Product:</b> {{ commodity.commodity_name }}</p>
+                        <b>Number :</b>
+                        <input style="font-size: 24px" type="text" name="num" placeholder="Please enter..." required=""
+                                   value="1">
+                    {% endif %}
+{#                <p class="payword">#}
+{#                    <b>Number :</b>#}
+{#                    <input style="font-size: 24px" type="text"#}
+{#                           name="num" placeholder="Please enter..." required="" value="{% if cart_pay is not none %}{{ cart_pay.commodity_num }}{% else %}1{% endif %}">#}
                         {#                               </span><input name="box" style="width:50px;position:absolute;left:20px;">#}
 
                     </select>

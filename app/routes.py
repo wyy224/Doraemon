@@ -315,12 +315,25 @@ def product():
 def purchase():
     if islogined():
         commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
-        if session.get('price') is not None:
+        cart_pay = None
+        showList = []
+        info = dict()
+        print(session.get('order_list'))
+        if session.get('order_list') is not None:
             price = session.get('price')
+            cart_pay = session.get('order_list')
+            for c in session.get('order_list'):
+                info = dict()
+                c_name = c['name']
+                commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                info['commodity'] = commodity
+                info['num'] = c['num']
+                showList.append(info)
+                print(info)
+                print(showList)
         else:
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
-        cart_pay = Cart.query.filter(Cart.user_id == session.get('uid') and Cart.commodity_id == session.get('cid')).first()
         if request.method == 'POST':
             # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
             # quantity = int(request.form['quantity'])
@@ -329,6 +342,7 @@ def purchase():
             # neworder = Order(commodity_id=session['cid'], user_id=session['uid'],
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
+            print(request.form['num'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
                              transport=request.form['transport'])
             # user.money = user.money - priceNeed * quantity
@@ -342,20 +356,23 @@ def purchase():
                     orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                     db.session.add(orderdetail)
                     com.cargo_quantity -= int(c_num)
-                    session.pop('order_list', None)
-                    session.pop('price', None)
                     cart = Cart.query.filter(Cart.commodity_id == com.id).all()
                     for a in cart:
                         db.session.delete(a)
             else:
                 com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
-                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=1)
-                com.cargo_quantity -= 1
+                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id, commodity_num=request.form['num'])
+                print("before:", com.cargo_quantity)
+                com.cargo_quantity -= int(request.form['num'])
+                print("after:", com.cargo_quantity)
                 db.session.add(orderdetail)
-                session.pop('cid', None)
+            session.pop('cid', None)
+            session.pop('order_list', None)
+            session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
-        return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay)
+        return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
+                               showlist=showList)
     else:
         return redirect('/login')
 
@@ -492,6 +509,8 @@ def adjust_icon():
 
 @app.route('/single/<int:id>', methods=['GET', 'POST'])
 def single(id):
+    session.pop('order_list', None)
+    session.pop('price', None)
     if islogined():
         user_icon = setIcon()
     else:
