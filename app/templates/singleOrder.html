@@ -41,7 +41,7 @@
     {#      这边要改到下面放头像的地方去#}
 
     {% if user == current_user %} {# 判断用户是不是当前用户 #}
-        <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary">Change your avatar <span
+        <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary i18n" contrastName="CHANGE_AVATAR">Change your avatar <span
             class="fa fa-edit"></span></a>
     {% endif %}
 </div>
@@ -60,13 +60,16 @@
         </h1>
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
-                <li><a href="/home ">Home</a></li>
-                <li><a href="/collection">Collection</a></li>
-                <li><a href="/ShoppingCart">Shopping Cart</a></li>
-                <li><a href="/contact">Services</a></li>
-                <li><a href="/Orders">Orders</a></li>
+                <li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                <li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+                <li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+                <li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                {% if  authority == 1 %}
+                        <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
+                    {% endif %}
                 <li>
-                    <button onclick="location.href='/main_page'">Come back to Home Page</button>
+                    <button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button>
                 </li>
             </ul>
         </nav>
@@ -76,7 +79,7 @@
             <div class="d-flex justify-content-center">
                 <form action="#" class="colorlib-subscribe-form">
                     <div class="form-group d-flex">
-                        <button onclick="location.href='/main_page'">Log out at here</button>
+                        <button onclick="location.href='/main_page'" class="i18n" contrastName="LOG_OUT_HERE">Log out at here</button>
                     </div>
                 </form>
             </div>
@@ -87,11 +90,11 @@
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="/home">Home</a></span>
-                            <span class="mr-2"><a href="/collection">Collection</a></span>
-                            <span class="mr-2"><a href="/ShoppingCart">Shopping Cart</a></span>
-                            <span>Orders</span></p>
-                        <h1 class="bread">Order Details</h1>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n" contrastName="HOME">Home</a></span>
+                            <span class="i18n" contrastName="COLLECTION">Collection</span>
+                            <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
+                            <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+                        <h1 class="bread" class="i18n" contrastName="ORDER_DETAILS">Order Details</h1>
                     </div>
                 </div>
             </div>
@@ -114,12 +117,11 @@
                         <div class="slider-item js-fullheight"
                              style="background-image: url({{ order.pic_path }});">
                             {% if order.is_receive %}
-                                <span class="product-new-top"
-                                      style="background: #28a745"
-                                >received</span>
+                                <span class="product-new-top i18n"
+                                      style="background: #28a745" contrastName="RECEIVED">received</span>
                             {% else %}
-                                <span class="product-new-top"
-                                      style="background: #dc3545"
+                                <span class="product-new-top i18n"
+                                      style="background: #dc3545" contrastName="ARRIVED"
                                 >Arrived</span>
                             {% endif %}
                         </div>
@@ -131,17 +133,15 @@
                 </div>
                 <div class="author-info text p-3 p-md-5">
                     <div class="desc">
-                        <h1 class="mb-4"><span>Order Details:</span></h1>
-                        <p class="mb-4"><b>Product:</b> {{ order.commodity_name }}</p>
-                        <p class="mb-4"><b>Price:</b> ${{ order.price }} </p>
-                        <p class="mb-4"><b>Delivery address: </b>{{ order.address }}</p>
+                        <h1 class="mb-4 i18n" contrastName="OREDER_DETAILS"><span>Order Details</span>:</h1>
+                        <p class="mb-4 i18n" contrastName="PRODUCT2"><b>Product:</b> {{ order.commodity_name }}</p>
+                        <p class="mb-4 i18n" contrastName="PRICE"><b>Price:</b> ${{ order.price }} </p>
+                        <p class="mb-4 i18n" contrastName="ADDRESS"><b>Delivery address: </b>{{ order.address }}</p>
                         {#                                <p class="mb-4"><b>Phone number: </b>010-12345678</p>#}
-                        <p class="mb-4"><b>Consignee name: </b>{{ user1.user_name }}</p>
-                        <ul class="ftco-social mt-3" style="color: #e83e8c">
-                            if you want to modify the delivery address, you need to contact with the service.
-                        </ul>
+                        <p class="mb-4 i18n"  contrastName="CONSIGNEE"><b>Consignee name: </b>{{ user1.user_name }}</p>
+
                         <form action="order/receive/{{ order.id }}" method="post">
-                            <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}">Confirm receipt</button>
+                            <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}" class="i18n"  contrastName="CONFIRM_RECEIPT">Confirm receipt</button>
                         </form>
 {#                        <form >#}
 {#                            <select id="country1"  class="frm-field required sect" >#}
@@ -163,9 +163,8 @@
 {#                        </form>#}
 {#                        <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/modify_commodity'">edit order</button>#}
                         <form action="order/delete/{{ order.id }}" method="post">
-                            <button class="cancel"
-                                    onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}">
-                                Cancel order
+                            <button class="cancel i18n"
+                                    onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}" contrastName="CANCEL_ORDER">Cancel order
                             </button>
                         </form>
 
