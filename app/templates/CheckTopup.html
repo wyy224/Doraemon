@@ -21,7 +21,6 @@
     {#    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">#}
     {#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">#}
     {#    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">#}
-
     <link rel="stylesheet" href="../static/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/animate.css">
 
@@ -40,6 +39,8 @@
     <link rel="stylesheet" href="../static/css/flaticon.css">
     <link rel="stylesheet" href="../static/css/icomoon.css">
     <link rel="stylesheet" href="../static/css/style-per.css">
+
+    <link rel="stylesheet" href="../static/css/list.css" type="text/css">
 </head>
 <body>
 
@@ -106,56 +107,106 @@
                 </div>
             </div>
         </section>
-        <h></h>
-        <div id="light" class="white_content" style="background-color: rgba(255,255,240,0.7);text-align: center">
-            <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
-            <table style="margin: auto" class="topup">
-                <thead>
-                <tr>
-                    <th>Customer</th>
-                    <th>Top up Time</th>
-                    <th>Top up Amount</th>
-                    <th>Top up Situation</th>
-                    {% if authority == 1 %}
-                        <th>Confirmation</th>
-                    {% endif %}
-                </tr>
-                {% for c in check %}
-                    <tr>
-                        <th>
-                            {{ c.user_name }}
-                        </th>
-                        <th>{{ c.time }}</th>
-                        <th>${{ c.money }}</th>
-                        <th>
-                            {% if c.situation %}
-                                Arrived to account
-                            {% else %}
-                                Need to be dealt with
+        <div class="ivu-table ivu-table-default ivu-table-border" style="background-color: rgba(255,255,240,0.7);text-align: center">
+              <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
+              <div class="ivu-table-header">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+                      <thead>
+                        <tr>
+                            <th class="ivu-table-column-sPsr1K">
+                                <div class="ivu-table-cell"><span class="">Customer</span></div>
+                            </th>
+                            <th class="ivu-table-column-0Ty1Sa">
+                                <div class="ivu-table-cell"><span class="">Top up Time</span></div>
+                            </th>
+                            <th class="ivu-table-column-BsnJUZ">
+                                <div class="ivu-table-cell"><span class="">Top up Amount</span></div>
+                            </th>
+                            <th class="ivu-table-column-HpbwFs">
+                                <div class="ivu-table-cell"><span class="">Top up Situation</span></div>
+                            </th>
+                            {% if authority == 1 %}
+                                <th>Confirmation</th>
                             {% endif %}
-                        </th>
-                        {% if authority == 1 %}
-                            {% if c.situation %}
-                                <th>
-                                    <div class="confirm">Confirmed</div>
-                                </th>
-                            {% else %}
-                                <th>
-                                    <a class="confirm" href="/Confirm/{{ c.id }}"
-                                       onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
-                                       contrastName="CANCEL_ORDER">Confirm</a>
-                                </th>
-                            {% endif %}
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-
-
-                </thead>
-                <tbody id="tbody1">
-                </tbody>
-            </table>
-
+                        </tr>
+                      </thead>
+                  </table>
+              </div>
+              <div class="ivu-table-body" style="">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+                      <tbody class="ivu-table-tbody">
+                        {% for c in check %}
+                            <tr draggable="false" class="ivu-table-row">
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">{{ c.user_name }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">{{ c.time }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">${{ c.money }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">
+                                                    {% if c.situation %}
+                                                        Arrived to account
+                                                    {% else %}
+                                                        Need to be dealt with
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">
+                                                    {% if authority == 1 %}
+                                                        {% if c.situation %}
+                                                            <div class="confirm">Confirmed</div>
+                                                        {% else %}
+                                                            <a class="confirm" href="/Confirm/{{ c.id }}"
+                                                               onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
+                                                               contrastName="CANCEL_ORDER">Confirm</a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
         </div><!-- END COLORLIB-MAIN -->
     </div><!-- END COLORLIB-PAGE -->
 

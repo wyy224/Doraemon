@@ -43,10 +43,12 @@ def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
-                           icon=user_icon)
+                           icon=user_icon,authority=authority)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -65,10 +67,12 @@ def search():
 def about():
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(),authority=authority)
 
 
 room_user = {}
@@ -417,10 +421,13 @@ def topup():
 def service():
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
+        session['cid'] = id
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(),authority=authority)
 
 
 @app.route('/typography')
@@ -840,11 +847,13 @@ def main_page():
     if islogined():
         name = session['USERNAME']
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         name = "visitor"
         user_icon = 'NULL'
+        authority = 0
     return render_template('index.html', islogin=islogined(), username=name, types=all_type,
-                           ype_value=all_type.values(), icon=user_icon)
+                           ype_value=all_type.values(), icon=user_icon, authority=authority)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
@@ -931,3 +940,14 @@ def modify_single():
             return render_template('newsingle.html', islogin=islogined(), commodity=commodity, types=all_type,
                                    type_value=all_type.values(), authority=authority, modify=IsModify)
     return redirect('/home')
+
+@app.route('/customer')
+def customer():
+    if islogined():
+        user_icon = setIcon()
+        authority = session.get('authority')
+    else:
+        user_icon = 'NULL'
+        authority = 0
+    return render_template('customer.html',islogin=islogined(),authority=authority,types=all_type,
+                           ype_value=all_type.values(), icon=user_icon)
