@@ -13,14 +13,14 @@
                     {% if cart_pay is not none %}
                         {% for s in showlist %}
                             <p class="payword"> <img src='{{ s.commodity.pic_path }}' alt="" width=100 height=100></p>
-                            <p class="payword"><b>Product:</b> {{ s.commodity.commodity_name }}</p>
-                            <b>Number :</b>
+                            <p class="payword"><b class="i18n" contrastName="PRODUCT2">Product:</b> {{ s.commodity.commodity_name }}</p>
+                            <b class="i18n" contrastName="NUMBER">Number:</b>
                             <p class="payword" style="font-size: 24px">{{ s.num }}</p>
                         {% endfor %}
                     {% else %}
                         <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>
-                        <p class="payword"><b>Product:</b> {{ commodity.commodity_name }}</p>
-                        <b>Number :</b>
+                        <p class="payword"><b class="i18n" contrastName="PRODUCT2">Product:</b> {{ commodity.commodity_name }}</p>
+                        <b class="i18n" contrastName="NUMBER">Number:</b>
                         <input style="font-size: 24px" type="text" name="num" placeholder="Please enter..." required=""
                                    value="1">
                     {% endif %}
@@ -33,30 +33,30 @@
                     </select>
                 </p>
                 <p class="payword">
-                    <b>Delivery address: </b>
+                    <b class="i18n" contrastName="ADDRESS">Delivery address: </b>
                     <input style="font-size: 24px" type="text"
                            name="address" placeholder="Please enter..." required="" value={{ profile.address }}>
                 </p>
                 <p class="payword">
-                    <b>Phone number: </b>
+                    <b class="i18n" contrastName="PHONE">Phone number: </b>
                     <input style="font-size: 24px" type="text"
                            name="phone_num" placeholder="Please enter..." required="" value={{ profile.phone_num }}>
                 </p>
                 <p class="payword">
-                    <b>Consignee name: </b>
+                    <b class="i18n" contrastName="CONSIGNEE">Consignee name: </b>
                     <input style="font-size: 24px" type="text"
                            name="name" placeholder="Please enter..." required="" value={{ profile.name }}>
                 </p>
                 <p class="payword">
-                    <b>Transport: </b>
+                    <b class="i18n" contrastName="TRANSPORT">Transport: </b>
                     <select style="font-size: 24px" value="1" name="transport">
-                        <option value="1">delivery home</option>
-                        <option value="2">pick up at the store</option>
+                        <option value="1" class="i18n" contrastName="DELIVERY_HOME">delivery home</option>
+                        <option value="2" class="i18n" contrastName="PICK_UP">pick up at the store</option>
                     </select>
                 </p>
 
-                <button class="paybt" type="submit">Confirm pay</button>
-                <button class="paybt" onclick="javascript:history.back(-1);{return false}">Cancel pay</button>
+                <button class="paybt i18n" type="submit"  contrastName="CONFIRM_PAY">Confirm pay</button>
+                <button class="paybt i18n" onclick="javascript:history.back(-1);{return false}" contrastName="CANCEL_PAY">Cancel pay</button>
 
             </form>
 

@@ -40,10 +40,10 @@
         <div class="inner_breadcrumb  ml-4">
             <ul class="short_ls">
                 <li>
-                    <a href="index">Home</a>
+                    <a href="index" class="i18n" contrastName="HOME">Home</a>
                     <span>/ /</span>
                 </li>
-                <li>Products</li>
+                <li class="i18n" contrastName="PRODUCTS">Products</li>
             </ul>
         </div>
     </div>
@@ -51,10 +51,9 @@
     <!--show Now-->
     <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
         <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
-            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3">Instruments Shop</h3>
+            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3 i18n" href="index" contrastName="INSTRUMENTS_SHOP">Instruments Shop</h3>
             {% if authority ==1 %}
-                <button type="button" class="addproduct" onclick="location.href='/newsingle'">add
-                    product
+                <button type="button" class="addproduct i18n" onclick="location.href='/newsingle'" contrastName="ADD_PRODUCT">add product
                 </button>
 
             {% endif %}
@@ -62,7 +61,7 @@
             <div class="row">
                 <div class="side-bar col-lg-3">
                     <div class="search-hotel">
-                        <h3 class="agileits-sear-head">Search Here..</h3>
+                        <h3 class="agileits-sear-head i18n" contrastName="SEARCH_HERE">Search Here..</h3>
                         <form action="#" method="post">
                             <input type="search" placeholder="Product name..." name="search" required="">
                             <input type="submit" value=" ">
@@ -84,7 +83,7 @@
 
                     <!-- deals -->
                     <div class="deal-leftmk left-side">
-                        <h3 class="agileits-sear-head">The Newest commodities</h3>
+                        <h3 class="agileits-sear-head i18n" contrastName="TNC">The Newest commodities</h3>
                         {% for commodity in new_commodities %}
                             <div class="row special-sec1">
                                 <div class="col-xs-4 img-deals">
@@ -112,11 +111,10 @@
                                             <img src="{{ product.pic_path }}" class="img-thumbnail img-fluid" alt="">
                                             <div class="men-cart-pro">
                                                 <div class="inner-men-cart-pro">
-                                                    <a href="single/{{ product.id }}" class="link-product-add-cart">Quick
-                                                        View</a>
+                                                    <a href="single/{{ product.id }}" class="link-product-add-cart i18n" contrastName="QV">Quick View</a>
                                                 </div>
                                             </div>
-                                            <span class="product-new-top">New</span>
+                                            <span class="product-new-top i18n" contrastName="NEW">New</span>
                                         </div>
                                         <div class="item-info-product">
                                             <div class="info-product-price">
@@ -248,7 +246,7 @@
         </li>
     </ul>
     <ul style="display: flex;justify-content: center">
-        <span>Total: {{ products.pages }} pages</span>
+        <span class="i18n" contrastName="TOTAL2">Total: </span>{{ products.pages }} <span class="i18n" contrastName="PAGES">pages</span>
     </ul>
     <!-- //show Now-->
     <!--subscribe-address-->
@@ -257,8 +255,8 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
                         <div class="address-gried-2">
-                            <b>Doraemon Instrument Store</b>
-                            <p>
+                            <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
+                            <p class="i18n" contrastName="GYBCOI">
                                 Give you best choices of instruments!
                             </p>
                         </div>
