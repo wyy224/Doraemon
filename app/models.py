@@ -95,6 +95,17 @@ class OrderDetail(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     commodity_num = db.Column(db.Integer, default=0, nullable=False)
 
+class CheckMoney(db.Model):
+    __tablename__ = "checkmoney"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_name = db.Column(db.String(32), db.ForeignKey('user.user_name'))
+    time = db.Column(db.DateTime, default=datetime.now)
+    money = db.Column(db.Integer, default=0, nullable=False)
+    situation = db.Column(db.Boolean, default=False, nullable=False)
+
+
+
 
 # A table of more user information
 class Profile(db.Model):
@@ -112,6 +123,7 @@ class Collections(db.Model):
     __tablename__ = "collections"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     commodity_id = db.Column(db.Integer, db.ForeignKey('commodity.id'))
     commodity = db.relationship('Commodity', backref=db.backref('Commodity', lazy='dynamic'))
