@@ -182,12 +182,12 @@
                                         </div>
                                     </div>
                                 </td>
+                            {% if authority == 1 %}
                                 <td class="ivu-table-column">
                                     <div class="ivu-table-cell">
                                         <div class="ivu-table-cell-tooltip ivu-tooltip">
                                             <div class="ivu-tooltip-rel">
                                                 <span class="ivu-table-cell-tooltip-content">
-                                                    {% if authority == 1 %}
                                                         {% if c.situation %}
                                                             <div class="confirm">Confirmed</div>
                                                         {% else %}
@@ -195,12 +195,13 @@
                                                                onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
                                                                contrastName="CANCEL_ORDER">Confirm</a>
                                                         {% endif %}
-                                                    {% endif %}
+
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
+                            {% endif %}
                             </tr>
                         {% endfor %}
                       </tbody>
