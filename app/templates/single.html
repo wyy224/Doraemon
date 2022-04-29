@@ -39,10 +39,10 @@
         <div class="inner_breadcrumb  ml-4">
             <ul class="short_ls">
                 <li>
-                    <a href="index">Home</a>
+                    <a href="index" class="i18n" contrastName="HOME">Home</a>
                     <span>/ /</span>
                 </li>
-                <li>Single Page</li>
+                <li class="i18n" contrastName="SINGLE_PAGE">Single Page</li>
             </ul>
         </div>
     </div>
@@ -93,11 +93,11 @@
                         </div>
                         <div class="color-quality">
                             <div class="color-quality-right">
-                                <h5>stock: {{ commodity. cargo_quantity }}</h5>
+                                <h5><span class="i18n" contrastName="STOCK">stock: </span>{{ commodity. cargo_quantity }}</h5>
                             </div>
                         </div>
                         <div class="occasional">
-                            <h5>You can click here to listen the sound!</h5>
+                            <h5 class="i18n" contrastName="YCCHTLTS">You can click here to listen the sound!</h5>
 
                             {#                        <div class="colr ert">#}
                             {#                           <label class="radio"><input type="radio" name="radio" checked=""><i></i> Soft Teddy Bear (Black)</label>#}
@@ -115,7 +115,7 @@
                             <div class="toys single-item singlepage">
                                 <form action="/cart/add" method="post">
                                     <p class="payword">
-                                        <b>Number :</b>
+                                        <b class="i18n" contrastName="NUMBER">Number :</b>
                                         <select id="country1" onchange="change_country(this.value)"
                                                 class="frm-field required sect" name="number">
                                             <option value="1">1</option>
@@ -135,16 +135,14 @@
                                     <input type="hidden" name="commodity_id" value="{{ commodity.id }}">
                                     <input type="hidden" name="num" value="1">
 
-                                    <button type="submit" class="toys-cart ptoys-cart add">
-                                        Add to Cart
-                                    </button>
+                                    <button type="submit" class="toys-cart ptoys-cart add i18n" contrastName="ADD_TO_CART">Add to Cart</button>
                                     {% if authority ==1 %}
-                                        <button type="button" class="toys-cart ptoys-cart add"
-                                                onclick="location.href='/modify_commodity'">edit product
+                                        <button type="button" class="toys-cart ptoys-cart add i18n"
+                                                onclick="location.href='/modify_commodity'" contrastName="EDIT_PRODUCT">edit product
                                         </button>
                                     {% else %}
-                                        <button type="button" class="toys-cart ptoys-cart add"
-                                                onclick="location.href='/purchase'">buy product
+                                        <button type="button" class="toys-cart ptoys-cart add i18n"
+                                                onclick="location.href='/purchase'" contrastName="BUY_PRODUCT">buy product
                                         </button>
 
                                     {% endif %}
@@ -152,7 +150,7 @@
                             </div>
                         </div>
                         <ul class="footer-social text-left mt-lg-4 mt-3">
-                            <li>Share On :</li>
+                            <li class="i18n" contrastName="SHARE_ON">Share On :</li>
                             <li class="mx-1">
                                 <a href="#">
                                     <span class="fab fa-facebook-f"></span>
@@ -185,8 +183,8 @@
                     <div class="responsive_tabs">
                         <div id="horizontalTab">
                             <ul class="resp-tabs-list">
-                                <li>Description</li>
-                                <li>Reviews</li>
+                                <li class="i18n" contrastName="DESCRIPTION">Description</li>
+                                <li class="i18n" contrastName="REVIEWS">Reviews</li>
                             </ul>
                             <div class="resp-tabs-container">
                                 <!--/tab_one-->
@@ -228,7 +226,7 @@
                                             </div>
                                         {% endfor %}
                                         <div class="add-review">
-                                            <h4>add a review</h4>
+                                            <h4 class="i18n" contrastName="ADD_A_REVIEW">add a review</h4>
                                             <form action="" method="post" enctype="multipart/form-data" novalidate>
                                                 {{ form.hidden_tag() }}
                                                 <div class="row">
@@ -492,5 +490,6 @@
     <!-- //smooth-scrolling-of-move-up -->
     <!--bootstrap working-->
     <script src="../static/js/bootstrap.min.js"></script>
+
     <!-- //bootstrap working-->
 {% endblock %}

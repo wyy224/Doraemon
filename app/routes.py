@@ -402,8 +402,9 @@ def topup():
     if islogined():
         username = session['USERNAME']
         if request.method == 'POST':
-            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-            user.money = user.money + int(request.form['money'])
+            requirement = CheckMoney(user_name=session.get('USERNAME'), money=int(request.form['money']))
+            # user.money = user.money + int(request.form['money'])
+            db.session.add(requirement)
             db.session.commit()
             return redirect(url_for('home'))
         else:
@@ -606,11 +607,12 @@ def Orders():
             alllist = get_orders(o2, alllist)
         session.pop('allorders', None)
         session['allorders'] = alllist
+        print(session['allorders'])
         authority = session.get('authority')
 
         return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,
-                           allorders=alllist,
-                           authority=authority)
+                               allorders=alllist,
+                               authority=authority)
 
     else:
         return redirect(url_for('login'))
@@ -621,7 +623,7 @@ def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
 
     user_icon = setIcon()
-    list = session.get('orders')
+    list = session.get('allorders')
     order = list[int(id) - 1]
     user1 = User.query.filter(User.id == session.get('uid')).first()
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
@@ -693,14 +695,30 @@ def collection():
     user_icon = setIcon()
     authority = session.get('authority')
     collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects, authority = authority)
+    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
+                           authority=authority)
+
 
 @app.route('/CheckTopup')
 def CheckTopup():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     authority = session.get('authority')
-    return render_template('CheckTopup.html', authority = authority,user=user, icon=user_icon, islogin=islogined(),)
+    if (authority == 0):
+        check = CheckMoney.query.filter(CheckMoney.user_name == session.get('USERNAME')).all()
+    else:
+        check = CheckMoney.query.all()
+    return render_template('CheckTopup.html', authority=authority, user=user, icon=user_icon, islogin=islogined(), check=check)
+
+@app.route('/Confirm/<int:id>', methods=['GET', 'POST'])
+def Confirm(id):
+    a = CheckMoney.query.filter(CheckMoney.id == id).first()
+    user1 = User.query.filter(User.user_name == a.user_name).first()
+    a.situation = True
+    user1.money = user1.money + a.money
+    db.session.commit()
+    return redirect(url_for('CheckTopup'))
+
 
 
 @app.route('/modify', methods=['GET', 'POST'])
@@ -732,7 +750,8 @@ def modify():
             flash('AVA uploaded and saved')
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form, authority = authority)
+    return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form,
+                           authority=authority)
 
 
 # To get the avatar
@@ -833,7 +852,7 @@ def get_commodity():
     data = Commodity.query
     commodity = data.order_by(Commodity.release_time)
     authority = session.get('authority')
-    return render_template("index.html", commodity=commodity, authority = authority)
+    return render_template("index.html", commodity=commodity, authority=authority)
 
 
 # @app.route('/division', methods=['GET', 'POST'])

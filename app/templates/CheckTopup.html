@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-        .translate_button{
-            background: transparent;
-            border: none;
-            text-decoration: underline;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .translate_button:focus{outline:0}
-    </style>
+    .translate_button {
+        background: transparent;
+        border: none;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .translate_button:focus {
+        outline: 0
+    }
+</style>
 <head>
     <title>Personal Information</title>
     <meta charset="utf-8">
@@ -43,145 +46,146 @@
 <div id="colorlib-page">
     <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
     <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
-			<h1 id="colorlib-logo"><a href="/home">
+        <h1 id="colorlib-logo"><a href="/home">
                 <span>
                     {% if icon == "NULL" %}
                         <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
                     {% else %}
                         <img src='{{ icon }}' alt="" width=100 height=100>
                     {% endif %}
-                </span><br>{{user.user_name}}</a>
-            </h1>
-			<nav id="colorlib-main-menu" role="navigation">
-				<ul>
-					<li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
-					<li ><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
-					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
-					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
-                    <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
-                     {% if  authority == 1 %}
-                        <li class="colorlib-active"><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
-                    {% endif %}
-                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
-				</ul>
-			</nav>
+                </span><br>{{ user.user_name }}</a>
+        </h1>
+        <nav id="colorlib-main-menu" role="navigation">
+            <ul>
+                <li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                <li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+                <li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+                <li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                {% if  authority == 1 %}
+                    <li class="colorlib-active"><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up
+                        List</a></li>
+                {% endif %}
+                <li>
+                    <button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to
+                        Home Page
+                    </button>
+                </li>
+            </ul>
+        </nav>
 
-			<div class="colorlib-footer">
-				<button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
-                            切换为中文
-                </button>
-				<div class="d-flex justify-content-center">
-					<form action="#" class="colorlib-subscribe-form">
-            <div class="form-group d-flex">
-            	<button onclick="clickToLogout();" class="i18n" contrastName="LOG_OUT_HERE">Log out at here</button>
+        <div class="colorlib-footer">
+            <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                切换为中文
+            </button>
+            <div class="d-flex justify-content-center">
+                <form action="#" class="colorlib-subscribe-form">
+                    <div class="form-group d-flex">
+                        <button onclick="clickToLogout();" class="i18n" contrastName="LOG_OUT_HERE">Log out at here
+                        </button>
+                    </div>
+                </form>
             </div>
-          </form>
-				</div>
-			</div>
-		</aside> <!-- END COLORLIB-ASIDE -->
+        </div>
+    </aside> <!-- END COLORLIB-ASIDE -->
     <div id="colorlib-main">
         <section class="ftco-section ftco-bread">
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n" contrastName="HOME">Home</a></span>
-                            <span class="i18n" ><a href="/collection" contrastName="COLLECTION" class="i18n">Collection</a></span>
-                        <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
-                        <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
-                        <span class="i18n" contrastName="TOPUPLIST">Top up list</span>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n"
+                                                                     contrastName="HOME">Home</a></span>
+                            <span class="i18n"><a href="/collection" contrastName="COLLECTION"
+                                                  class="i18n">Collection</a></span>
+                            <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
+                            <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+                            <span class="i18n" contrastName="TOPUPLIST">Top up list</span>
                         </p>
                         <h1 class="bread i18n" contrastName="MY_COLLECT">Top up List</h1>
                     </div>
                 </div>
             </div>
         </section>
-        <h> </h>
-    <div id="light" class="white_content" style="background-color: rgba(255,255,240,0.7);text-align: center">
-        <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
-        <table style="margin: auto" class="topup">
-            <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Top up Time</th>
-                <th>Top up Amount</th>
-                <th>Top up Situation</th>
-                <th>Confirmation</th>
-            </tr>
-            <tr>
-                <th>
-                    user1
-                </th>
-                <th>2022/04/29</th>
-                <th>$2000</th>
-                <th>
-                    Arrived to account
-                </th>
-                <th>
-                    <button class="confirm">Confirm</button>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    user1
-                </th>
-                <th>2022/04/29</th>
-                <th>$2000</th>
-                <th>
-                    Arrived to account
-                </th>
-                <th>
-                    <button class="confirm">Confirm</button>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    user1
-                </th>
-                <th>2022/04/29</th>
-                <th>$2000</th>
-                <th>
-                    Not arrived to account
-                </th>
-                <th>
-                    <button class="confirm">Confirm</button>
-                </th>
-            </tr>
-
-            </thead>
-            <tbody id="tbody1">
-            </tbody>
-        </table>
-
-    </div><!-- END COLORLIB-MAIN -->
-</div><!-- END COLORLIB-PAGE -->
-
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen" >
-    <svg class="circular" width="48px" height="48px">
-        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
-        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-                stroke="#F96D00"/>
-    </svg>
-</div>
+        <h></h>
+        <div id="light" class="white_content" style="background-color: rgba(255,255,240,0.7);text-align: center">
+            <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
+            <table style="margin: auto" class="topup">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Top up Time</th>
+                    <th>Top up Amount</th>
+                    <th>Top up Situation</th>
+                    {% if authority == 1 %}
+                        <th>Confirmation</th>
+                    {% endif %}
+                </tr>
+                {% for c in check %}
+                    <tr>
+                        <th>
+                            {{ c.user_name }}
+                        </th>
+                        <th>{{ c.time }}</th>
+                        <th>${{ c.money }}</th>
+                        <th>
+                            {% if c.situation %}
+                                Arrived to account
+                            {% else %}
+                                Need to be dealt with
+                            {% endif %}
+                        </th>
+                        {% if authority == 1 %}
+                            {% if c.situation %}
+                                <th>
+                                    <div class="confirm">Confirmed</div>
+                                </th>
+                            {% else %}
+                                <th>
+                                    <a class="confirm" href="/Confirm/{{ c.id }}"
+                                       onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
+                                       contrastName="CANCEL_ORDER">Confirm</a>
+                                </th>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
 
 
-<script src="../static/js/jquery.min.js"></script>
-<script src="../static/js/jquery-migrate-3.0.1.min.js"></script>
-<script src="../static/js/popper.min.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/jquery.easing.1.3.js"></script>
-<script src="../static/js/jquery.waypoints.min.js"></script>
-<script src="../static/js/jquery.stellar.min.js"></script>
-<script src="../static/js/owl.carousel.min.js"></script>
-<script src="../static/js/jquery.magnific-popup.min.js"></script>
-<script src="../static/js/aos.js"></script>
-<script src="../static/js/jquery.animateNumber.min.js"></script>
-<script src="../static/js/bootstrap-datepicker.js"></script>
-<script src="../static/js/jquery.timepicker.min.js"></script>
-<script src="../static/js/scrollax.min.js"></script>
-{#  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>#}
-{#  <script src="../static/js/google-map.js"></script>#}
-<script src="../static/js/main.js"></script>
+                </thead>
+                <tbody id="tbody1">
+                </tbody>
+            </table>
+
+        </div><!-- END COLORLIB-MAIN -->
+    </div><!-- END COLORLIB-PAGE -->
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery.easing.1.3.js"></script>
+    <script src="../static/js/jquery.waypoints.min.js"></script>
+    <script src="../static/js/jquery.stellar.min.js"></script>
+    <script src="../static/js/owl.carousel.min.js"></script>
+    <script src="../static/js/jquery.magnific-popup.min.js"></script>
+    <script src="../static/js/aos.js"></script>
+    <script src="../static/js/jquery.animateNumber.min.js"></script>
+    <script src="../static/js/bootstrap-datepicker.js"></script>
+    <script src="../static/js/jquery.timepicker.min.js"></script>
+    <script src="../static/js/scrollax.min.js"></script>
+    {#  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>#}
+    {#  <script src="../static/js/google-map.js"></script>#}
+    <script src="../static/js/main.js"></script>
 
 </div>
 </body>
