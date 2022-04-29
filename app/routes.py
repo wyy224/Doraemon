@@ -674,7 +674,6 @@ def home():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         profile = Profile.query.filter(Profile.user_id == user.id).first()
         user_icon = setIcon()
-        authority = session.get('authority')
         if profile.address == None:
             profile.address = ''
         if profile.phone_num == None:
@@ -682,7 +681,7 @@ def home():
         if profile.name == None:
             profile.name = ''
         return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                               type_value=all_type.values(), icon=user_icon, authority=authority)
+                               type_value=all_type.values(), icon=user_icon)
     else:
         return redirect(url_for('login'))
 
@@ -691,23 +690,14 @@ def home():
 def collection():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    authority = session.get('authority')
     collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects, authority = authority)
-
-@app.route('/CheckTopup')
-def CheckTopup():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
-    authority = session.get('authority')
-    return render_template('CheckTopup.html', authority = authority,user=user, icon=user_icon, islogin=islogined(),)
+    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects)
 
 
 @app.route('/modify', methods=['GET', 'POST'])
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
-    authority = session.get('authority')
     profile = Profile.query.filter(Profile.user_id == user.id).first()
     form = UpdateForm()
     ava_dir = Config.AVA_UPLOAD_DIR
@@ -732,7 +722,7 @@ def modify():
             flash('AVA uploaded and saved')
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form, authority = authority)
+    return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form)
 
 
 # To get the avatar
@@ -832,8 +822,7 @@ def main_page():
 def get_commodity():
     data = Commodity.query
     commodity = data.order_by(Commodity.release_time)
-    authority = session.get('authority')
-    return render_template("index.html", commodity=commodity, authority = authority)
+    return render_template("index.html", commodity=commodity)
 
 
 # @app.route('/division', methods=['GET', 'POST'])
