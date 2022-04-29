@@ -44,21 +44,26 @@
                 {{user.user_name}}</a></h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li><a href="/home">Home</a></li>
-					<li><a href="/collection">Collection</a></li>
-					<li><a href="/ShoppingCart">Shopping Cart</a></li>
-					<li><a href="/contact">Services</a></li>
-                    <li><a href="/Orders">Orders</a></li>
-                    <li><button onclick="location.href='/main_page'">Come back to Home Page</button> </li>
+					<li><a href="/home" class="i18n" contrastName="HOME">Home</a></li>
+					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+					<li><a href="/ShoppingCart" class="i18n" contrastName="SHOPPINGCART">Shopping Cart</a></li>
+					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                    <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                     {% if  authority == 1 %}
+                        <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
+                    {% endif %}
+                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="CBTHP">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
 
 			<div class="colorlib-footer">
-				<h3>You can click here ~</h3>
+				<button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                            切换为中文
+                </button>
 				<div class="d-flex justify-content-center">
 					<form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
-            	<button onclick="clickToLogout();">Log out at here</button>
+            	<button onclick="clickToLogout();" class="i18n" contrastName="LOAH">Log out at here</button>
             </div>
           </form>
 				</div>
@@ -116,7 +121,7 @@
                                     {{ form.name(size=11,value=profile.name) }}</p>
                                 <p>{{ form.submit(class="form_but") }}</p>
                             </form>
-                            <button onclick="change2();">Back</button>
+                            <button onclick="change2();" class="i18n" contrastName="BACK">Back</button>
 	                        </div>
                             </div>
 						</div>
@@ -176,3 +181,6 @@
     })
     }
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>

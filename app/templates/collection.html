@@ -59,6 +59,9 @@
 					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
 					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
                     <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                     {% if  authority == 1 %}
+                        <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
+                    {% endif %}
                     <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
@@ -85,6 +88,7 @@
                         <span class="i18n" contrastName="COLLECTION">Collection</span>
                         <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
                         <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+
                         </p>
                         <h1 class="bread i18n" contrastName="MY_COLLECT">My Collection</h1>
                     </div>
@@ -102,7 +106,7 @@
                                 <div class="overlay"></div>
                                 <div class="text ml-4 mb-4">
                                     <h3>{{ collects.commodity.commodity_name }}</h3>
-                                    <span class="tag">Model</span>
+
                                 </div>
                             </a>
                         </div>

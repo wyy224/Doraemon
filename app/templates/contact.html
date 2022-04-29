@@ -44,15 +44,15 @@
         <div class="inner_breadcrumb  ml-4">
             <ul class="short_ls">
                 {% if  authority == 1 %}
-                <a class="list" id="leaveroom" href="/adjust">Exit</a>
+                <a class="list i18n" id="leaveroom" href="/adjust" contrastName="EXIT">Exit</a>
                 {% else %}
-                <a class="list" id="leaveroom" href="/main_page">Exit</a>
+                <a class="list i18n" id="leaveroom" href="/main_page" contrastName="EXIT">Exit</a>
                 {% endif %}
                 <li>
-                    <a href="/index">Home</a>
+                    <a href="/index" class="i18n" contrastName="HOME">Home</a>
                     <span>/ /</span>
                 </li>
-                <li>Contact</li>
+                <li class="i18n" contrastName="CONTACT">Contact</li>
             </ul>
         </div>
     </div>
@@ -87,7 +87,7 @@
             <input id='send-msg-inp'>
 
             <button type="button" id='send-msg-btn'
-                    value="SEND" name="action"><i>Send</i></button>
+                    value="SEND" name="action" class="i18n" contrastName="SEND"><i>Send</i></button>
         </div>
     </section>
     <!-- //show Now-->
@@ -97,8 +97,8 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
                     <div class="address-gried-2">
-                        <b>Doraemon Instrument Store</b>
-                        <p>
+                        <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
+                        <p class="i18n" contrastName="GYBCOI">
                             Give you best choices of instruments!
                         </p>
                     </div>
