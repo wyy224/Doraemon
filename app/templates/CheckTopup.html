@@ -137,11 +137,13 @@
                         {% if authority == 1 %}
                             {% if c.situation %}
                                 <th>
-                                <div class="confirm">Confirmed</div>
+                                    <div class="confirm">Confirmed</div>
                                 </th>
                             {% else %}
                                 <th>
-                                    <a class="confirm" href="/Confirm/{{ c.id }}">Confirm</a>
+                                    <a class="confirm" href="/Confirm/{{ c.id }}"
+                                       onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
+                                       contrastName="CANCEL_ORDER">Confirm</a>
                                 </th>
                             {% endif %}
                         {% endif %}
