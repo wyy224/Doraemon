@@ -61,16 +61,8 @@ var execI18n = function() {
 		mode: 'map', //用Map的方式使用资源文件中的值
 		language: i18nLanguage,
 		callback: function() { //加载成功后设置显示内容
-			console.log(i18nLanguage);
 			var insertEle = j(".i18n");
 			insertEle.each(function() {
-				// 筛去其中的html语法
-				// var html = j(this).html();
-				// var reg = /<(.*)>/;
-				// if (reg.test(html)) {
-				// 	var htmlValue = reg.exec(html)[0];
-				// 	j(this).html(htmlValue + j.i18n.prop(contrastName));
-				// }
 				var contrastName = j(this).attr('contrastName');
 				// 根据i18n元素的 contrastName 获取内容写入'
 				console.log(j.i18n.prop(contrastName));
@@ -79,6 +71,19 @@ var execI18n = function() {
 					j(this).html(j.i18n.prop(contrastName));
 				};
 			});
+			// var insertEle_Single = j(".i18n-single")
+			// insertEle_Single.each(function() {
+			// 	this.path='../static/js/i18n/';
+			// 	var contrastName = j(this).attr('contrastName');
+			// 	// 根据i18n元素的 contrastName 获取内容写入'
+			// 	console.log(j.i18n.prop(contrastName));
+			// 	console.log(this.path);
+			// 	debugger
+			// 	if(contrastName) {
+			// 		j(this).html(j.i18n.prop(contrastName));
+			// 	};
+			// 	this.path='./static/js/i18n/';
+			// });
 			var insertInputEle = j(".i18n-input");
 			insertInputEle.each(function() {
 				var selectAttr = j(this).attr('selectattr');
