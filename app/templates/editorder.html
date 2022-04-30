@@ -23,27 +23,27 @@
                 <p class="payword">
                     <b>Delivery address: </b>
                     <input style="font-size: 24px" type="text"
-                           name="address" placeholder="Please enter..." required="" value='{{ details1.address }}'>
+                           name="address" placeholder="Please enter..." required="" value='{{ details.address }}'>
                 </p>
                 <p class="payword">
                     <b>Phone number: </b>
                     <input style="font-size: 24px" type="text"
-                           name="phone_num" placeholder="Please enter..." required="" value='{{ details1.phone_num }}'>
+                           name="phone_num" placeholder="Please enter..." required="" value='{{ details.phone_num }}'>
                 </p>
                 <p class="payword">
                     <b>Consignee name: </b>
                     <input style="font-size: 24px" type="text"
-                           name="name" placeholder="Please enter..." required="" value='{{ details1.name }}'>
+                           name="name" placeholder="Please enter..." required="" value='{{ details.name }}'>
                 </p>
                 <p class="payword">
                     <b>Transport: </b>
                     <select style="font-size: 24px" value="1" name="transport">
-                        {% if details1.transport == 1 %}
+                        {% if details.transport == '1' %}
                             <option value="1" selected>delivery home</option>
                         {% else %}
                             <option value="1">delivery home</option>
                         {% endif %}
-                        {% if details1.transport == 2 %}
+                        {% if details.transport == '2' %}
                             <option value="2" selected>pick up at the store</option>
                         {% else %}
                             <option value="2" >pick up at the store</option>

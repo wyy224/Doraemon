@@ -704,10 +704,19 @@ def receiveOder(id):
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     od_ed = OrderDetail.query.get(id)
-    # details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_ed.order_id).all()
-    details1 = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
-    print(details1)
-    return render_template('editorder.html', details1=details1)
+    details = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
+
+    if request.method == 'POST':
+        details.address = request.form['address']
+        details.phone_num = request.form['phone_num']
+        details.name = request.form['name']
+        details.transport = request.form['transport']
+        db.session.commit()
+        return redirect(url_for('singleOrder', id=id))
+
+
+
+    return render_template('editorder.html', details=details)
 
 
 @app.route('/home')
