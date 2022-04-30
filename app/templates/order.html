@@ -123,18 +123,18 @@
                                      height="400px"></a>
                             {% if order.status == 'Not deliver' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #c9040c" contrastName="Not deliver">Not deliver</span>
+                                      style="background: #c9040c" >Not deliver</span>
                             {% elif order.status == 'In transit' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #e0a800" contrastName="In transit"
+                                      style="background: #e0a800"
                                 >In transit</span>
                             {% elif order.status == 'Delivered' %}
                                 <span class="product-new-top i18n"
-                                      style="background: cornflowerblue" contrastName="Delivered"
+                                      style="background: cornflowerblue"
                                 >Delivered</span>
                             {% elif order.status == 'Signed in' %}
                                 <span class="product-new-top i18n"
-                                      style="background: green" contrastName="Signed in"
+                                      style="background: green"
                                 >Signed in</span>
                             {% endif %}
                             <div class="card-body">
@@ -153,23 +153,23 @@
                                      height="400px"></a>
                             {% if order.status == 'Not deliver' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #c9040c" contrastName="Not deliver">Not deliver</span>
+                                      style="background: #c9040c" >Not deliver</span>
                             {% elif order.status == 'In transit' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #e0a800" contrastName="In transit"
+                                      style="background: #e0a800"
                                 >In transit</span>
                             {% elif order.status == 'Delivered' %}
                                 <span class="product-new-top i18n"
-                                      style="background: cornflowerblue" contrastName="Delivered"
+                                      style="background: cornflowerblue"
                                 >Delivered</span>
                             {% elif order.status == 'Signed in' %}
                                 <span class="product-new-top i18n"
-                                      style="background: green" contrastName="Signed in"
+                                      style="background: green"
                                 >Signed in</span>
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title"><a
-                                        href="singleOrder/{{ order.detail }}">{{ order.commodity_name }} </a></h5>
+                                        href="singleOrder/{{ order.detail }}">Order{{ order.id }}: {{ order.commodity_name }} </a></h5>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}</p>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_INFO">Product information: </span>{{ order.introduction }}</p>
                             </div>
