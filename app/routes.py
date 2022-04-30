@@ -644,6 +644,7 @@ def singleOrder(id):
     user1 = User.query.filter(User.id == session.get('uid')).first()
     sta = order['status']
 
+
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1, sta=sta)
 
 
@@ -660,6 +661,9 @@ def change_status(id):
 
 def get_orders(p, list):
     order_detail = db.session.query(OrderDetail).filter(OrderDetail.order_id == p.id).all()
+    order_detail1 = db.session.query(Order).filter(Order.id == p.id).first()
+
+
     for od in order_detail:
         item = dict()
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
@@ -673,6 +677,8 @@ def get_orders(p, list):
         item['introduction'] = c.introduction
         item['price'] = c.price * od.commodity_num
         item['transport'] = p.transport
+        item['name'] = order_detail1.name
+        item['phone_num'] = order_detail1.phone_num
         list.append(item)
 
     return list

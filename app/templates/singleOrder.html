@@ -153,7 +153,8 @@
                         <p class="mb-4 i18n" contrastName="PRICE"><b>Price:</b> ${{ order.price }} </p>
                         <p class="mb-4 i18n" contrastName="ADDRESS"><b>Delivery address: </b>{{ order.address }}</p>
                         {#                                <p class="mb-4"><b>Phone number: </b>010-12345678</p>#}
-                        <p class="mb-4 i18n" contrastName="CONSIGNEE"><b>Consignee name: </b>{{ user1.user_name }}</p>
+                        <p class="mb-4 i18n" contrastName="CONSIGNEE"><b>Consignee name: </b>{{ order.name }}</p>
+                        <p class="mb-4 i18n" ><b>Phone number: </b>{{ order.phone_num }}</p>
                         {% if sta != 'Signed in' %}
                             <a class="mb-4 i18n" href="/edit/{{ order.detail }}"><b>Edit</b></a>
                         {% endif %}
