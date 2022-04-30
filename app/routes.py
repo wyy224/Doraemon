@@ -48,7 +48,7 @@ def base():
         user_icon = 'NULL'
         authority = 0
     return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
-                           icon=user_icon,authority=authority)
+                           icon=user_icon, authority=authority)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -72,7 +72,7 @@ def about():
         user_icon = 'NULL'
         authority = 0
     return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(),authority=authority)
+                           type_value=all_type.values(), authority=authority)
 
 
 room_user = {}
@@ -347,7 +347,7 @@ def purchase():
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                             transport=request.form['transport'])
+                             transport=request.form['transport'], phone_num=request.form['phone_num'], name=request.form['name'])
             # user.money = user.money - priceNeed * quantity
             db.session.add(neworder)
             db.session.commit()
@@ -427,7 +427,7 @@ def service():
         user_icon = 'NULL'
         authority = 0
     return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(),authority=authority)
+                           type_value=all_type.values(), authority=authority)
 
 
 @app.route('/typography')
@@ -630,10 +630,32 @@ def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
 
     user_icon = setIcon()
+
+
+    allorders = Order.query.all()
+    alllist = []
+    for o2 in allorders:
+        alllist = get_orders(o2, alllist)
+    session.pop('allorders', None)
+    session['allorders'] = alllist
+
     list = session.get('allorders')
     order = list[int(id) - 1]
     user1 = User.query.filter(User.id == session.get('uid')).first()
-    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
+    sta = order['status']
+
+    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1, sta=sta)
+
+
+@app.route('/status/<int:id>', methods=['GET', 'POST'])
+def change_status(id):
+    status = request.form['status']
+    list = session.get('allorders')
+    order1 = list[int(id) - 1]
+    order = Order.query.filter(Order.id == order1['id']).first()
+    order.status = status
+    db.session.commit()
+    return redirect(url_for('singleOrder', id=id))
 
 
 def get_orders(p, list):
@@ -644,12 +666,13 @@ def get_orders(p, list):
         item['id'] = p.id
         item['detail'] = od.id
         item['pic_path'] = c.pic_path
-        item['is_receive'] = p.is_receive
+        item['status'] = p.status
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
         item['address'] = p.address
         item['introduction'] = c.introduction
         item['price'] = c.price * od.commodity_num
+        item['transport'] = p.transport
         list.append(item)
 
     return list
@@ -671,10 +694,20 @@ def deleteOrder(id):
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
 def receiveOder(id):
-    order_rec = Order.query.get(id)
-    order_rec.is_receive = 1
+    list = session.get('allorders')
+    order1 = list[int(id) - 1]
+    order = Order.query.filter(Order.id == order1['id']).first()
+    order.status = "Signed in"
     db.session.commit()
-    return redirect(url_for('Orders'))
+    return redirect(url_for('singleOrder', id=id))
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    od_ed = OrderDetail.query.get(id)
+    # details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_ed.order_id).all()
+    details1 = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
+    print(details1)
+    return render_template('editorder.html', details1=details1)
 
 
 @app.route('/home')
@@ -715,7 +748,9 @@ def CheckTopup():
         check = CheckMoney.query.filter(CheckMoney.user_name == session.get('USERNAME')).all()
     else:
         check = CheckMoney.query.all()
-    return render_template('CheckTopup.html', authority=authority, user=user, icon=user_icon, islogin=islogined(), check=check)
+    return render_template('CheckTopup.html', authority=authority, user=user, icon=user_icon, islogin=islogined(),
+                           check=check)
+
 
 @app.route('/Confirm/<int:id>', methods=['GET', 'POST'])
 def Confirm(id):
@@ -725,7 +760,6 @@ def Confirm(id):
     user1.money = user1.money + a.money
     db.session.commit()
     return redirect(url_for('CheckTopup'))
-
 
 
 @app.route('/modify', methods=['GET', 'POST'])
@@ -941,6 +975,7 @@ def modify_single():
                                    type_value=all_type.values(), authority=authority, modify=IsModify)
     return redirect('/home')
 
+
 @app.route('/customer')
 def customer():
     if islogined():
@@ -949,5 +984,5 @@ def customer():
     else:
         user_icon = 'NULL'
         authority = 0
-    return render_template('customer.html',islogin=islogined(),authority=authority,types=all_type,
+    return render_template('customer.html', islogin=islogined(), authority=authority, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)

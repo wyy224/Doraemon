@@ -62,7 +62,7 @@ def set_db():
 
     # add order
 
-    order1 = Order(user_id=1, address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='Train')
+    order1 = Order(user_id=1, address='No. 100, Pingyuan Park, Chaoyang District, Beijing', transport='2')
 
     db.session.add(order1)
 
