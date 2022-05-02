@@ -999,5 +999,15 @@ def customer():
     else:
         user_icon = 'NULL'
         authority = 0
-    return render_template('customer.html', islogin=islogined(), authority=authority, types=all_type,
+    users = User.query.all()
+    allusers = []
+    for user in users:
+        item = dict()
+        item['id']=user.id
+        item['username']=user.user_name
+        item['email']=user.email
+        item['time']=user.register_time
+        item['money']=user.money
+        allusers.append(item)
+    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
