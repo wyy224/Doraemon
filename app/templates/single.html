@@ -113,7 +113,7 @@
                         </div>
                         <div class="occasion-cart">
                             <div class="toys single-item singlepage">
-                                <form action="/cart/add" method="post">
+                                <form action="" method="post" name="form1">
                                     <p class="payword">
                                         <b class="i18n" contrastName="NUMBER">Number :</b>
                                         <select id="country1" onchange="change_country(this.value)"
@@ -135,14 +135,14 @@
                                     <input type="hidden" name="commodity_id" value="{{ commodity.id }}">
                                     <input type="hidden" name="num" value="1">
 
-                                    <button type="submit" class="toys-cart ptoys-cart add i18n" contrastName="ADD_TO_CART">Add to Cart</button>
+                                    <button onclick="form1.action='/cart/add'" type="submit" class="toys-cart ptoys-cart add i18n" contrastName="ADD_TO_CART">Add to Cart</button>
                                     {% if authority ==1 %}
                                         <button type="button" class="toys-cart ptoys-cart add i18n"
                                                 onclick="location.href='/modify_commodity'" contrastName="EDIT_PRODUCT">edit product
                                         </button>
                                     {% else %}
-                                        <button type="button" class="toys-cart ptoys-cart add i18n"
-                                                onclick="location.href='/purchase'" contrastName="BUY_PRODUCT">buy product
+                                        <button class="toys-cart ptoys-cart add i18n"
+                                                onclick="form1.action='/single/add'" type="submit" contrastName="BUY_PRODUCT">buy product
                                         </button>
 
                                     {% endif %}
