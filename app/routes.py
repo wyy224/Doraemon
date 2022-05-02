@@ -336,6 +336,7 @@ def purchase():
                 print(info)
                 print(showList)
         else:
+            num = session['purchase_num']
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
@@ -362,7 +363,7 @@ def purchase():
                         com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
                         orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                         db.session.add(orderdetail)
-                        if(com.cargo_quantity < int(c_num)):
+                        if (com.cargo_quantity < int(c_num)):
                             message = "No more quantity"
                             return render_template('payfail.html', message=message)
 
@@ -396,8 +397,9 @@ def purchase():
             session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
+
         return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
-                               showlist=showList)
+                               showlist=showList, num=num)
     else:
         return redirect('/login')
 
@@ -600,6 +602,12 @@ def cart_add():
             return redirect(url_for('ShoppingCart'))
         else:
             return redirect(url_for('login'))
+
+
+@app.route("/single/add", methods=['GET', 'POST'])
+def single_add():
+    session['purchase_num'] = request.form['number']
+    return redirect(url_for('purchase'))
 
 
 @app.route('/newsingle', methods=['GET', 'POST'])
@@ -1021,11 +1029,11 @@ def customer():
     allusers = []
     for user in users:
         item = dict()
-        item['id']=user.id
-        item['username']=user.user_name
-        item['email']=user.email
-        item['time']=user.register_time
-        item['money']=user.money
+        item['id'] = user.id
+        item['username'] = user.user_name
+        item['email'] = user.email
+        item['time'] = user.register_time
+        item['money'] = user.money
         allusers.append(item)
     return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
