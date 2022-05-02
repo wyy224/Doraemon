@@ -101,12 +101,13 @@
                           <col width="50">
                       </colgroup>
                       <tbody class="ivu-table-tbody">
+                        {% for user in allusers %}
                         <tr draggable="false" class="ivu-table-row">
                             <td class="ivu-table-column">
                                 <div class="ivu-table-cell">
                                     <div class="ivu-table-cell-tooltip ivu-tooltip">
                                         <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content">1
+                                            <span class="ivu-table-cell-tooltip-content"> {{ user.id }}
                                             </span>
                                         </div>
                                     </div>
@@ -116,7 +117,7 @@
                                 <div class="ivu-table-cell">
                                     <div class="ivu-table-cell-tooltip ivu-tooltip">
                                         <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content">2
+                                            <span class="ivu-table-cell-tooltip-content"> {{ user.username }}
                                             </span>
                                         </div>
                                     </div>
@@ -126,7 +127,7 @@
                                 <div class="ivu-table-cell">
                                     <div class="ivu-table-cell-tooltip ivu-tooltip">
                                         <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content">3
+                                            <span class="ivu-table-cell-tooltip-content"> {{ user.email }}
                                             </span>
                                         </div>
                                     </div>
@@ -136,7 +137,7 @@
                                 <div class="ivu-table-cell">
                                     <div class="ivu-table-cell-tooltip ivu-tooltip">
                                         <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content">4
+                                            <span class="ivu-table-cell-tooltip-content"> {{ user.time }}
                                             </span>
                                         </div>
                                     </div>
@@ -146,7 +147,7 @@
                                 <div class="ivu-table-cell">
                                     <div class="ivu-table-cell-tooltip ivu-tooltip">
                                         <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content">5
+                                            <span class="ivu-table-cell-tooltip-content"> {{ user.money }}
                                             </span>
                                         </div>
                                     </div>
@@ -167,6 +168,7 @@
                                 </div>
                             </td>
                         </tr>
+                       {% endfor %}
                       </tbody>
                   </table>
               </div>
