@@ -279,7 +279,7 @@ def index():
 
 @app.route('/icon')
 def icon():
-    return render_template('icon.html', types=all_type, ype_value=all_type.values())
+    return render_template('icon.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/product')
