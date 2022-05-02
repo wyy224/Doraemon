@@ -43,10 +43,12 @@ def base():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
-                           icon=user_icon)
+                           icon=user_icon, authority=authority)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -65,10 +67,12 @@ def search():
 def about():
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(), authority=authority)
 
 
 room_user = {}
@@ -275,7 +279,7 @@ def index():
 
 @app.route('/icon')
 def icon():
-    return render_template('icon.html', types=all_type, ype_value=all_type.values())
+    return render_template('icon.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/product')
@@ -343,29 +347,50 @@ def purchase():
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                             transport=request.form['transport'])
+                             transport=request.form['transport'], phone_num=request.form['phone_num'],
+                             name=request.form['name'])
             # user.money = user.money - priceNeed * quantity
             db.session.add(neworder)
-            db.session.commit()
+            # db.session.commit()
+            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
             if session.get('order_list') is not None:
-                for c in session.get('order_list'):
-                    c_name = c['name']
-                    c_num = c['num']
-                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
-                    db.session.add(orderdetail)
-                    com.cargo_quantity -= int(c_num)
-                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
-                    for a in cart:
-                        db.session.delete(a)
+                if user.money >= int(session.get('price')):
+                    user.money = user.money - int(session.get('price'))
+                    for c in session.get('order_list'):
+                        c_name = c['name']
+                        c_num = c['num']
+                        com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                        orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
+                        db.session.add(orderdetail)
+                        if(com.cargo_quantity < int(c_num)):
+                            message = "No more quantity"
+                            return render_template('payfail.html', message=message)
+
+                        com.cargo_quantity -= int(c_num)
+                        cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                        for a in cart:
+                            db.session.delete(a)
+                else:
+                    message = "Insufficient account balance"
+                    return (render_template('payfail.html', message=message))
             else:
-                com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
-                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id,
-                                          commodity_num=request.form['num'])
-                print("before:", com.cargo_quantity)
-                com.cargo_quantity -= int(request.form['num'])
-                print("after:", com.cargo_quantity)
-                db.session.add(orderdetail)
+                quantity = int(request.form['num'])
+                priceNeed = int(commodity.price)
+                if user.money >= priceNeed * quantity:
+                    user.money = user.money - priceNeed * quantity
+                    com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+                    orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id,
+                                              commodity_num=request.form['num'])
+                    print("before:", com.cargo_quantity)
+                    if com.cargo_quantity < int(request.form['num']):
+                        message = "No more quantity"
+                        return render_template('payfail.html', message=message)
+                    com.cargo_quantity -= int(request.form['num'])
+                    print("after:", com.cargo_quantity)
+                    db.session.add(orderdetail)
+                else:
+                    message = "Insufficient account balance"
+                    return (render_template('payfail.html', message=message))
             session.pop('cid', None)
             session.pop('order_list', None)
             session.pop('price', None)
@@ -417,10 +442,13 @@ def topup():
 def service():
     if islogined():
         user_icon = setIcon()
+        authority = session.get('authority')
+        session['cid'] = id
     else:
         user_icon = 'NULL'
+        authority = 0
     return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values())
+                           type_value=all_type.values(), authority=authority)
 
 
 @app.route('/typography')
@@ -623,26 +651,53 @@ def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
 
     user_icon = setIcon()
+
+    allorders = Order.query.all()
+    alllist = []
+    for o2 in allorders:
+        alllist = get_orders(o2, alllist)
+    session.pop('allorders', None)
+    session['allorders'] = alllist
+
     list = session.get('allorders')
     order = list[int(id) - 1]
     user1 = User.query.filter(User.id == session.get('uid')).first()
-    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1)
+    sta = order['status']
+
+    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
+                           sta=sta)
+
+
+@app.route('/status/<int:id>', methods=['GET', 'POST'])
+def change_status(id):
+    status = request.form['status']
+    list = session.get('allorders')
+    order1 = list[int(id) - 1]
+    order = Order.query.filter(Order.id == order1['id']).first()
+    order.status = status
+    db.session.commit()
+    return redirect(url_for('singleOrder', id=id))
 
 
 def get_orders(p, list):
     order_detail = db.session.query(OrderDetail).filter(OrderDetail.order_id == p.id).all()
+    order_detail1 = db.session.query(Order).filter(Order.id == p.id).first()
+
     for od in order_detail:
         item = dict()
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
         item['id'] = p.id
         item['detail'] = od.id
         item['pic_path'] = c.pic_path
-        item['is_receive'] = p.is_receive
+        item['status'] = p.status
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
         item['address'] = p.address
         item['introduction'] = c.introduction
         item['price'] = c.price * od.commodity_num
+        item['transport'] = p.transport
+        item['name'] = order_detail1.name
+        item['phone_num'] = order_detail1.phone_num
         list.append(item)
 
     return list
@@ -664,10 +719,28 @@ def deleteOrder(id):
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
 def receiveOder(id):
-    order_rec = Order.query.get(id)
-    order_rec.is_receive = 1
+    list = session.get('allorders')
+    order1 = list[int(id) - 1]
+    order = Order.query.filter(Order.id == order1['id']).first()
+    order.status = "Signed in"
     db.session.commit()
-    return redirect(url_for('Orders'))
+    return redirect(url_for('singleOrder', id=id))
+
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    od_ed = OrderDetail.query.get(id)
+    details = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
+
+    if request.method == 'POST':
+        details.address = request.form['address']
+        details.phone_num = request.form['phone_num']
+        details.name = request.form['name']
+        details.transport = request.form['transport']
+        db.session.commit()
+        return redirect(url_for('singleOrder', id=id))
+
+    return render_template('editorder.html', details=details)
 
 
 @app.route('/home')
@@ -708,7 +781,9 @@ def CheckTopup():
         check = CheckMoney.query.filter(CheckMoney.user_name == session.get('USERNAME')).all()
     else:
         check = CheckMoney.query.all()
-    return render_template('CheckTopup.html', authority=authority, user=user, icon=user_icon, islogin=islogined(), check=check)
+    return render_template('CheckTopup.html', authority=authority, user=user, icon=user_icon, islogin=islogined(),
+                           check=check)
+
 
 @app.route('/Confirm/<int:id>', methods=['GET', 'POST'])
 def Confirm(id):
@@ -718,7 +793,6 @@ def Confirm(id):
     user1.money = user1.money + a.money
     db.session.commit()
     return redirect(url_for('CheckTopup'))
-
 
 
 @app.route('/modify', methods=['GET', 'POST'])
@@ -840,11 +914,13 @@ def main_page():
     if islogined():
         name = session['USERNAME']
         user_icon = setIcon()
+        authority = session.get('authority')
     else:
         name = "visitor"
         user_icon = 'NULL'
+        authority = 0
     return render_template('index.html', islogin=islogined(), username=name, types=all_type,
-                           ype_value=all_type.values(), icon=user_icon)
+                           ype_value=all_type.values(), icon=user_icon, authority=authority)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
@@ -931,3 +1007,25 @@ def modify_single():
             return render_template('newsingle.html', islogin=islogined(), commodity=commodity, types=all_type,
                                    type_value=all_type.values(), authority=authority, modify=IsModify)
     return redirect('/home')
+
+
+@app.route('/customer')
+def customer():
+    if islogined():
+        user_icon = setIcon()
+        authority = session.get('authority')
+    else:
+        user_icon = 'NULL'
+        authority = 0
+    users = User.query.all()
+    allusers = []
+    for user in users:
+        item = dict()
+        item['id']=user.id
+        item['username']=user.user_name
+        item['email']=user.email
+        item['time']=user.register_time
+        item['money']=user.money
+        allusers.append(item)
+    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
+                           ype_value=all_type.values(), icon=user_icon)

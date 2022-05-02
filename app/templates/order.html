@@ -121,18 +121,25 @@
                             <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
-                            {% if order.is_receive %}
-                                <span class="product-new-top"
-                                      style="background: #28a745"
-                                >received</span>
-                            {% else %}
-                                <span class="product-new-top"
-                                      style="background: #dc3545"
-                                >Arrived</span>
+                            {% if order.status == 'Not deliver' %}
+                                <span class="product-new-top i18n"
+                                      style="background: #c9040c" >Not deliver</span>
+                            {% elif order.status == 'In transit' %}
+                                <span class="product-new-top i18n"
+                                      style="background: #e0a800"
+                                >In transit</span>
+                            {% elif order.status == 'Delivered' %}
+                                <span class="product-new-top i18n"
+                                      style="background: cornflowerblue"
+                                >Delivered</span>
+                            {% elif order.status == 'Signed in' %}
+                                <span class="product-new-top i18n"
+                                      style="background: green"
+                                >Signed in</span>
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title"><a
-                                        href="singleOrder/{{ order.detail }}">{{ order.commodity_name }} </a></h5>
+                                        href="singleOrder/{{ order.detail }}">Order{{ order.id }}: {{ order.commodity_name }} </a></h5>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}</p>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_INFO">Product information: </span>{{ order.introduction }}</p>
                             </div>
@@ -144,20 +151,25 @@
                             <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
-                            {% if order.is_receive %}
+                            {% if order.status == 'Not deliver' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #28a745"
-                                      contrastName="RECEIVED"
-                                >Received</span>
-                            {% else %}
+                                      style="background: #c9040c" >Not deliver</span>
+                            {% elif order.status == 'In transit' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #dc3545"
-                                      contrastName="ARRIVED"
-                                >Arrived</span>
+                                      style="background: #e0a800"
+                                >In transit</span>
+                            {% elif order.status == 'Delivered' %}
+                                <span class="product-new-top i18n"
+                                      style="background: cornflowerblue"
+                                >Delivered</span>
+                            {% elif order.status == 'Signed in' %}
+                                <span class="product-new-top i18n"
+                                      style="background: green"
+                                >Signed in</span>
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title"><a
-                                        href="singleOrder/{{ order.detail }}">{{ order.commodity_name }} </a></h5>
+                                        href="singleOrder/{{ order.detail }}">Order{{ order.id }}: {{ order.commodity_name }} </a></h5>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}</p>
                                 <p class="card-text"><span class="i18n" contrastName="PAY_INFO">Product information: </span>{{ order.introduction }}</p>
                             </div>

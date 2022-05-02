@@ -17,11 +17,10 @@
         </td>
         <td>{subtotal}</td>
         <td>
-            <span class="del i18n" contrastName="DELETE">Delete</span>
+            <span class="del i18n" contrastName="DELETE">
+                Delete
+            </span>
         </td>
-{#        <td>#}
-{#            <span class="pay_for">Pay!</span>#}
-{#        </td>#}
     </tr>
 </template>
 <template id="temp1">
@@ -193,6 +192,7 @@
             //利用事件冒泡的原理，把事件添加给父级box
             var e=ev||event;
             var target=e.target||e.srcElement;//获取当前点击对象
+            console.log(e.target.className);
             var cls=target.className;
             if (cls.indexOf("check")!=-1)cls='check';
             switch (cls) {
@@ -222,12 +222,16 @@
                         this.onblur=null;//销毁事件
                     };
                     break;
-                case 'del': //删除商品
+                case 'del i18n': //删除商品
                     var tr=target.parentNode.parentNode;
                     var tds=tr.cells;
-                    if (confirm('Are you sure to delete?'))
+                    var really=confirm('Are you sure to delete?');
+                    if(really)
+                    {
                         change(tds[1].innerText,'delete',1);
                         tbody.removeChild(tr);
+                        debugger
+                    }
                     break;
                 case 'pay_for': //付款
                     var tr=target.parentNode.parentNode;
@@ -240,8 +244,10 @@
                     break;
                 case 'delAll'://删除全部商品
                     if (confirm('Are you sure to delete all?'))
+                    {
                         change('','delAll',1);
                         tbody.innerHTML='';
+                    }
                     break;
                 case 'cancel':
                     var index=target.getAttribute('data-index');

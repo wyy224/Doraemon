@@ -51,9 +51,11 @@
     <!--show Now-->
     <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
         <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
-            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3 i18n" href="index" contrastName="INSTRUMENTS_SHOP">Instruments Shop</h3>
+            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3 i18n" href="index"
+                contrastName="INSTRUMENTS_SHOP">Instruments Shop</h3>
             {% if authority ==1 %}
-                <button type="button" class="addproduct i18n" onclick="location.href='/newsingle'" contrastName="ADD_PRODUCT">add product
+                <button type="button" class="addproduct i18n" onclick="location.href='/newsingle'"
+                        contrastName="ADD_PRODUCT">add product
                 </button>
 
             {% endif %}
@@ -92,7 +94,8 @@
                                 <div class="col-xs-8 img-deal1">
                                     <h3>{{ commodity.commodity_name }}</h3>
                                     <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
-                                    <span class="i18n" contrastName="RELEASE_TIME">release_time:</span><span>{{ commodity.release_time }}</span>
+                                    <span class="i18n"
+                                          contrastName="RELEASE_TIME">release_time:</span><span>{{ commodity.release_time }}</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -111,7 +114,8 @@
                                             <img src="{{ product.pic_path }}" class="img-thumbnail img-fluid" alt="">
                                             <div class="men-cart-pro">
                                                 <div class="inner-men-cart-pro">
-                                                    <a href="single/{{ product.id }}" class="link-product-add-cart i18n" contrastName="QV">Quick View</a>
+                                                    <a href="single/{{ product.id }}" class="link-product-add-cart i18n"
+                                                       contrastName="QV">Quick View</a>
                                                 </div>
                                             </div>
                                             <span class="product-new-top i18n" contrastName="NEW">New</span>
@@ -124,7 +128,9 @@
                                                             <a href="single/{{ product.id }}">{{ product.commodity_name }}</a>
                                                         </h4>
                                                         <div class="grid-price mt-2">
-                                                            <span class="money ">{{ product.price }}</span>
+                                                            <span class="money ">{{ product.price }}</span><br>
+                                                            <span class="i18n" contrastName="COLLECT_NUM">collect_num:</span>
+                                                            <span id="collect_num">{{ product.collect_num }}</span>
                                                         </div>
                                                     </div>
                                                     <ul class="stars">
@@ -246,7 +252,8 @@
         </li>
     </ul>
     <ul style="display: flex;justify-content: center">
-        <span class="i18n" contrastName="TOTAL2">Total: </span>{{ products.pages }} <span class="i18n" contrastName="PAGES">pages</span>
+        <span class="i18n" contrastName="TOTAL2">Total: </span>{{ products.pages }} <span class="i18n"
+                                                                                          contrastName="PAGES">pages</span>
     </ul>
     <!-- //show Now-->
     <!--subscribe-address-->
@@ -254,12 +261,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
-                        <div class="address-gried-2">
-                            <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
-                            <p class="i18n" contrastName="GYBCOI">
-                                Give you best choices of instruments!
-                            </p>
-                        </div>
+                    <div class="address-gried-2">
+                        <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
+                        <p class="i18n" contrastName="GYBCOI">
+                            Give you best choices of instruments!
+                        </p>
+                    </div>
                 </div>
                 <div class="col-lg-6 col-md-6 address-w3l-right text-center">
                     <div class="address-gried ">
@@ -495,9 +502,16 @@
                     if (document.getElementById("button_collect" + product).style.background === "rgb(255, 193, 7)") {
                         console.log("12")
                         document.getElementById("button_collect" + product).style.background = "#ea1d5d"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a-0)-1;
+                        var c =document.getElementById("collect_num").innerHTML=b;
+
                     } else {
                         console.log("123")
                         document.getElementById("button_collect" + product).style.background = "rgb(255, 193, 7)"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a-0)+1;
+                        var c =document.getElementById("collect_num").innerHTML=b;
                     }
                     alert(data)
                     {#console.log("123");#}

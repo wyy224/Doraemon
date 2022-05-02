@@ -8700,30 +8700,32 @@ textarea.form-control {
   transform: translateY(-50%);
   color: rgba(255, 255, 255, 0.8); }
 
-.topup{
-  margin-top: 100px;
-  margin-bottom: 100px;
-  border: solid 4px #b3d7ff;
-  width: 100%;
-  text-align: center;
-  background-color: rgba(255,255,230,0.5);
-}
-td, th {
- border-bottom: 2px solid #b3d7ff;
-  border-right: 2px solid #b3d7ff;
-  text-align: center;
+/*.topup{*/
+/*  margin-top: 100px;*/
+/*  margin-bottom: 100px;*/
+/*  border: solid 4px #b3d7ff;*/
+/*  width: 100%;*/
+/*  text-align: center;*/
+/*  background-color: rgba(255,255,230,0.5);*/
+/*}*/
+/*td, th {*/
+/* border-bottom: 2px solid #b3d7ff;*/
+/*  border-right: 2px solid #b3d7ff;*/
+/*  text-align: center;*/
 
-}
-#light{
-  height: 700px;
-}
+/*}*/
+/*#light{*/
+/*  height: 700px;*/
+/*}*/
 
-td {
+/*td {*/
 
-border-top: 2px solid #b3d7ff;
+/*border-top: 2px solid #b3d7ff;*/
 
-}
+/*}*/
 .confirm{
+  max-width: 50%;
+  margin: 0 auto;
   cursor: pointer;
   border-radius: 5px;
   border-color: #d4edda;

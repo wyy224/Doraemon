@@ -58,23 +58,46 @@ $.i18n.properties = function(settings) {
 	}
 	if(settings.language === null) {settings.language='';}
 	
-	// load and parse bundle files
-	var files = getFiles(settings.name);
-	for(i=0; i<files.length; i++) {
-		// 1. load base (eg, Messages.properties)
-		loadAndParseFile(settings.path + files[i] + '.properties', settings.language, settings.mode);
-        // 2. with language code (eg, Messages_pt.properties)
-		if(settings.language.length >= 2) {
-            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings.language, settings.mode);
-		}
-		// 3. with language code and country code (eg, Messages_pt_PT.properties)
-        if(settings.language.length >= 5) {
-            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 5) +'.properties', settings.language, settings.mode);
-        }
-	}
-	
 	// call callback
-	if(settings.callback){ settings.callback(); }
+	if(settings.callback){
+        console.log(window.location.href.toString().indexOf('single'));
+        if((window.location.href.toString().indexOf('single'))!=-1)
+        {
+            settings.path='../static/js/i18n/';
+            // load and parse bundle files
+            var files = getFiles(settings.name);
+            for(i=0; i<files.length; i++) {
+                // 1. load base (eg, Messages.properties)
+                loadAndParseFile(settings.path + files[i] + '.properties', settings.language, settings.mode);
+                // 2. with language code (eg, Messages_pt.properties)
+                if(settings.language.length >= 2) {
+                    loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings.language, settings.mode);
+                }
+                // 3. with language code and country code (eg, Messages_pt_PT.properties)
+                if(settings.language.length >= 5) {
+                    loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 5) +'.properties', settings.language, settings.mode);
+                }
+            }
+        }
+        else{
+            settings.path='./static/js/i18n/';
+            // load and parse bundle files
+            var files = getFiles(settings.name);
+            for(i=0; i<files.length; i++) {
+                // 1. load base (eg, Messages.properties)
+                loadAndParseFile(settings.path + files[i] + '.properties', settings.language, settings.mode);
+                // 2. with language code (eg, Messages_pt.properties)
+                if(settings.language.length >= 2) {
+                    loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings.language, settings.mode);
+                }
+                // 3. with language code and country code (eg, Messages_pt_PT.properties)
+                if(settings.language.length >= 5) {
+                    loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 5) +'.properties', settings.language, settings.mode);
+                }
+            }
+        }
+        settings.callback();
+    }
 };
 
 

@@ -41,8 +41,10 @@
     {#      这边要改到下面放头像的地方去#}
 
     {% if user == current_user %} {# 判断用户是不是当前用户 #}
-        <br><a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary i18n" contrastName="CHANGE_AVATAR">Change your avatar <span
-            class="fa fa-edit"></span></a>
+        <br>
+        <a style="margin-top: 10px" href="/change-avatar/" class="btn btn-primary i18n" contrastName="CHANGE_AVATAR">Change
+            your avatar <span
+                    class="fa fa-edit"></span></a>
     {% endif %}
 </div>
 
@@ -66,10 +68,12 @@
                 <li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
                 <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                 {% if  authority == 1 %}
-                        <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
-                    {% endif %}
+                    <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
+                {% endif %}
                 <li>
-                    <button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button>
+                    <button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to
+                        Home Page
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -79,7 +83,9 @@
             <div class="d-flex justify-content-center">
                 <form action="#" class="colorlib-subscribe-form">
                     <div class="form-group d-flex">
-                        <button onclick="location.href='/main_page'" class="i18n" contrastName="LOG_OUT_HERE">Log out at here</button>
+                        <button onclick="location.href='/main_page'" class="i18n" contrastName="LOG_OUT_HERE">Log out at
+                            here
+                        </button>
                     </div>
                 </form>
             </div>
@@ -90,7 +96,8 @@
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-center align-items-center">
                     <div class="col-md-8 ftco-animate">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n" contrastName="HOME">Home</a></span>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n"
+                                                                     contrastName="HOME">Home</a></span>
                             <span class="i18n" contrastName="COLLECTION">Collection</span>
                             <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
@@ -116,13 +123,21 @@
                     <section class="home-slider js-fullheight owl-carousel">
                         <div class="slider-item js-fullheight"
                              style="background-image: url({{ order.pic_path }});">
-                            {% if order.is_receive %}
+                            {% if sta == 'Not deliver' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #28a745" contrastName="RECEIVED">received</span>
-                            {% else %}
+                                      style="background: #c9040c" >Not deliver</span>
+                            {% elif sta == 'In transit' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #dc3545" contrastName="ARRIVED"
-                                >Arrived</span>
+                                      style="background: #e0a800"
+                                >In transit</span>
+                            {% elif sta == 'Delivered' %}
+                                <span class="product-new-top i18n"
+                                      style="background: cornflowerblue"
+                                >Delivered</span>
+                            {% elif sta == 'Signed in' %}
+                                <span class="product-new-top i18n"
+                                      style="background: green"
+                                >Signed in</span>
                             {% endif %}
                         </div>
 
@@ -138,35 +153,67 @@
                         <p class="mb-4 i18n" contrastName="PRICE"><b>Price:</b> ${{ order.price }} </p>
                         <p class="mb-4 i18n" contrastName="ADDRESS"><b>Delivery address: </b>{{ order.address }}</p>
                         {#                                <p class="mb-4"><b>Phone number: </b>010-12345678</p>#}
-                        <p class="mb-4 i18n"  contrastName="CONSIGNEE"><b>Consignee name: </b>{{ user1.user_name }}</p>
+                        <p class="mb-4 i18n" ><b>Consignee name: </b>{{ order.name }}</p>
+                        <p class="mb-4 i18n" ><b>Phone number: </b>{{ order.phone_num }}</p>
+                        {% if sta != 'Signed in' %}
+                            <a class="mb-4 i18n" href="/edit/{{ order.detail }}"><b>Edit</b></a>
+                        {% endif %}
 
-                        <form action="order/receive/{{ order.id }}" method="post">
-                            <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}" class="i18n"  contrastName="CONFIRM_RECEIPT">Confirm receipt</button>
-                        </form>
-{#                        <form >#}
-{#                            <select id="country1"  class="frm-field required sect" >#}
-{#                              {% if = %}#}
-{#                                <option value="1" selected>1</option>#}
-{#                              {% else %}#}
-{#                                  <option value="1">1</option>#}
-{#                              {% endif %}  #}
-{#                              #}
-{#                              <option value="2">2</option>#}
-{#                              <option value="3">3</option>#}
-{#                              <option value="4">4</option>#}
-{#                              <option value="5">5</option>#}
-{#                              <option value="6">6</option>#}
-{#                               </span><input name="box" style="width:50px;position:absolute;left:20px;">#}
-{##}
-{#                           </select>#}
-{##}
-{#                        </form>#}
-{#                        <button type="button" class="toys-cart ptoys-cart add" onclick="location.href='/modify_commodity'">edit order</button>#}
-                        <form action="order/delete/{{ order.id }}" method="post">
-                            <button class="cancel i18n"
-                                    onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}" contrastName="CANCEL_ORDER">Cancel order
-                            </button>
-                        </form>
+                        {% if user.authority==0 %}
+                            {% if sta == "Delivered" %}
+                                <form action="order/receive/{{ order.detail }}" method="post">
+                                    <button onclick="{if(confirm('Please reconfirm that your order has been delivered!')){return true;}return false;}"
+                                            class="i18n" contrastName="CONFIRM_RECEIPT">Confirm receipt
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            {% if sta != 'Signed in' %}
+                                <form action="/status/{{ order.id }}" method="post">
+                                    <select id="status" onchange="change_country(this.value)"
+                                            class="frm-field required sect" name="status">
+                                        {% if sta == "Not deliver" %}
+                                            <option value="Not deliver" selected>Not deliver</option>
+                                        {% else %}
+                                            <option value="Not deliver">Not deliver</option>
+                                        {% endif %}
+                                        {% if order.transport != '2' %}
+                                            {% if sta == "In transit" %}
+                                                <option value="In transit" selected>In transit</option>
+                                            {% else %}
+                                                <option value="In transit">In transit</option>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if sta == "Delivered" %}
+                                            <option value="Delivered" selected>Delivered</option>
+                                        {% else %}
+                                            <option value="Delivered">Delivered</option>
+                                        {% endif %}
+                                        {#                                        {% if sta == "Signed in" %}#}
+                                        {#                                            <option value="Signed in" selected>Signed in</option>#}
+                                        {#                                        {% else %}#}
+                                        {#                                            <option value="Signed in">Signed in</option>#}
+                                        {#                                        {% endif %}#}
+                                    </select>
+                                    <br>
+                                    <button onclick="{if(confirm('Please confirm that you want to change the status of this order!')){return true;}return false;}"
+                                            class="i18n" >Change order status
+                                    </button>
+                                </form>
+                            {% else %}
+                                <div>status: {{ sta }}</div>
+                            {% endif %}
+
+                        {% endif %}
+                        {% if sta != 'Signed in' %}
+                            <form action="order/delete/{{ order.id }}" method="post">
+                                <button class="cancel i18n"
+                                        onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}"
+                                        contrastName="CANCEL_ORDER">Cancel order
+                                </button>
+                            </form>
+                        {% endif %}
+
 
                     </div>
                 </div>
@@ -223,3 +270,4 @@
         })
     }
 </script>
+

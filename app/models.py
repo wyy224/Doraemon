@@ -83,7 +83,9 @@ class Order(db.Model):
     purchase_time = db.Column(db.DateTime, default=datetime.now)
     address = db.Column(db.String(64), nullable=False)
     transport = db.Column(db.String(64), nullable=False)
-    is_receive = db.Column(db.Boolean, default=False, nullable=False)
+    status = db.Column(db.String(64), default='Not deliver', nullable=False)
+    phone_num = db.Column(db.String(11), nullable=True)
+    name = db.Column(db.String(11), nullable=True)
 
 
 # A table of order detail
