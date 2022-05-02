@@ -336,7 +336,6 @@ def purchase():
                 print(info)
                 print(showList)
         else:
-            num = session['purchase_num']
             price = commodity.price
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
@@ -397,7 +396,7 @@ def purchase():
             session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
-
+        num = session['purchase_num']
         return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
                                showlist=showList, num=num)
     else:
