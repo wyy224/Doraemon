@@ -347,29 +347,50 @@ def purchase():
             #                  commodity_num=quantity, address=request.form['address'],
             #                  transport=request.form['transport'])
             neworder = Order(user_id=session.get('uid'), address=request.form['address'],
-                             transport=request.form['transport'], phone_num=request.form['phone_num'], name=request.form['name'])
+                             transport=request.form['transport'], phone_num=request.form['phone_num'],
+                             name=request.form['name'])
             # user.money = user.money - priceNeed * quantity
             db.session.add(neworder)
-            db.session.commit()
+            # db.session.commit()
+            user = User.query.filter(User.user_name == session.get('USERNAME')).first()
             if session.get('order_list') is not None:
-                for c in session.get('order_list'):
-                    c_name = c['name']
-                    c_num = c['num']
-                    com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
-                    orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
-                    db.session.add(orderdetail)
-                    com.cargo_quantity -= int(c_num)
-                    cart = Cart.query.filter(Cart.commodity_id == com.id).all()
-                    for a in cart:
-                        db.session.delete(a)
+                if user.money >= int(session.get('price')):
+                    user.money = user.money - int(session.get('price'))
+                    for c in session.get('order_list'):
+                        c_name = c['name']
+                        c_num = c['num']
+                        com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                        orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
+                        db.session.add(orderdetail)
+                        if(com.cargo_quantity < int(c_num)):
+                            message = "No more quantity"
+                            return render_template('payfail.html', message=message)
+
+                        com.cargo_quantity -= int(c_num)
+                        cart = Cart.query.filter(Cart.commodity_id == com.id).all()
+                        for a in cart:
+                            db.session.delete(a)
+                else:
+                    message = "Insufficient account balance"
+                    return (render_template('payfail.html', message=message))
             else:
-                com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
-                orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id,
-                                          commodity_num=request.form['num'])
-                print("before:", com.cargo_quantity)
-                com.cargo_quantity -= int(request.form['num'])
-                print("after:", com.cargo_quantity)
-                db.session.add(orderdetail)
+                quantity = int(request.form['num'])
+                priceNeed = int(commodity.price)
+                if user.money >= priceNeed * quantity:
+                    user.money = user.money - priceNeed * quantity
+                    com = Commodity.query.filter(Commodity.id == session.get('cid')).first()
+                    orderdetail = OrderDetail(commodity_id=session.get('cid'), order_id=neworder.id,
+                                              commodity_num=request.form['num'])
+                    print("before:", com.cargo_quantity)
+                    if com.cargo_quantity < int(request.form['num']):
+                        message = "No more quantity"
+                        return render_template('payfail.html', message=message)
+                    com.cargo_quantity -= int(request.form['num'])
+                    print("after:", com.cargo_quantity)
+                    db.session.add(orderdetail)
+                else:
+                    message = "Insufficient account balance"
+                    return (render_template('payfail.html', message=message))
             session.pop('cid', None)
             session.pop('order_list', None)
             session.pop('price', None)
@@ -631,7 +652,6 @@ def singleOrder(id):
 
     user_icon = setIcon()
 
-
     allorders = Order.query.all()
     alllist = []
     for o2 in allorders:
@@ -644,8 +664,8 @@ def singleOrder(id):
     user1 = User.query.filter(User.id == session.get('uid')).first()
     sta = order['status']
 
-
-    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1, sta=sta)
+    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
+                           sta=sta)
 
 
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
@@ -662,7 +682,6 @@ def change_status(id):
 def get_orders(p, list):
     order_detail = db.session.query(OrderDetail).filter(OrderDetail.order_id == p.id).all()
     order_detail1 = db.session.query(Order).filter(Order.id == p.id).first()
-
 
     for od in order_detail:
         item = dict()
@@ -707,6 +726,7 @@ def receiveOder(id):
     db.session.commit()
     return redirect(url_for('singleOrder', id=id))
 
+
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     od_ed = OrderDetail.query.get(id)
@@ -719,8 +739,6 @@ def edit(id):
         details.transport = request.form['transport']
         db.session.commit()
         return redirect(url_for('singleOrder', id=id))
-
-
 
     return render_template('editorder.html', details=details)
 
