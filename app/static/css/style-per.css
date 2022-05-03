@@ -7752,6 +7752,20 @@ h1, h2, h3, h4, h5,
     text-align: center;
     line-height: 2.3;
 }
+
+.product-new-top-left {
+    background: #fb383b;
+    color: #fff;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 90px;
+    font-size: 16px;
+    height: 34px;
+    text-align: center;
+    line-height: 2.3;
+}
+
 .product-new-top-big {
     background: #fb383b;
     color: #fff;
