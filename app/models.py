@@ -86,6 +86,8 @@ class Order(db.Model):
     status = db.Column(db.String(64), default='Not deliver', nullable=False)
     phone_num = db.Column(db.String(11), nullable=True)
     name = db.Column(db.String(11), nullable=True)
+    Urgent = db.Column(db.Boolean, default=False, nullable=False)
+
 
 
 # A table of order detail

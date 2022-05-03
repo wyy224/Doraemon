@@ -171,6 +171,7 @@
                                                            value="{{ user_id }}"/>
                                                     <input type="hidden" value="{{ product.id }}"
                                                            id="product_id">
+                                                    {% if authority != 1 %}
                                                     <button id="button_collect{{ product.id }}"
                                                             class="toys-cart ptoys-cart"
                                                             {% if product.is_collected %}
@@ -181,6 +182,7 @@
                                                             onclick=collect("{{ product.id }}")>
                                                         <i class="fas fa-star"></i>
                                                     </button>
+                                                    {% endif %}
                                                     {#                                                    </form>#}
                                                 </div>
                                             </div>

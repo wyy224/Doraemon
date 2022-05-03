@@ -630,8 +630,8 @@ def Orders():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         user_icon = setIcon()
-        orders = Order.query.filter(Order.user_id == session.get('uid'))
-        allorders = Order.query.all()
+        orders = Order.query.filter(Order.user_id == session.get('uid')).order_by(Order.Urgent.desc()).all()
+        allorders = Order.query.order_by(Order.Urgent.desc()).all()
         list = [];
         alllist = []
         for o in orders:
@@ -705,6 +705,7 @@ def get_orders(p, list):
         item['transport'] = p.transport
         item['name'] = order_detail1.name
         item['phone_num'] = order_detail1.phone_num
+        item['urgent'] = p.Urgent
         list.append(item)
 
     return list
@@ -728,6 +729,22 @@ def deleteOrder(id):
     db.session.delete(order)
     db.session.commit()
     return redirect(url_for('Orders'))
+
+@app.route('/singleOrder/order/urgent/<int:id>', methods=['GET', 'POST'])
+def urgent(id):
+    od_del = OrderDetail.query.get(id)
+    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
+    order = Order.query.filter(Order.id == details.order_id).first()
+    if(order.Urgent):
+        order.Urgent = 0
+    else:
+        order.Urgent = 1
+    db.session.commit()
+    return redirect(url_for('singleOrder', id=id))
+
+
+
+
 
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
