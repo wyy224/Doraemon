@@ -363,7 +363,7 @@ def purchase():
                         orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                         db.session.add(orderdetail)
                         if (com.cargo_quantity < int(c_num)):
-                            message = "No more quantity"
+                            message = "No more stock"
                             return render_template('payfail.html', message=message)
 
                         com.cargo_quantity -= int(c_num)
@@ -383,7 +383,7 @@ def purchase():
                                               commodity_num=request.form['num'])
                     print("before:", com.cargo_quantity)
                     if com.cargo_quantity < int(request.form['num']):
-                        message = "No more quantity"
+                        message = "No more stock"
                         return render_template('payfail.html', message=message)
                     com.cargo_quantity -= int(request.form['num'])
                     print("after:", com.cargo_quantity)
@@ -716,9 +716,15 @@ def deleteOrder(id):
     # check if one order has multiple details
     details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).all()
     # if has only one detail then delete the order
+    money = 0
     for a in details:
         db.session.delete(a)
+        commodity = Commodity.query.filter(Commodity.id == a.commodity_id).first()
+        money = money + commodity.price * a.commodity_num
+        commodity.cargo_quantity = commodity.cargo_quantity + a.commodity_num
     order = Order.query.filter(Order.id == od_del.order_id).first()
+    user = User.query.filter(User.id == order.user_id).first()
+    user.money = user.money + money
     db.session.delete(order)
     db.session.commit()
     return redirect(url_for('Orders'))

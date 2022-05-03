@@ -65,6 +65,7 @@
 
                     {% for send in message %}
                         {% if send.author_id == uid %}
+                            <img>
                             <li class="right">{{ send.content }}</li>
                         {% else %}
                             <li class="left">{{ send.user_name }}:{{ send.content }}</li>
