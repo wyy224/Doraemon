@@ -71,12 +71,11 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
-                    {% if authority == 0 %}
+                     {% if authority != 1 %}
 					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
 					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
                     {% endif %}
 					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
-
                     <li class="colorlib-active"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
                     <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
@@ -124,13 +123,8 @@
                             <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
-                                {% if order.urgent == 1 %}
                                 <span class="product-new-top-left i18n"
-                                      style="background: #c9040c" >Urgent</span>
-                                {% else %}
-                                    <span class="product-new-top-left i18n"
-                                      style="background: #28a745" >Normal</span>
-                                {% endif %}
+                                      style="background: #c9040c" >1</span>
                             {% if order.status == 'Not deliver' %}
                                 <span class="product-new-top i18n"
                                       style="background: #c9040c" >Not deliver</span>
@@ -161,13 +155,8 @@
                             <a href="singleOrder/{{ order.detail }}">
                                 <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                      height="400px"></a>
-                                {% if order.urgent == 1 %}
                                 <span class="product-new-top-left i18n"
-                                      style="background: #c9040c" >Urgent</span>
-                                {% else %}
-                                    <span class="product-new-top-left i18n"
-                                      style="background: #28a745" >Normal</span>
-                                {% endif %}
+                                      style="background: #c9040c" >1</span>
                             {% if order.status == 'Not deliver' %}
                                 <span class="product-new-top i18n"
                                       style="background: #c9040c" >Not deliver</span>
