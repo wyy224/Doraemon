@@ -698,7 +698,7 @@ def get_orders(p, list):
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
         item['id'] = p.id
         item['detail'] = od.id
-        item['pic_path'] = c.pic_path
+        item['pic_path'] = c.pic_path1
         item['status'] = p.status
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
