@@ -756,6 +756,7 @@ def receiveOder(id):
     order1 = list[int(id) - 1]
     order = Order.query.filter(Order.id == order1['id']).first()
     order.status = "Signed in"
+    order.Urgent = 0
     db.session.commit()
     return redirect(url_for('singleOrder', id=id))
 
