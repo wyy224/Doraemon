@@ -205,7 +205,10 @@ def on_leave(data):
 
 @app.route('/ShoppingCart')
 def ShoppingCart():
-    return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
+    if islogined():
+        return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/SearchResults')
@@ -794,12 +797,15 @@ def home():
 
 @app.route('/collection')
 def collection():
-    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-    user_icon = setIcon()
-    authority = session.get('authority')
-    collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-    return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
-                           authority=authority)
+    if islogined():
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        user_icon = setIcon()
+        authority = session.get('authority')
+        collects = Collections.query.filter(Collections.user_id == session.get('uid'))
+        return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
+                               authority=authority)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/CheckTopup')

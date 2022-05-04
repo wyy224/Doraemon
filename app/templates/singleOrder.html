@@ -122,7 +122,13 @@
                 <div class="author-image text img d-flex">
                     <section class="home-slider js-fullheight owl-carousel">
                         <div class="slider-item js-fullheight"
-                             style="background-image: url({{ order.pic_path }});">
+                             style="background-image: url({{ order.pic_path }});"> {% if order.urgent == 1 %}
+                                <span class="product-new-top-left i18n"
+                                      style="background: #c9040c" >Urgent</span>
+                                {% else %}
+                                    <span class="product-new-top-left i18n"
+                                      style="background: #28a745" >Normal</span>
+                                {% endif %}
                             {% if sta == 'Not deliver' %}
                                 <span class="product-new-top i18n"
                                       style="background: #c9040c" >Not deliver</span>
@@ -156,7 +162,9 @@
                         <p class="mb-4 i18n" ><b>Consignee name: </b>{{ order.name }}</p>
                         <p class="mb-4 i18n" ><b>Phone number: </b>{{ order.phone_num }}</p>
                         {% if sta != 'Signed in' %}
-                            <a class="mb-4 i18n" href="/edit/{{ order.detail }}"><b>Edit</b></a>
+                            {% if user1.authority == 0 %}
+                                <a class="mb-4 i18n" href="/edit/{{ order.detail }}"><b>Edit</b></a>
+                            {% endif %}
                         {% endif %}
 
                         {% if user.authority==0 %}

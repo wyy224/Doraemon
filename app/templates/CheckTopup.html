@@ -59,8 +59,10 @@
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
                 <li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                {% if authority == 0 %}
                 <li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
                 <li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+                {% endif %}
                 <li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
                 <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                 {% if  authority == 1 %}
