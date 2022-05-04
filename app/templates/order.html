@@ -71,8 +71,10 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                     {% if authority != 1 %}
 					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
 					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+                    {% endif %}
 					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
                     <li class="colorlib-active"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
