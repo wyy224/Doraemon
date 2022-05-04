@@ -698,7 +698,7 @@ def get_orders(p, list):
         c = db.session.query(Commodity).filter(Commodity.id == od.commodity_id).first()
         item['id'] = p.id
         item['detail'] = od.id
-        item['pic_path'] = c.pic_path
+        item['pic_path'] = c.pic_path1
         item['status'] = p.status
         item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
@@ -756,6 +756,7 @@ def receiveOder(id):
     order1 = list[int(id) - 1]
     order = Order.query.filter(Order.id == order1['id']).first()
     order.status = "Signed in"
+    order.Urgent = 0
     db.session.commit()
     return redirect(url_for('singleOrder', id=id))
 

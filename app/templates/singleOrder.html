@@ -122,7 +122,8 @@
                 <div class="author-image text img d-flex">
                     <section class="home-slider js-fullheight owl-carousel">
                         <div class="slider-item js-fullheight"
-                             style="background-image: url({{ order.pic_path1 }});"> {% if order.urgent == 1 %}
+                             style="background-image: url({{ order.pic_path }});">
+                            {% if order.urgent == 1 %}
                                 <span class="product-new-top-left i18n"
                                       style="background: #c9040c" >Urgent</span>
                                 {% else %}
@@ -177,13 +178,15 @@
                             {% endif %}
                         {% else %}
                             {% if sta != 'Signed in' %}
-                                {% if sta != 'Delivered' and  order.transport != '2'  %}
+                                {% if  order.transport != '2'  %}
                                     <form action="order/urgent/{{ order.detail }}" method="post">
                                     <button onclick="{if(confirm('Please confirm that you want to change the urgent status！')){return true;}return false;}"
                                             class="i18n" >Change the urgent status
                                     </button>
+                                    </form>
 
                                 {% endif %}
+                                <br>
                                 <form action="/status/{{ order.id }}" method="post">
                                     <select id="status" onchange="change_country(this.value)"
                                             class="frm-field required sect" name="status">
