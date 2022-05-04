@@ -83,7 +83,7 @@
             <div class="d-flex justify-content-center">
                 <form action="#" class="colorlib-subscribe-form">
                     <div class="form-group d-flex">
-                        <button onclick="location.href='/main_page'" class="i18n" contrastName="LOG_OUT_HERE">Log out at
+                        <button onclick="clickToLogout();" class="i18n" contrastName="LOG_OUT_HERE">Log out at
                             here
                         </button>
                     </div>
@@ -245,6 +245,24 @@
                 stroke="#F96D00"/>
     </svg>
 </div>
+
+<script>
+    function clickToLogout() {
+        $.post('/api/logout', {}).done(function (response) {
+            let server_code = response['returnValue']
+            if (server_code == 1) {
+                // success set done
+                alert("You have been logged out")
+                window.location.href = '/main_page';
+            } else {
+                alert("You have not been logged out")
+                window.location.href = '/home';
+            }
+        }).fail(function () {
+            console.log("Fail reset");
+        })
+    }
+</script>
 
 
 <script src="../static/js/jquery.min.js"></script>

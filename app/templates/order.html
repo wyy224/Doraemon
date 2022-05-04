@@ -224,7 +224,6 @@
 <script>
     function clickToLogout() {
         $.post('/api/logout', {}).done(function (response) {
-            alert("run")
             let server_code = response['returnValue']
             if (server_code == 1) {
                 // success set done

@@ -60,7 +60,7 @@ def search():
 
     final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
 
-    return render_template('SearchResults.html', final_search=final_search)
+    return render_template('SearchResults.html', final_search=final_search, types=all_type, type_value=all_type.values())
 
 
 @app.route('/about')
