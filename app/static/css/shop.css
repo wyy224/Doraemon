@@ -443,6 +443,8 @@ ul.stars li a:hover {
 .product-toys-info {
     border: 1px solid #ccc;
     padding: 10px;
+	height: 510px;
+	width: 400px;
 }
 /*-- //effect on products --*/
 
