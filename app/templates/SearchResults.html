@@ -58,7 +58,7 @@
           {% for search_results in final_search %}
             <div class="result-list">
 
-                <img href="main_page" src="{{ search_results.pic_path }}" alt=" " class="img-items">
+                <img href="main_page" src="{{ search_results.pic_path1 }}" alt=" " class="img-items">
                 <div class="item-info">
                     <a style="font-size: 35px;cursor: pointer"><b>{{ search_results.commodity_name }}</b></a>
                     <p style="font-size: 20px"><b>price: </b>{{ search_results.price }} <b>$</b></p>
@@ -96,7 +96,7 @@
           {% for search_results in final_search %}
             <div class="result-list">
 
-                <img href="main_page" src="{{ search_results.pic_path }}" alt=" " class="img-items">
+                <img href="main_page" src="{{ search_results.pic_path1 }}" alt=" " class="img-items">
                 <div class="item-info">
                     <a href="single/{{ search_results.id }}" style="font-size: 35px;cursor: pointer; color: black" ><b>{{ search_results.commodity_name }}</b></a>
                     <p style="font-size: 20px"><b>price: $</b>{{ search_results.price }} </p>

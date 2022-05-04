@@ -12,13 +12,13 @@
                 <h1 class="payword1"><span>Order Details:</span></h1>
                     {% if cart_pay is not none %}
                         {% for s in showlist %}
-                            <p class="payword"> <img src='{{ s.commodity.pic_path }}' alt="" width=100 height=100></p>
+                            <p class="payword"> <img src='{{ s.commodity.pic_path1 }}' alt="" width=100 height=100></p>
                             <p class="payword"><b class="i18n" contrastName="PRODUCT2">Product:</b> {{ s.commodity.commodity_name }}</p>
                             <b class="i18n" contrastName="NUMBER">Number:</b>
                             <p class="payword" style="font-size: 24px">{{ s.num }}</p>
                         {% endfor %}
                     {% else %}
-                        <p class="payword"> <img src='{{ commodity.pic_path }}' alt="" width=100 height=100></p>
+                        <p class="payword"> <img src='{{ commodity.pic_path1 }}' alt="" width=100 height=100></p>
                         <p class="payword"><b class="i18n" contrastName="PRODUCT2">Product:</b> {{ commodity.commodity_name }}</p>
                         <b class="i18n" contrastName="NUMBER" >Number:</b>
                         <input style="font-size: 24px" type="text" name="num" placeholder="Please enter..." required=""

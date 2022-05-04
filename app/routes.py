@@ -623,7 +623,7 @@ def newsingle():
         db.session.commit()
         session['cid'] = newcommodity.id
         print("22222222")
-        return redirect(url_for('upload'))
+        return redirect(url_for('review_pic'))
     else:
         return render_template('newsingle.html', islogin=islogined(), types=all_type, type_value=all_type.values())
 
@@ -938,8 +938,9 @@ def reg_mes():
 # bug
 @app.route('/api/logout', methods=["GET", "POST"])
 def logout():
-    session.pop("USERNAME", None)
-    session.pop("uid", None)
+    # session.pop("USERNAME", None)
+    # session.pop("uid", None)
+    session.clear()
     return jsonify({'returnValue': 1})
     # session.clear()
     # return redirect('/main_page')
@@ -985,6 +986,26 @@ def get_avatar(filename):
     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/instruments')),
                                filename, as_attachment=True)
 
+@app.route('/commodity_pic_review')
+def review_pic():
+    c = session['cid']
+    commodity = Commodity.query.filter(Commodity.id == c).first()
+    return render_template('upload_review.html', commodity=commodity)
+
+@app.route('/pic1_session_add')
+def add_pic1():
+    session['commodity_pic'] = 1
+    return redirect(url_for('upload'))
+
+@app.route('/pic2_session_add')
+def add_pic2():
+    session['commodity_pic'] = 2
+    return redirect(url_for('upload'))
+
+@app.route('/pic3_session_add')
+def add_pic3():
+    session['commodity_pic'] = 3
+    return redirect(url_for('upload'))
 
 @app.route('/change-commodity/', methods=['GET', 'POST'])
 def upload():
@@ -995,7 +1016,13 @@ def upload():
         print("../static/instruments/" + session['c_filename'])
         c = session['cid']
         commodity = Commodity.query.filter(Commodity.id == c).first()
-        commodity.pic_path = "../static/instruments/" + session['c_filename']
+        pic_position = session['commodity_pic']
+        if pic_position == 1:
+            commodity.pic_path1 = "../static/instruments/" + session['c_filename']
+        if pic_position == 2:
+            commodity.pic_path2 = "../static/instruments/" + session['c_filename']
+        if pic_position == 3:
+            commodity.pic_path3 = "../static/instruments/" + session['c_filename']
         db.session.commit()
         return redirect("/change-commodity/crop/")
     return render_template('upload.html')
@@ -1013,11 +1040,18 @@ def crop():
         url_s = filenames[0]
         url_m = filenames[1]
         url_l = filenames[2]
-        commodity.pic_path = "../static/instruments/" + url_l
+        pic_position = session['commodity_pic']
+        if pic_position == 1:
+            commodity.pic_path1 = "../static/instruments/" + url_l
+        if pic_position == 2:
+            commodity.pic_path2 = "../static/instruments/" + url_l
+        if pic_position == 3:
+            commodity.pic_path3 = "../static/instruments/" + url_l
         db.session.commit()
+        session.pop('commodity_pic', None)
         flash('Upload picture successfully', 'success')
 
-        return redirect("/shop")
+        return redirect("/commodity_pic_review")
     return render_template('crop.html')
 
 
@@ -1034,7 +1068,7 @@ def modify_single():
             commodity.price = request.form['price']
             commodity.introduction = request.form['introduction']
             db.session.commit()
-            return redirect('/shop')
+            return redirect('/commodity_pic_review')
         else:
             print("to start modify")
             IsModify = True

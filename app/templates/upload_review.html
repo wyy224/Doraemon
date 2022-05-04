@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review the commodity pictures</title>
+</head>
+<body>
+    <p><b>Picture1:</b></p>
+    <div>
+        {% if commodity.pic_path1 is not none %}
+        <img src="{{ commodity.pic_path1 }}">
+        {% else %}
+            <b>No picture</b>
+        {% endif %}
+    </div>
+    <a href="/pic1_session_add">Edit picture1</a>
+
+    <p><b>Picture2:</b></p>
+    <div>
+        {% if commodity.pic_path2 is not none %}
+        <img src="{{ commodity.pic_path2 }}">
+        {% else %}
+            <b>No picture</b>
+        {% endif %}
+    </div>
+    <a href="/pic2_session_add">Edit picture2</a>
+
+    <p><b>Picture3:</b></p>
+    <div>
+        {% if commodity.pic_path3 is not none %}
+        <img src="{{ commodity.pic_path3 }}">
+        {% else %}
+            <b>No picture</b>
+        {% endif %}
+    </div>
+    <a href="/pic3_session_add">Edit picture3</a>
+
+    <br>
+    <div>
+        <a href="/shop">Finish!</a>
+    </div>
+
+</body>
+</html>

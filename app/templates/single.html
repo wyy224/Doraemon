@@ -57,21 +57,39 @@
                         <div class="grid images_3_of_2">
                             <div class="flexslider1">
                                 <ul class="slides">
-                                    <li data-thumb="{{ commodity.pic_path }}">
+                                    {% if commodity.pic_path1 is not none %}
+                                        <li data-thumb="{{ commodity.pic_path1 }}">
+                                            <div style="display:flex;justify-content: center"><img
+                                                    src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
+                                                    alt=" "></div>
+                                        </li>
+                                    {% endif %}
+                                    {% if commodity.pic_path2 is not none %}
+                                        <li data-thumb="{{ commodity.pic_path2 }}">
+                                            <div style="display:flex;justify-content: center"><img
+                                                    src="{{ commodity.pic_path2 }}" data-imagezoom="true" class="img-fluid"
+                                                    alt=" "></div>
+                                        </li>
+                                    {% else %}
+                                        <li data-thumb="{{ commodity.pic_path1 }}">
                                         <div style="display:flex;justify-content: center"><img
-                                                src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid"
+                                                src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
                                                 alt=" "></div>
-                                    </li>
-                                    <li data-thumb="{{ commodity.pic_path }}">
-                                        <div style="display:flex;justify-content: center"><img
-                                                src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid"
-                                                alt=" "></div>
-                                    </li>
-                                    <li data-thumb="{{ commodity.pic_path }}">
-                                        <div style="display:flex;justify-content: center"><img
-                                                src="{{ commodity.pic_path }}" data-imagezoom="true" class="img-fluid"
-                                                alt=" "></div>
-                                    </li>
+                                        </li>
+                                    {% endif %}
+                                    {% if commodity.pic_path3 is not none %}
+                                        <li data-thumb="{{ commodity.pic_path3 }}">
+                                            <div style="display:flex;justify-content: center"><img
+                                                    src="{{ commodity.pic_path3 }}" data-imagezoom="true" class="img-fluid"
+                                                    alt=" "></div>
+                                        </li>
+                                    {% else %}
+                                        <li data-thumb="{{ commodity.pic_path1 }}">
+                                            <div style="display:flex;justify-content: center"><img
+                                                    src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
+                                                    alt=" "></div>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                                 <div class="clearfix"></div>
                             </div>

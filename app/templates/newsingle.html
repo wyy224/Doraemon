@@ -57,7 +57,50 @@
 
                   <div class="col-lg-8 single-right-left simpleCart_shelfItem">
                       {% if modify  %}
-                           <form action="" method="post">
+                         <div class="col-lg-4 single-right-left ">
+                            <div class="grid images_3_of_2">
+                                <div class="flexslider1">
+                                    <ul class="slides">
+                                        {% if commodity.pic_path1 is not none %}
+                                            <li data-thumb="{{ commodity.pic_path1 }}">
+                                                <div style="display:flex;justify-content: center"><img
+                                                        src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
+                                                        alt=" "></div>
+                                            </li>
+                                        {% endif %}
+                                        {% if commodity.pic_path2 is not none %}
+                                            <li data-thumb="{{ commodity.pic_path2 }}">
+                                                <div style="display:flex;justify-content: center"><img
+                                                        src="{{ commodity.pic_path2 }}" data-imagezoom="true" class="img-fluid"
+                                                        alt=" "></div>
+                                            </li>
+                                        {% else %}
+                                            <li data-thumb="{{ commodity.pic_path1 }}">
+                                            <div style="display:flex;justify-content: center"><img
+                                                    src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
+                                                    alt=" "></div>
+                                            </li>
+                                        {% endif %}
+                                        {% if commodity.pic_path3 is not none %}
+                                            <li data-thumb="{{ commodity.pic_path3 }}">
+                                                <div style="display:flex;justify-content: center"><img
+                                                        src="{{ commodity.pic_path3 }}" data-imagezoom="true" class="img-fluid"
+                                                        alt=" "></div>
+                                            </li>
+                                        {% else %}
+                                            <li data-thumb="{{ commodity.pic_path1 }}">
+                                                <div style="display:flex;justify-content: center"><img
+                                                        src="{{ commodity.pic_path1 }}" data-imagezoom="true" class="img-fluid"
+                                                        alt=" "></div>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                         </div>
+
+                          <form action="" method="post">
                           <h3 class="i18n" contrastName="PRODUCTNAME">product name:</h3><input class="form-control" type="text" name="product name" placeholder="Please enter..." required="" value={{commodity.commodity_name}}>
                           <p><span class="item_price i18n" contrastName="STOCK">stock:</span><input class="form-control" type="text" name="quantity" placeholder="Please enter..." required="" value={{commodity.cargo_quantity}}>
                           <span class="item_price i18n" contrastName="PRICE"> price:</span><input class="form-control" type="text" name="price" placeholder="Please enter..." required="" value={{commodity.price}}>
@@ -93,7 +136,7 @@
 
                       </form>
 
-                        {% endif %}
+                      {% endif %}
 
 
 

@@ -42,12 +42,12 @@ def set_db():
 
     # add commodity
 
-    piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path='../static/instruments/piano.jpg',
+    piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path1='../static/instruments/piano.jpg',
                       price=3000, introduction='piano', type='piano')
     db.session.add(piano)
 
     drum = Commodity(commodity_name='drum', cargo_quantity=100,
-                     pic_path='../static/instruments/drum.png',
+                     pic_path1='../static/instruments/drum.png',
                      price=3000, introduction='drum', type='drum')
     db.session.add(drum)
 
