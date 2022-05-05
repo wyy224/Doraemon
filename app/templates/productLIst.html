@@ -104,37 +104,43 @@
                             {% endif %}
                             {% if authority == 1 %}
                             <span class="i18n"><a href="/customer" class="i18n">Customer</a></span>
-                            <span class="mr-2"><a href="/productList" class="i18n">Products</a></span>
+                            <span class="mr-2">Products</span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
-                            <span class="i18n" contrastName="TOPUPLIST">Top up list</span>
+                            <span class="i18n" contrastName="TOPUPLIST"><a href="/CheckTopup" class="i18n">Top up list</a></span>
                         </p>
-                        <h1 class="bread i18n" contrastName="MY_COLLECT">Top up List</h1>
+                        <h1 class="bread i18n" contrastName="MY_COLLECT"></h1>
                     </div>
                 </div>
             </div>
         </section>
         <div class="ivu-table ivu-table-default ivu-table-border" style="background-color: rgba(255,255,240,0.7);text-align: center">
-              <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
+              <span style="font-size: 25px;font-family: fantasy;">Product List</span>
+              <br>
+              <button class = "search-btn" type="button" style="margin-bottom: 20px" onclick="location.href='/newProduct'" contrastName="ADD_PRODUCT">add
+                    product</button>
               <div class="ivu-table-header">
                   <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
                       <thead>
                         <tr>
                             <th class="ivu-table-column-sPsr1K">
-                                <div class="ivu-table-cell"><span class="">Customer</span></div>
+                                <div class="ivu-table-cell"><span class="">name</span></div>
                             </th>
                             <th class="ivu-table-column-0Ty1Sa">
-                                <div class="ivu-table-cell"><span class="">Top up Time</span></div>
-                            </th>
-                            <th class="ivu-table-column-BsnJUZ">
-                                <div class="ivu-table-cell"><span class="">Top up Amount</span></div>
+                                <div class="ivu-table-cell"><span class="">quantity</span></div>
                             </th>
                             <th class="ivu-table-column-HpbwFs">
-                                <div class="ivu-table-cell"><span class="">Top up Situation</span></div>
+                                <div class="ivu-table-cell"><span class="">release_time</span></div>
                             </th>
-                            {% if authority == 1 %}
-                                <th>Confirmation</th>
-                            {% endif %}
+                            <th class="ivu-table-column-BsnJUZ">
+                                <div class="ivu-table-cell"><span class="">price</span></div>
+                            </th>
+                            <th class="ivu-table-column-HpbwFs">
+                                <div class="ivu-table-cell"><span class="">type</span></div>
+                            </th>
+                            <th class="ivu-table-column-KCCxfC ivu-table-column-center ivu-table-hidden">
+                                <div class="ivu-table-cell ivu-table-hidden"><span class="">Operation</span></div>
+                            </th>
                         </tr>
                       </thead>
                   </table>
@@ -142,13 +148,23 @@
               <div class="ivu-table-body" style="">
                   <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
                       <tbody class="ivu-table-tbody">
-                        {% for c in check %}
+                        {% for c in commodities %}
                             <tr draggable="false" class="ivu-table-row">
                                 <td class="ivu-table-column">
                                     <div class="ivu-table-cell">
                                         <div class="ivu-table-cell-tooltip ivu-tooltip">
                                             <div class="ivu-tooltip-rel">
-                                                <span class="ivu-table-cell-tooltip-content">{{ c.user_name }}
+                                                <span class="ivu-table-cell-tooltip-content">{{ c.name }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="ivu-table-column">
+                                    <div class="ivu-table-cell">
+                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                            <div class="ivu-tooltip-rel">
+                                                <span class="ivu-table-cell-tooltip-content">{{ c.quantity }}
                                                 </span>
                                             </div>
                                         </div>
@@ -168,7 +184,7 @@
                                     <div class="ivu-table-cell">
                                         <div class="ivu-table-cell-tooltip ivu-tooltip">
                                             <div class="ivu-tooltip-rel">
-                                                <span class="ivu-table-cell-tooltip-content">${{ c.money }}
+                                                <span class="ivu-table-cell-tooltip-content">${{ c.price }}
                                                 </span>
                                             </div>
                                         </div>
@@ -178,37 +194,24 @@
                                     <div class="ivu-table-cell">
                                         <div class="ivu-table-cell-tooltip ivu-tooltip">
                                             <div class="ivu-tooltip-rel">
-                                                <span class="ivu-table-cell-tooltip-content">
-                                                    {% if c.situation %}
-                                                        Arrived to account
-                                                    {% else %}
-                                                        Need to be dealt with
-                                                    {% endif %}
+                                                <span class="ivu-table-cell-tooltip-content">${{ c.type }}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                            {% if authority == 1 %}
                                 <td class="ivu-table-column">
-                                    <div class="ivu-table-cell">
-                                        <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                            <div class="ivu-tooltip-rel">
-                                                <span class="ivu-table-cell-tooltip-content">
-                                                        {% if c.situation %}
-                                                            <div class="confirm">Confirmed</div>
-                                                        {% else %}
-                                                            <a class="confirm" href="/Confirm/{{ c.id }}"
-                                                               onclick="{if(confirm('Please confirm whether you want to agree to this recharge?')){return true;}return false;}"
-                                                               contrastName="CANCEL_ORDER">Confirm</a>
-                                                        {% endif %}
-
-                                                </span>
-                                            </div>
+                                    <div class="ivu-table-cell ivu-table-hidden">
+                                        <div style="display: flex; justify-content: center;">
+                                            <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
+                                                <a href="single/{{ c.id }}">View</a>
+                                            </button>
+                                            <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
+                                                <span>Edit</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
-                            {% endif %}
                             </tr>
                         {% endfor %}
                       </tbody>

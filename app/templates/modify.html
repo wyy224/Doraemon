@@ -44,13 +44,20 @@
                 {{user.user_name}}</a></h1>
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
-					<li><a href="/home" class="i18n" contrastName="HOME">Home</a></li>
+					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                    {% if authority != 1 %}
 					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
-					<li><a href="/ShoppingCart" class="i18n" contrastName="SHOPPINGCART">Shopping Cart</a></li>
-					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
                     <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    {% endif %}
+                    {% if authority == 1 %}
+                        <li><a href="/customer" class="i18n">Customer</a></li>
+                        <li><a href="/productList" class="i18n">Products</a></li>
+                        <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    {% endif %}
+					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
                     <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
-                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="CBTHP">Come back to Home Page</button> </li>
+                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
 				</ul>
 			</nav>
 

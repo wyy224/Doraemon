@@ -1144,6 +1144,9 @@ def modify_single():
 
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
     if islogined():
         user_icon = setIcon()
         authority = session.get('authority')
@@ -1172,7 +1175,7 @@ def customer():
                                types=all_type,
                                ype_value=all_type.values(), icon=user_icon)
 
-    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
+    return render_template('customer.html', islogin=islogined(), user=user,authority=authority, allusers=allusers, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
 
 
@@ -1187,3 +1190,26 @@ def get_customer(users):
         item['money'] = user.money
         allusers.append(item)
     return allusers
+
+@app.route('/productList')
+def productList():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
+    products = Commodity.query.all()
+    allproducts = get_product(products)
+    return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon, islogin=islogined(),
+                           )
+
+def get_product(products):
+    allproducts = []
+    for p in products:
+        item = dict()
+        item['id'] = p.id
+        item['name'] = p.commodity_name
+        item['quantity'] = p.cargo_quantity
+        item['time'] = p.release_time
+        item['price'] = p.price
+        item['type'] = p.type
+        allproducts.append(item)
+    return allproducts

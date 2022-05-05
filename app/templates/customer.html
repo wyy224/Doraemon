@@ -1,233 +1,301 @@
-{% extends "base.html" %}
-{% block content %}
-      <!--meta tags -->
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="keywords" content="Toys Shop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
-         Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design">
-      <link rel="stylesheet" href="../static/css/list.css" type="text/css">
-      <script>
-         addEventListener("load", function () {
-         	setTimeout(hideURLbar, 0);
-         }, false);
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .translate_button {
+        background: transparent;
+        border: none;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-         function hideURLbar() {
-         	window.scrollTo(0, 1);
-         }
-      </script>
-      <!--//meta tags ends here-->
-      <!--booststrap-->
-      <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
-      <!--//booststrap end-->
-      <!-- font-awesome icons -->
-      <link href="../static/css/fontawesome-all.min.css" rel="stylesheet" type="text/css" media="all">
-      <!-- //font-awesome icons -->
-      <!--stylesheets-->
-      <link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all">
-      <!--//stylesheets-->
+    .translate_button:focus {
+        outline: 0
+    }
+</style>
+<head>
+    <title>Personal Information</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-      <!-- banner -->
-      <div class="inner_page-banner one-img">
-      </div>
-      <!--//banner -->
-      <!-- short -->
-      <div class="using-border py-3">
-         <div class="inner_breadcrumb  ml-4">
-            <ul class="short_ls">
-               <li>
-                  <a href="index">Member</a>
-                  <span>/ /</span>
-               </li>
-               <li>List</li>
-            </ul>
-         </div>
-      </div>
-      <!-- //short-->
-      <!--Search -->
-      <div class = "card">
-         <div class = "header">
-              <form action="" method="post">
-                <div class = "form-box">
-                    User ID <input class = "search-field id" type="text" name="uid">
-                    Username <input class = "search-field name" type="text" name="uname">
-                    Email <input class = "search-field email" type="text" name="email">
-                    <button class = "search-btn" type="button">Search</button>
+    {#    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">#}
+    <link rel="stylesheet" href="../static/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../static/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../static/css/aos.css">
+
+    <link rel="stylesheet" href="../static/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../static/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../static/css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="../static/css/flaticon.css">
+    <link rel="stylesheet" href="../static/css/icomoon.css">
+    <link rel="stylesheet" href="../static/css/style-per.css">
+
+    <link rel="stylesheet" href="../static/css/list.css" type="text/css">
+</head>
+<body>
+
+<div id="colorlib-page">
+    <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+    <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
+        <h1 id="colorlib-logo"><a href="/home">
+                <span>
+                    {% if icon == "NULL" %}
+                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                    {% else %}
+                        <img src='{{ icon }}' alt="" width=100 height=100>
+                    {% endif %}
+                </span><br>{{ user.user_name }}</a>
+        </h1>
+        <nav id="colorlib-main-menu" role="navigation">
+                <ul>
+					<li class="colorlib-active"><a href="/home " class="i18n" contrastName="HOME">Home</a></li>
+                    {% if authority != 1 %}
+					<li><a href="/collection" class="i18n" contrastName="COLLECTION">Collection</a></li>
+					<li><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></li>
+                    <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    {% endif %}
+                    {% if authority == 1 %}
+                        <li><a href="/customer" class="i18n">Customer</a></li>
+                        <li><a href="/productList" class="i18n">Products</a></li>
+                        <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
+                    {% endif %}
+					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
+                    <li><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></li>
+                    <li><button onclick="location.href='/main_page'" class="i18n" contrastName="BACK_FROM_HOME">Come back to Home Page</button> </li>
+				</ul>
+        </nav>
+
+        <div class="colorlib-footer">
+            <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                切换为中文
+            </button>
+            <div class="d-flex justify-content-center">
+                <form action="#" class="colorlib-subscribe-form">
+                    <div class="form-group d-flex">
+                        <button onclick="clickToLogout();" class="i18n" contrastName="LOG_OUT_HERE">Log out at here
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </aside> <!-- END COLORLIB-ASIDE -->
+    <div id="colorlib-main">
+        <section class="ftco-section ftco-bread">
+            <div class="container">
+                <div class="row no-gutters slider-text justify-content-center align-items-center">
+                    <div class="col-md-8 ftco-animate">
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/home" class="i18n"
+                                                                     contrastName="HOME">Home</a></span>
+                            {% if authority != 1 %}
+                            <span class="i18n"><a href="/collection" contrastName="COLLECTION"
+                                                  class="i18n">Collection</a></span>
+                            <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
+                            <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+                            {% endif %}
+                            {% if authority == 1 %}
+                            <span class="i18n">Customer</span>
+                            <span class="mr-2"><a href="/productList" class="i18n">Products</a></span>
+                            <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+                            {% endif %}
+                            <span class="i18n" contrastName="TOPUPLIST"><a href="/CheckTopup" class="i18n">Top up list</a></span>
+                        </p>
+                        <h1 class="bread i18n" contrastName="MY_COLLECT"></h1>
+                    </div>
                 </div>
-              </form>
-          </div>
-          <div class="ivu-table ivu-table-default ivu-table-border" >
-              <div class="ivu-table-header">
-                  <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
-                      <colgroup>
-                          <col width="40">
-                          <col width="60">
-                          <col width="100">
-                          <col width="100">
-                          <col width="50">
-                          <col width="50">
-                      </colgroup>
-                      <thead>
-                        <tr>
-                            <th class="ivu-table-column-sPsr1K">
-                                <div class="ivu-table-cell"><span class="">User ID</span></div>
-                            </th>
-                            <th class="ivu-table-column-0Ty1Sa">
-                                <div class="ivu-table-cell"><span class="">Username</span></div>
-                            </th>
-                            <th class="ivu-table-column-BsnJUZ">
-                                <div class="ivu-table-cell"><span class="">Email</span></div>
-                            </th>
-                            <th class="ivu-table-column-HpbwFs">
-                                <div class="ivu-table-cell"><span class="">Register time</span></div>
-                            </th>
-                            <th class="ivu-table-column-GbhPDM ivu-table-column-left">
-                                <div class="ivu-table-cell"><span class="">Balance</span></div>
-                            </th>
-                            <th class="ivu-table-column-KCCxfC ivu-table-column-center ivu-table-hidden">
-                                <div class="ivu-table-cell ivu-table-hidden"><span class="">Operation</span></div>
-                            </th>
-                        </tr>
+            </div>
+        </section>
+        <div class="ivu-table ivu-table-default ivu-table-border" style="background-color: rgba(255,255,240,0.7);text-align: center">
+            <span style="font-size: 25px;font-family: fantasy;">Customer List</span>
+            <div class = "header">
+                    <form action="" method="post">
+                        <div class = "form-box">
+                            User ID <input class = "search-field id" type="text" name="uid">
+                            Username <input class = "search-field name" type="text" name="uname">
+                            Email <input class = "search-field email" type="text" name="email">
+                            <button class = "search-btn" type="button">Search</button>
+                        </div>
+                    </form>
+                </div>
+            <div class="ivu-table ivu-table-default ivu-table-border" >
+                    <div class="ivu-table-header">
+                        <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+                            <colgroup>
+                              <col width="40">
+                              <col width="60">
+                              <col width="100">
+                              <col width="100">
+                              <col width="50">
+                              <col width="50">
+                          </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="ivu-table-column-sPsr1K">
+                                    <div class="ivu-table-cell"><span class="">User ID</span></div>
+                                </th>
+                                <th class="ivu-table-column-0Ty1Sa">
+                                    <div class="ivu-table-cell"><span class="">Username</span></div>
+                                </th>
+                                <th class="ivu-table-column-BsnJUZ">
+                                    <div class="ivu-table-cell"><span class="">Email</span></div>
+                                </th>
+                                <th class="ivu-table-column-HpbwFs">
+                                    <div class="ivu-table-cell"><span class="">Register time</span></div>
+                                </th>
+                                <th class="ivu-table-column-GbhPDM ivu-table-column-left">
+                                    <div class="ivu-table-cell"><span class="">Balance</span></div>
+                                </th>
+                                <th class="ivu-table-column-KCCxfC ivu-table-column-center ivu-table-hidden">
+                                    <div class="ivu-table-cell ivu-table-hidden"><span class="">Operation</span></div>
+                                </th>
+                            </tr>
                       </thead>
-                  </table>
-              </div>
-              <div class="ivu-table-body" style="">
-                  <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
-                      <colgroup>
-                          <col width="40">
-                          <col width="60">
-                          <col width="100">
-                          <col width="100">
-                          <col width="50">
-                          <col width="50">
-                      </colgroup>
-                      <tbody class="ivu-table-tbody">
-                        {% for user in allusers %}
-                        <tr draggable="false" class="ivu-table-row">
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell">
-                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                        <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content"> {{ user.id }}
-                                            </span>
+                        </table>
+                    </div>
+                    <div class="ivu-table-body" style="">
+                        <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+                            <colgroup>
+                                <col width="40">
+                                <col width="60">
+                                <col width="100">
+                                <col width="100">
+                                <col width="50">
+                                <col width="50">
+                            </colgroup>
+                            <tbody class="ivu-table-tbody">
+                                {% for user in allusers %}
+                                <tr draggable="false" class="ivu-table-row">
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell">
+                                            <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                                <div class="ivu-tooltip-rel">
+                                                    <span class="ivu-table-cell-tooltip-content"> {{ user.id }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell">
-                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                        <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content"> {{ user.username }}
-                                            </span>
+                                    </td>
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell">
+                                            <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                                <div class="ivu-tooltip-rel">
+                                                    <span class="ivu-table-cell-tooltip-content"> {{ user.username }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell">
-                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                        <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content"> {{ user.email }}
-                                            </span>
+                                    </td>
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell">
+                                            <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                                <div class="ivu-tooltip-rel">
+                                                    <span class="ivu-table-cell-tooltip-content"> {{ user.email }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell">
-                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                        <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content"> {{ user.time }}
-                                            </span>
+                                    </td>
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell">
+                                            <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                                <div class="ivu-tooltip-rel">
+                                                    <span class="ivu-table-cell-tooltip-content"> {{ user.time }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell">
-                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
-                                        <div class="ivu-tooltip-rel">
-                                            <span class="ivu-table-cell-tooltip-content"> {{ user.money }}
-                                            </span>
+                                    </td>
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell">
+                                            <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                                <div class="ivu-tooltip-rel">
+                                                    <span class="ivu-table-cell-tooltip-content"> {{ user.money }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="ivu-table-column">
-                                <div class="ivu-table-cell ivu-table-hidden">
-                                    <div style="display: flex; justify-content: center;">
-                                        <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
-                                            <span>Edit</span>
-                                        </button>
-                                        <button type="button" class="ivu-btn ivu-btn-error ivu-btn-small" style="margin-right: 5px; display: block;">
-                                            <span>
-                                                Ban
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                       {% endfor %}
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-      <!-- //Modal 1-->
-      <!--js working-->
-      <script src='../static/js/jquery-2.2.3.min.js'></script>
-      <!--//js working-->
-      <!-- cart-js -->
-      <script src="../static/js/minicart.js"></script>
-      <script>
-         toys.render();
+                                    </td>
+                                    <td class="ivu-table-column">
+                                        <div class="ivu-table-cell ivu-table-hidden">
+                                            <div style="display: flex; justify-content: center;">
+                                                <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
+                                                    <span>Edit</span>
+                                                </button>
+                                                <button type="button" class="ivu-btn ivu-btn-error ivu-btn-small" style="margin-right: 5px; display: block;">
+                                                    <span>
+                                                        Ban
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                               {% endfor %}
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+    </div><!-- END COLORLIB-MAIN -->
+</div><!-- END COLORLIB-PAGE -->
 
-         toys.cart.on('toys_checkout', function (evt) {
-         	var items, len, i;
-
-         	if (this.subtotal() > 0) {
-         		items = this.items();
-
-         		for (i = 0, len = items.length; i < len; i++) {}
-         	}
-         });
-      </script>
-      <!-- //cart-js -->
-      <!-- start-smoth-scrolling -->
-      <script src="../static/js/move-top.js"></script>
-      <script src="../static/js/easing.js"></script>
-      <script>
-         jQuery(document).ready(function ($) {
-         	$(".scroll").click(function (event) {
-         		event.preventDefault();
-         		$('html,body').animate({
-         			scrollTop: $(this.hash).offset().top
-         		}, 900);
-         	});
-         });
-      </script>
-      <!-- start-smoth-scrolling -->
-      <!-- here stars scrolling icon -->
-      <script>
-         $(document).ready(function () {
-
-         	var defaults = {
-         		containerID: 'toTop', // fading element id
-         		containerHoverID: 'toTopHover', // fading element hover id
-         		scrollSpeed: 1200,
-         		easingType: 'linear'
-         	};
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
 
 
-         	$().UItoTop({
-         		easingType: 'easeOutQuart'
-         	});
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery.easing.1.3.js"></script>
+    <script src="../static/js/jquery.waypoints.min.js"></script>
+    <script src="../static/js/jquery.stellar.min.js"></script>
+    <script src="../static/js/owl.carousel.min.js"></script>
+    <script src="../static/js/jquery.magnific-popup.min.js"></script>
+    <script src="../static/js/aos.js"></script>
+    <script src="../static/js/jquery.animateNumber.min.js"></script>
+    <script src="../static/js/bootstrap-datepicker.js"></script>
+    <script src="../static/js/jquery.timepicker.min.js"></script>
+    <script src="../static/js/scrollax.min.js"></script>
+    {#  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>#}
+    {#  <script src="../static/js/google-map.js"></script>#}
+    <script src="../static/js/main.js"></script>
 
-         });
-      </script>
-      <!-- //here ends scrolling icon -->
-      <!--bootstrap working-->
-      <script src="../static/js/bootstrap.min.js"></script>
-      <!-- //bootstrap working-->      <!-- //OnScroll-Number-Increase-JavaScript -->
-{% endblock %}
+</div>
+</body>
+</html>
+<script>
+    function clickToLogout() {
+        $.post('/api/logout', {}).done(function (response) {
+            let server_code = response['returnValue']
+            if (server_code == 1) {
+                // success set done
+                alert("You have been logged out")
+                window.location.href = '/main_page';
+            } else {
+                alert("You have not been logged out")
+                window.location.href = '/home';
+            }
+        }).fail(function () {
+            console.log("Fail reset");
+        })
+    }
+</script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>
