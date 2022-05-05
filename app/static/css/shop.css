@@ -1212,12 +1212,13 @@ button.toys-cart {
 
 .addproduct{
 
-	margin-left: 1300px;
-	height: 40px;
-	width: 120px;
+
+	height: 60px;
+	width: 150px;
 	background: #e81921;
 	color: white;
 	border: none;
+	font-size: larger;
 }
 .addproduct:hover{
 	background: #c9040c;
