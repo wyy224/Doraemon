@@ -632,6 +632,7 @@ input#amount1 {
 }
 
 .side-bar {
+	max-width: 50%;
     padding: 20px 5px;
     border: 1px solid #e4e4e4;
 }
@@ -735,6 +736,7 @@ input.checked {
 .special-sec1 {
     margin-top: 15px;
     margin-left: 1px;
+	margin-right: 1px;
 }
 .wrapper_top_shop {
     padding: 15px;
