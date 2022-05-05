@@ -738,6 +738,7 @@ input.checked {
     margin-top: 15px;
     margin-left: 1px;
 	margin-right: 1px;
+	width: calc(100% - 30px);
 
 }
 .wrapper_top_shop {
