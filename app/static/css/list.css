@@ -128,3 +128,98 @@ tr {
   user-select: none;
   transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear,-webkit-box-shadow .2s linear;
 }
+.content-goods-publish {
+    padding: 15px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 0.8em;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    background: none repeat 0 0 #fff;
+}
+div.base-info-item h4 {
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    font-weight: 700;
+    color: #333;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: left;
+}
+.single-page-con{
+    min-width: 740px;
+    position: center;
+    padding: 30px;
+    left: 180px;
+    top: 100px;
+    right: 0;
+    bottom: 0;
+    height: calc(100% - 110px);
+    width: calc(100% - 180px);
+    overflow: auto;
+    z-index: 1;
+    transition: left .3s;
+}
+.single-page-con .single-page {
+    position: center;
+    margin: 10px;
+}
+.content-goods-publish {
+    padding: 15px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 0.8em;
+    background: none repeat 0 0 #fff;
+}
+
+.form-item-view {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.ivu-form-item {
+    margin-bottom: 24px;
+    vertical-align: top;
+    zoom: 1;
+}
+.ivu-form-item-label {
+    text-align: right;
+    vertical-align: middle;
+    float: left;
+    color: #515a6e;
+    line-height: 1;
+    padding: 10px 12px 10px 0;
+    box-sizing: border-box;
+}
+.ivu-input-wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+.ivu-form-item-content {
+    position: relative;
+    line-height: 32px;
+    width: 260px;
+    color: #515a6e;
+}
+.ivu-select{
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    color: #515a6e;
+    font-size: 12px;
+    line-height: normal;
+}
+.ivu-upload-drag {
+    background: #fff;
+    border: 1px dashed #dcdee2;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s ease;
+}

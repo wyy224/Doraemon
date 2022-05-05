@@ -629,21 +629,37 @@ def single_add():
     return redirect(url_for('purchase'))
 
 
-@app.route('/newsingle', methods=['GET', 'POST'])
-def newsingle():
+@app.route('/newProduct', methods=['GET', 'POST'])
+def newproduct():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
     if request.method == 'POST':
-        print("1111111")
-        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
-                                 price=request.form['price'], introduction=request.form['introduction'],
-                                 type=request.form['type'])
+        newcommodity = Commodity(commodity_name=request.form.get('product name'), cargo_quantity=request.form.get('quantity'),
+                                 price=request.form.get('price'), introduction=request.form.get('introduction'),
+                                 type=request.form.get('type'))
+        dir = "../static/instruments/"
+        if request.files.get('pic1') is not None:
+            f = request.files.get('pic1')
+            newcommodity.pic_path1 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        if request.files.get('pic2') is not None:
+            f = request.files.get('pic2')
+            newcommodity.pic_path2 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        if request.files.get('pic3') is not None:
+            f = request.files.get('pic3')
+            newcommodity.pic_path3 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        s = request.files.get('sound')
+        s_name = newcommodity.commodity_name +".mp3"
+        s.save(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
         db.session.add(newcommodity)
         db.session.commit()
         session['cid'] = newcommodity.id
-        print("22222222")
-        return redirect(url_for('review_pic'))
+        return redirect(url_for('home'))
     else:
-        return render_template('newsingle.html', islogin=islogined(), types=all_type, type_value=all_type.values())
-
+        return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon,authority=authority, types=all_type, type_value=all_type.values())
 
 @app.route('/Orders')
 def Orders():
