@@ -60,7 +60,8 @@ def search():
 
     final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
 
-    return render_template('SearchResults.html', final_search=final_search, types=all_type, type_value=all_type.values())
+    return render_template('SearchResults.html', final_search=final_search, types=all_type,
+                           type_value=all_type.values())
 
 
 @app.route('/about')
@@ -223,7 +224,7 @@ def get_cart():
     for prod in products:
         item = dict()
         pd = Commodity.query.filter(Commodity.id == prod.commodity_id).first()
-        item['pic'] = pd.pic_path
+        item['pic'] = pd.pic_path1
         item['name'] = pd.commodity_name
         item['price'] = pd.price
         item['num'] = prod.commodity_num
@@ -311,6 +312,8 @@ def product():
         authority = 0
         user_icon = 'NULL'
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    for a in new_commodities:
+        a.release_time = a.release_time.strftime('%Y-%m-%d')
     return render_template('product.html', islogin=islogined(), products=products, types=all_type,
                            type_value=all_type.values(),
                            authority=authority, new_commodities=new_commodities, icon=user_icon, type=types,
@@ -326,6 +329,7 @@ def purchase():
         showList = []
         info = dict()
         print(session.get('order_list'))
+        num = 0
         if session.get('order_list') is not None:
             price = session.get('price')
             cart_pay = session.get('order_list')
@@ -340,6 +344,7 @@ def purchase():
                 print(showList)
         else:
             price = commodity.price
+            num = session['purchase_num']
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
         if request.method == 'POST':
             # user = User.query.filter(User.user_name == session.get('USERNAME')).first()
@@ -377,6 +382,7 @@ def purchase():
                     message = "Insufficient account balance"
                     return (render_template('payfail.html', message=message))
             else:
+
                 quantity = int(request.form['num'])
                 priceNeed = int(commodity.price)
                 if user.money >= priceNeed * quantity:
@@ -399,7 +405,7 @@ def purchase():
             session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
-        num = session['purchase_num']
+
         return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
                                showlist=showList, num=num)
     else:
@@ -479,6 +485,8 @@ def shop():
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
+
+
     user_id = session.get('uid')
 
     for commodity in commodities:
@@ -487,6 +495,9 @@ def shop():
             commodity.is_collected = True
         else:
             commodity.is_collected = False
+
+    for a in new_commodities:
+        a.release_time = a.release_time.strftime('%Y-%m-%d')
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
@@ -733,21 +744,18 @@ def deleteOrder(id):
     db.session.commit()
     return redirect(url_for('Orders'))
 
+
 @app.route('/singleOrder/order/urgent/<int:id>', methods=['GET', 'POST'])
 def urgent(id):
     od_del = OrderDetail.query.get(id)
     details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
     order = Order.query.filter(Order.id == details.order_id).first()
-    if(order.Urgent):
+    if (order.Urgent):
         order.Urgent = 0
     else:
         order.Urgent = 1
     db.session.commit()
     return redirect(url_for('singleOrder', id=id))
-
-
-
-
 
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
@@ -797,15 +805,17 @@ def home():
     else:
         return redirect(url_for('login'))
 
+
 def get_info():
     info = dict()
     prod = Commodity.query.count()
-    user = int(User.query.count())-1
+    user = int(User.query.count()) - 1
     order = Order.query.count()
     info['prod'] = prod
     info['cus'] = user
     info['order'] = order
     return info
+
 
 def get_new():
     NOW = datetime.now()
@@ -817,6 +827,8 @@ def get_new():
     new['cus'] = cus
     new['cmnt'] = cmnt
     return new
+
+
 @app.route('/collection')
 def collection():
     if islogined():
@@ -1008,26 +1020,31 @@ def get_avatar(filename):
     return send_from_directory((os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static/instruments')),
                                filename, as_attachment=True)
 
+
 @app.route('/commodity_pic_review')
 def review_pic():
     c = session['cid']
     commodity = Commodity.query.filter(Commodity.id == c).first()
     return render_template('upload_review.html', commodity=commodity)
 
+
 @app.route('/pic1_session_add')
 def add_pic1():
     session['commodity_pic'] = 1
     return redirect(url_for('upload'))
+
 
 @app.route('/pic2_session_add')
 def add_pic2():
     session['commodity_pic'] = 2
     return redirect(url_for('upload'))
 
+
 @app.route('/pic3_session_add')
 def add_pic3():
     session['commodity_pic'] = 3
     return redirect(url_for('upload'))
+
 
 @app.route('/change-commodity/', methods=['GET', 'POST'])
 def upload():
@@ -1109,9 +1126,9 @@ def customer():
     else:
         user_icon = 'NULL'
         authority = 0
-    users_id=[]
-    users_name=[]
-    users_email=[]
+    users_id = []
+    users_name = []
+    users_email = []
     users = User.query.all()
     allusers = get_customer(users)
     if request.method == 'POST':
@@ -1134,14 +1151,15 @@ def customer():
     return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
 
+
 def get_customer(users):
     allusers = []
     for user in users:
         item = dict()
-        item['id']=user.id
-        item['username']=user.user_name
-        item['email']=user.email
-        item['time']=user.register_time
-        item['money']=user.money
+        item['id'] = user.id
+        item['username'] = user.user_name
+        item['email'] = user.email
+        item['time'] = user.register_time
+        item['money'] = user.money
         allusers.append(item)
     return allusers
