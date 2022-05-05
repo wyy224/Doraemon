@@ -56,36 +56,132 @@
     <!--show Now-->
     <div id="light" class="white_content">
         <span style="font-size: 25px;font-family: fantasy;">Communication Lists</span>
-        <table style="margin: auto">
-            <thead style="background-color: pink;color: white;">
-            <tr>
-                <th>Customer</th>
-                <th>Time</th>
-                <th>Count of messages</th>
-                <th>Situation</th>
-            </tr>
-            {% for u in user %}
-                <tr>
+            <div class = "card">
+            <div class = "header">
+              <form action="" method="post">
+                <div class = "form-box">
+                    User ID <input class = "search-field id" type="text" name="uid">
+                    Username <input class = "search-field name" type="text" name="uname">
+                    <button class = "search-btn" type="button">Search</button>
+                    <button class = "search-btn" type="button" onclick="location.href='/home'">Home</button>
+                </div>
+              </form>
+            </div>
 
-                    <th>{% if u.icon != None %}
-                        <img src="/static/uploaded_AVA/{{ u.icon }}" alt="" width=100 height=100>
-                    {% else %}
-                        <img src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
-                    {% endif %}<a href='contact_admin/{{ u.id }}'>{{ u.user_name }}</a></th>
-                    <th>{{ u.new_time }}</th>
-                    <th>{{ u.count }}</th>
-                    <th><a href='contact_admin/{{ u.id }}'>{% if u.situation %}read{% elif u.situation is none %} no message {% else %}unread{% endif %}</a>
-                    </th>
-                </tr>
-            {% endfor %}
+          <div class="ivu-table ivu-table-default ivu-table-border" >
+              <div class="ivu-table-header">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 350px;">
+                      <colgroup>
+                          <col width="40">
+                          <col width="60">
+                          <col width="80">
+                          <col width="80">
+                          <col width="50">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                            <th>
+                                <div class="ivu-table-cell"><span class="">Photo</span></div>
+                            </th>
+                            <th >
+                                <div class="ivu-table-cell"><span class="">Username</span></div>
+                            </th>
+                            <th >
+                                <div class="ivu-table-cell"><span class="">Time</span></div>
+                            </th>
+                            <th >
+                                <div class="ivu-table-cell"><span class="">Count of messages</span></div>
+                            </th>
+                            <th>
+                                <div class="ivu-table-cell ivu-table-hidden"><span class="">Situation</span></div>
+                            </th>
+                        </tr>
+                      </thead>
+                    </table>
+                </div>
+              <div class="ivu-table-body" style="">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+                      <colgroup>
+                          <col width="40">
+                          <col width="60">
+                          <col width="80">
+                          <col width="80">
+                          <col width="50">
+                      </colgroup>
+                      <tbody class="ivu-table-tbody">
 
-            </thead>
-            <tbody id="tbody1">
-            </tbody>
-        </table>
-        <div class="pay_cancel">
-            <a style="background: hotpink;color: white;padding: 10px" onclick="location.href='/home'">Home</a>
-        </div>
+                        {% for u in user %}
+                        <tr draggable="false" class="ivu-table-row">
+                            <td class="ivu-table-column">
+                                <div class="ivu-table-cell">
+                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                        <div class="ivu-tooltip-rel">
+{#                                            <span class="ivu-table-cell-tooltip-content">#}
+                                                {% if u.icon != None %}
+                                                    <img class="ivu-table-cell-tooltip-content" src="/static/uploaded_AVA/{{ u.icon }}" alt="" width=100 height=100>
+                                                {% else %}
+                                                    <img class="ivu-table-cell-tooltip-content" src='{{ avatars.default(size='l') }}' alt="" width=100 height=100>
+                                                {% endif %}
+{#                                            </span>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="ivu-table-column">
+                                <div class="ivu-table-cell">
+                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                        <div class="ivu-tooltip-rel">
+                                            <span class="ivu-table-cell-tooltip-content" onclick="location='contact_admin/{{ u.id }}'" style="cursor: pointer"> {{ u.user_name }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="ivu-table-column">
+                                <div class="ivu-table-cell">
+                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                        <div class="ivu-tooltip-rel">
+                                            <span class="ivu-table-cell-tooltip-content"> {{ u.new_time }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="ivu-table-column">
+                                <div class="ivu-table-cell">
+                                    <div class="ivu-table-cell-tooltip ivu-tooltip">
+                                        <div class="ivu-tooltip-rel">
+                                            <span class="ivu-table-cell-tooltip-content">{{ u.count }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="ivu-table-column">
+                                <div class="ivu-table-cell">
+                                    <div style="display: flex; justify-content: center;">
+                                        <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost"
+                                                style="margin-right: 5px; display: block;" onclick="location='contact_admin/{{ u.id }}'">
+                                                {% if u.situation %}
+                                                    <span>read</span>
+                                                {% elif u.situation is none %}
+                                                    <span>no message</span>
+                                                {% else %}
+                                                    <span>unread</span>
+                                                {% endif %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                       {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+
     </div>
     <div id="fade" class="black_overlay"></div>
     <!--show Now-->
@@ -203,7 +299,7 @@
     <!-- cart-js -->
     <script src="../static/js/minicart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
-
+    <link rel="stylesheet" href="../static/css/communicate_list.css" type="text/css">
 
 
 
