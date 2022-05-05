@@ -11,7 +11,7 @@ from app.functions import *
 from app.models import *
 from app.forms import UpdateForm, ReviewForm
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
@@ -790,12 +790,33 @@ def home():
             profile.phone_num = ''
         if profile.name == None:
             profile.name = ''
+        info = get_info()
+        new = get_new()
         return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                               type_value=all_type.values(), icon=user_icon, authority=authority)
+                               type_value=all_type.values(), info=info, new=new, icon=user_icon, authority=authority)
     else:
         return redirect(url_for('login'))
 
+def get_info():
+    info = dict()
+    prod = Commodity.query.count()
+    user = int(User.query.count())-1
+    order = Order.query.count()
+    info['prod'] = prod
+    info['cus'] = user
+    info['order'] = order
+    return info
 
+def get_new():
+    NOW = datetime.now()
+    new = dict()
+    order = Commodity.query.filter(Order.purchase_time >= NOW - timedelta(days=1)).count()
+    cus = User.query.filter(User.register_time >= NOW - timedelta(days=1)).count()
+    cmnt = Review.query.filter(Review.created >= NOW - timedelta(days=1)).count()
+    new['order'] = order
+    new['cus'] = cus
+    new['cmnt'] = cmnt
+    return new
 @app.route('/collection')
 def collection():
     if islogined():
@@ -1080,7 +1101,7 @@ def modify_single():
     return redirect('/home')
 
 
-@app.route('/customer')
+@app.route('/customer', methods=['GET', 'POST'])
 def customer():
     if islogined():
         user_icon = setIcon()
@@ -1088,15 +1109,39 @@ def customer():
     else:
         user_icon = 'NULL'
         authority = 0
+    users_id=[]
+    users_name=[]
+    users_email=[]
     users = User.query.all()
+    allusers = get_customer(users)
+    if request.method == 'POST':
+        print("hi")
+        if request.form.get('uid') is not None:
+            users_id = User.query.filter(User.id == request.form.get('uid')).all()
+        if request.form.get('uname') is not None:
+            users_name = User.query.filter(User.user_name == request.form.get('uname')).all()
+        if request.form.get('uname') is not None:
+            users_email = User.query.filter(User.email == request.form.get('uemail')).all()
+        if request.form.get('uid') is None and request.form.get('uname') is None and request.form.get('uname') is None:
+            users = User.query.all()
+        else:
+            users = list(set(users_id) & set(users_name) & set(users_email))
+        allusers = get_customer(users)
+        return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers,
+                               types=all_type,
+                               ype_value=all_type.values(), icon=user_icon)
+
+    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
+                           ype_value=all_type.values(), icon=user_icon)
+
+def get_customer(users):
     allusers = []
     for user in users:
         item = dict()
-        item['id'] = user.id
-        item['username'] = user.user_name
-        item['email'] = user.email
-        item['time'] = user.register_time
-        item['money'] = user.money
+        item['id']=user.id
+        item['username']=user.user_name
+        item['email']=user.email
+        item['time']=user.register_time
+        item['money']=user.money
         allusers.append(item)
-    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
-                           ype_value=all_type.values(), icon=user_icon)
+    return allusers
