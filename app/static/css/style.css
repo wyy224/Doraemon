@@ -94,7 +94,7 @@ ul {
 	z-index: 99;
 }
 h1 a.navbar-brand {
-font-size:32px; 
+font-size:20px;
 color: #fff !important; 
 text-transform:capitalize;
 font-family: fantasy;
@@ -995,7 +995,7 @@ filter: alpha(opacity=0);
     font-size: 41px;
 }
 .hedder-up, .info-top-grid, nav.navbar.navbar-expand-lg.navbar-light {
-    padding: 1em 2em;
+    padding: 1em 1.5em;
 }
 .navbar-light .navbar-nav .nav-link {
     letter-spacing: 1px;

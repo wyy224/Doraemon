@@ -15,7 +15,10 @@
         }
     </script>
     <style>
-
+        .right:before {
+          background-image: url("{{ icon }}");
+          background-size: 50px;
+        }
     </style>
     <!--//meta tags ends here-->
     <!--booststrap-->
@@ -70,17 +73,6 @@
                             <li class="left">{{ send.user_name }}:{{ send.content }}</li>
                         {% endif %}
                     {% endfor %}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
-                    {#                <li>Are we meeting today?</li>#}
-                    {#                <li>yes, what time suits you?</li>#}
-                    {#                <li>I was thinking after lunch, I have a meeting in the morning</li>#}
             </div>
         </ul>
         <div style="margin-top:20px;margin-left:10px;margin-right:10px;display: flex;flex-direction: row;">
