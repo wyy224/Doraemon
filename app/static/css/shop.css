@@ -581,6 +581,7 @@ ul.stars li a:hover {
 h3.agileits-sear-head {
     color: #181c27;
     margin-bottom: 20px;
+	margin-left: 15px;
     font-size: 1.1em;
     font-weight: 600;
 }
@@ -632,7 +633,7 @@ input#amount1 {
 }
 
 .side-bar {
-	max-width: 50%;
+	max-width: 30%;
     padding: 20px 5px;
     border: 1px solid #e4e4e4;
 }
@@ -687,7 +688,7 @@ input.checked {
 
 .left-side {
 	margin-top: 18px;
-	width: 55%;
+	overflow: auto;
 }
 
 
@@ -737,6 +738,7 @@ input.checked {
     margin-top: 15px;
     margin-left: 1px;
 	margin-right: 1px;
+
 }
 .wrapper_top_shop {
     padding: 15px;
