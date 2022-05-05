@@ -155,11 +155,16 @@
                 </div>
                 <div class="author-info text p-3 p-md-5">
                     <div class="desc">
-                        <h1 class="mb-4 i18n" contrastName="OREDER_DETAILS"><span>Order Details</span>:</h1>
+                        <h1 class="mb-4 i18n" contrastName="OREDER_DETAILS"><span>Order{{ order.id }} Details</span>:</h1>
                         <p class="mb-4 i18n" contrastName="PRODUCT2"><b>Product:</b> {{ order.commodity_name }}</p>
                         <p class="mb-4 i18n" contrastName="PRICE"><b>Price:</b> ${{ order.price }} </p>
+                        <p class="mb-4 i18n" ><b>Num:</b> {{ detail.commodity_num }} </p>
                         <p class="mb-4 i18n" contrastName="ADDRESS"><b>Delivery address: </b>{{ order.address }}</p>
-                        {#                                <p class="mb-4"><b>Phone number: </b>010-12345678</p>#}
+                        {% if order.transport == '1' %}
+                        <p class="mb-4 i18n" ><b>Transport: </b>delivery home </p>
+                        {% elif order.transport == '2' %}
+                        <p class="mb-4 i18n" ><b>Transport: </b>pick up at the store </p>
+                        {% endif %}
                         <p class="mb-4 i18n" ><b>Consignee name: </b>{{ order.name }}</p>
                         <p class="mb-4 i18n" ><b>Phone number: </b>{{ order.phone_num }}</p>
                         {% if sta != 'Signed in' %}
