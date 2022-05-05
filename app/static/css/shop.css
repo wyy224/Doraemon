@@ -582,8 +582,8 @@ h3.agileits-sear-head {
     color: #181c27;
     margin-bottom: 20px;
 	margin-left: 15px;
-    font-size: 1.1em;
-    font-weight: 500;
+    font-size: 1.4em;
+    font-weight: 600;
 }
 .search-hotel {
 	padding: 15px 0;
@@ -738,7 +738,7 @@ input.checked {
     margin-top: 15px;
     margin-left: 1px;
 	margin-right: 1px;
-	width: calc(100% - 30px);
+	width: calc(100% - 130px);
 
 }
 .wrapper_top_shop {
