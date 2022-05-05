@@ -312,11 +312,12 @@ def product():
         authority = 0
         user_icon = 'NULL'
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    for a in new_commodities:
+    x = new_commodities
+    for a in x:
         a.release_time = a.release_time.strftime('%Y-%m-%d')
     return render_template('product.html', islogin=islogined(), products=products, types=all_type,
                            type_value=all_type.values(),
-                           authority=authority, new_commodities=new_commodities, icon=user_icon, type=types,
+                           authority=authority, new_commodities=x, icon=user_icon, type=types,
                            user_id=user_id)
 
 
@@ -485,6 +486,7 @@ def shop():
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
+    x= new_commodities
 
 
     user_id = session.get('uid')
@@ -496,12 +498,16 @@ def shop():
         else:
             commodity.is_collected = False
 
-    for a in new_commodities:
-        a.release_time = a.release_time.strftime('%Y-%m-%d')
+    list =dict()
 
-    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=new_commodities,
+
+    for a in x:
+        list[a.id] = a.release_time.strftime('%Y-%m-%d')
+
+
+    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=x,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
-                           authority=authority, collect_commodities=collect_commodities)
+                           authority=authority, collect_commodities=collect_commodities, list=list)
 
 
 @app.route('/api/shop/price_section', methods=['POST'])
