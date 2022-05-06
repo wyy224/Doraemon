@@ -64,6 +64,25 @@ def search():
                            type_value=all_type.values())
 
 
+# @app.route('/customer_search', methods=['GET', 'POST'])
+# def find_customer():
+#     print("11111111111111111111111111111")
+#     uid = request.args.get("uid")
+#     uname = request.args.get("uname")
+#     email = request.args.get("email")
+#     filterList = []
+#     if uid is not None:
+#         filterList.append(User.id.like('%'+uid+'%'))
+#     if uname is not None:
+#         filterList.append(User.id.like('%'+uname+'%'))
+#     if email is not None:
+#         filterList.append(User.id.like('%'+email+'%'))
+#
+#     user = User.query.filter(*filterList).all()
+#
+#     return render_template('customer.html', user=user)
+
+
 @app.route('/about')
 def about():
     if islogined():
@@ -883,7 +902,8 @@ def home():
             info = get_info()
             new = get_new()
             return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                                   type_value=all_type.values(), info=info, new=new, icon=user_icon, authority=authority)
+                                   type_value=all_type.values(), info=info, new=new, icon=user_icon,
+                                   authority=authority)
     else:
         return redirect(url_for('login'))
 
@@ -1264,20 +1284,53 @@ def customer():
     allusers = get_customer(users)
     if request.method == 'POST':
         print("hi")
-        if request.form.get('uid') is not None:
-            users_id = User.query.filter(User.id == request.form.get('uid')).all()
-        if request.form.get('uname') is not None:
-            users_name = User.query.filter(User.user_name == request.form.get('uname')).all()
-        if request.form.get('uname') is not None:
-            users_email = User.query.filter(User.email == request.form.get('uemail')).all()
-        if request.form.get('uid') is None and request.form.get('uname') is None and request.form.get('uname') is None:
-            users = User.query.all()
-        else:
-            users = list(set(users_id) & set(users_name) & set(users_email))
+        # if request.form.get('uid') is not None:
+        #     users_id = User.query.filter(User.id == request.form.get('uid')).all()
+        #     print(1)
+        #     print(users_id)
+        # if request.form.get('uname') is not None:
+        #     users_name = User.query.filter(User.user_name == request.form.get('uname')).all()
+        #     print(2)
+        #     print(users_name)
+        # if request.form.get('email') is not None:
+        #     users_email = User.query.filter(User.email == request.form.get('email')).all()
+        #     print(3)
+        #     print(users_email)
+        # if request.form.get('uid') is None and request.form.get('uname') is None and request.form.get('email') is None:
+        #     users = User.query.all()
+        #     print(4)
+        #     print(users)
+        # else:
+        #     users = list(set(users_id) & set(users_name) & set(users_email))
+        #     print(5)
+        #     print(users)
+        uid = request.form.get("uid")
+        print(uid)
+        uname = request.form.get("uname")
+        print(uname)
+        email = request.form.get("email")
+        print(email)
+        filterList = []
+        if uid != '':
+            filterList.append(User.id == uid)
+            print(2)
+            print(filterList)
+        if uname != '':
+            filterList.append(User.user_name.like('%' + uname + '%'))
+            print(3)
+            print(filterList)
+        if email != '':
+            filterList.append(User.email.like('%' + email + '%'))
+            print(4)
+            print(filterList)
+
+        users= User.query.filter(*filterList).all()
+        print(users)
         allusers = get_customer(users)
+
         return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers,
                                types=all_type,
-                               ype_value=all_type.values(), icon=user_icon)
+                               ype_value=all_type.values(), icon=user_icon, user=user)
 
     return render_template('customer.html', islogin=islogined(), user=user, authority=authority, allusers=allusers,
                            types=all_type,
@@ -1323,10 +1376,11 @@ def get_product(products):
         allproducts.append(item)
     return allproducts
 
+
 @app.route('/ban/<int:id>', methods=['GET', 'POST'])
 def ban(id):
     user = User.query.filter(User.id == id).first()
-    if(user.ban == 0):
+    if (user.ban == 0):
         user.ban = 1
     else:
         user.ban = 0
