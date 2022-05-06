@@ -706,8 +706,11 @@ def singleOrder(id):
     session['allorders'] = alllist
 
     list = session.get('allorders')
-    order_num = db.session.query(OrderDetail).filter(OrderDetail.order_id < id).count()
+    print(list)
+    order_num = db.session.query(OrderDetail).filter(OrderDetail.id < id).count()
+    print(order_num)
     order = list[order_num]
+
     user1 = User.query.filter(User.id == session.get('uid')).first()
     sta = order['status']
 
