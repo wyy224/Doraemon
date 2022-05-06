@@ -154,9 +154,25 @@ def contact_admin(id):
                            message=message, uid=uid, contact_icon=contact_icon)
 
 
-@app.route('/adjust')
+@app.route('/adjust', methods=['GET', 'POST'])
 def adjust():
     user = User.query.filter_by(authority=0).order_by((User.situation == 0).desc()).all()
+
+    if request.method == 'POST':
+        uid = request.form.get("uid")
+        uname = request.form.get("uname")
+        filterList = []
+        if uid != '':
+            filterList.append(User.id == uid)
+
+        if uname != '':
+            filterList.append(User.user_name.like('%' + uname + '%'))
+
+        filterList.append(User.authority==0)
+
+
+        user = User.query.filter(*filterList).all()
+
 
     return render_template('adjust.html', user=user)
 
@@ -1305,27 +1321,20 @@ def customer():
         #     print(5)
         #     print(users)
         uid = request.form.get("uid")
-        print(uid)
         uname = request.form.get("uname")
-        print(uname)
         email = request.form.get("email")
-        print(email)
         filterList = []
         if uid != '':
             filterList.append(User.id == uid)
-            print(2)
-            print(filterList)
+
         if uname != '':
             filterList.append(User.user_name.like('%' + uname + '%'))
-            print(3)
-            print(filterList)
+
         if email != '':
             filterList.append(User.email.like('%' + email + '%'))
-            print(4)
-            print(filterList)
+
 
         users= User.query.filter(*filterList).all()
-        print(users)
         allusers = get_customer(users)
 
         return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers,
