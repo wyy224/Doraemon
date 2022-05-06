@@ -1260,7 +1260,7 @@ def customer():
     users_id = []
     users_name = []
     users_email = []
-    users = User.query.all()
+    users = User.query.filter(User.authority == 0).all()
     allusers = get_customer(users)
     if request.method == 'POST':
         print("hi")
