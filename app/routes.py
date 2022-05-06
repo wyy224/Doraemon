@@ -119,13 +119,16 @@ def contact_admin(id):
         choose1 = User.query.filter(User.id == id).first()
         choose1.situation = True
         db.session.commit()
+        contact_user = User.query.filter(User.id == id).first()
+        contact_icon = contact_user.icon
+
 
     else:
         user_icon = 'NULL'
         return redirect(url_for('login'))
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
                            type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
-                           message=message, uid=uid)
+                           message=message, uid=uid, contact_icon=contact_icon)
 
 
 @app.route('/adjust')

@@ -9,7 +9,7 @@ def set_db():
     from app.models import User, Commodity, Cart, Order, Profile
 
     # create administrator
-    admin = User(user_name='admin', email='admin123@gmail.com', authority=1)
+    admin = User(user_name='admin', email='admin123@gmail.com', authority=1, icon='admin.jpeg')
     admin.set_password('123456')
     db.session.add(admin)
     profile1 = Profile(user_id=1)
