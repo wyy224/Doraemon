@@ -82,6 +82,10 @@ room_user = {}
 @app.route('/contact')
 def contact():
     if islogined():
+        user = User.query.filter(User.id == session.get('uid')).first()
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
         user_icon = setIcon()
         authority = session.get('authority')
         username = session.get('USERNAME')
@@ -210,7 +214,12 @@ def on_leave(data):
 @app.route('/ShoppingCart')
 def ShoppingCart():
     if islogined():
-        return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
+        user = User.query.filter(User.id == session.get('uid')).first()
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
+        else:
+            return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
     else:
         return redirect(url_for('login'))
 
@@ -327,6 +336,10 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
+        user = User.query.filter(User.id == session.get('id')).first()
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
         print(session.get('cid'))
         commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
         cart_pay = None
@@ -439,6 +452,10 @@ def pay_order():
 @app.route('/top_up', methods=['GET', 'POST'])
 def topup():
     if islogined():
+        user = User.query.filter(User.id == session.get('uid')).first()
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
         username = session['USERNAME']
         if request.method == 'POST':
             requirement = CheckMoney(user_name=session.get('USERNAME'), money=int(request.form['money']))
@@ -492,6 +509,7 @@ def shop():
     x = new_commodities
 
     user_id = session.get('uid')
+    user = User.query.filter(User.id == user_id).first()
 
     for commodity in commodities:
         collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
@@ -507,7 +525,7 @@ def shop():
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=x,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
-                           authority=authority, collect_commodities=collect_commodities, list=list)
+                           authority=authority, collect_commodities=collect_commodities, list=list, user=user)
 
 
 @app.route('/api/shop/price_section', methods=['POST'])
@@ -605,6 +623,10 @@ def get_reviews(p):
 def cart_add():
     if request.method == 'POST':
         if session.get('uid') is not None:
+            user = User.query.filter(User.id == session.get('uid')).first()
+            if (user.ban == 1):
+                flash('The user has been disabled')
+                return redirect(url_for('logout'))
             commodity_id = request.form.get('commodity_id', None)
             commodity_num = request.form['number']
             print(commodity_num)
@@ -625,6 +647,10 @@ def cart_add():
 
 @app.route("/single/add", methods=['GET', 'POST'])
 def single_add():
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     session['purchase_num'] = request.form['number']
     return redirect(url_for('purchase'))
 
@@ -671,6 +697,9 @@ def newproduct():
 def Orders():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
         user_icon = setIcon()
         orders = Order.query.filter(Order.user_id == session.get('uid')).order_by(Order.Urgent.desc()).all()
         allorders = Order.query.order_by(Order.Urgent.desc()).all()
@@ -698,6 +727,9 @@ def Orders():
 @app.route('/singleOrder/<int:id>', methods=['GET', 'POST'])
 def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
 
     user_icon = setIcon()
 
@@ -761,6 +793,10 @@ def get_orders(p, list):
 
 @app.route('/singleOrder/order/delete/<int:id>', methods=['GET', 'POST'])
 def deleteOrder(id):
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     od_del = OrderDetail.query.get(id)
     # check if one order has multiple details
     details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).all()
@@ -794,6 +830,10 @@ def urgent(id):
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
 def receiveOder(id):
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     list = session.get('allorders')
     order1 = list[int(id) - 1]
     order = Order.query.filter(Order.id == order1['id']).first()
@@ -805,6 +845,10 @@ def receiveOder(id):
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     od_ed = OrderDetail.query.get(id)
     details = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
 
@@ -823,19 +867,23 @@ def edit(id):
 def home():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-        profile = Profile.query.filter(Profile.user_id == user.id).first()
-        user_icon = setIcon()
-        authority = session.get('authority')
-        if profile.address == None:
-            profile.address = ''
-        if profile.phone_num == None:
-            profile.phone_num = ''
-        if profile.name == None:
-            profile.name = ''
-        info = get_info()
-        new = get_new()
-        return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                               type_value=all_type.values(), info=info, new=new, icon=user_icon, authority=authority)
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
+        else:
+            profile = Profile.query.filter(Profile.user_id == user.id).first()
+            user_icon = setIcon()
+            authority = session.get('authority')
+            if profile.address == None:
+                profile.address = ''
+            if profile.phone_num == None:
+                profile.phone_num = ''
+            if profile.name == None:
+                profile.name = ''
+            info = get_info()
+            new = get_new()
+            return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
+                                   type_value=all_type.values(), info=info, new=new, icon=user_icon, authority=authority)
     else:
         return redirect(url_for('login'))
 
@@ -867,11 +915,15 @@ def get_new():
 def collection():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
-        user_icon = setIcon()
-        authority = session.get('authority')
-        collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-        return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
-                               authority=authority)
+        if (user.ban == 1):
+            flash('The user has been disabled')
+            return redirect(url_for('logout'))
+        else:
+            user_icon = setIcon()
+            authority = session.get('authority')
+            collects = Collections.query.filter(Collections.user_id == session.get('uid'))
+            return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
+                                   authority=authority)
     else:
         return redirect(url_for('login'))
 
@@ -879,6 +931,9 @@ def collection():
 @app.route('/CheckTopup')
 def CheckTopup():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     user_icon = setIcon()
     authority = session.get('authority')
     if (authority == 0):
@@ -902,6 +957,9 @@ def Confirm(id):
 @app.route('/modify', methods=['GET', 'POST'])
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    if (user.ban == 1):
+        flash('The user has been disabled')
+        return redirect(url_for('logout'))
     user_icon = setIcon()
     authority = session.get('authority')
     profile = Profile.query.filter(Profile.user_id == user.id).first()
@@ -966,16 +1024,20 @@ def login_mes():
     if not user_find:
         flash('Incorrect username')
         return redirect(url_for('login'))
-    if (check_password_hash(user_find.password_hash, request.form["password"])):
-        flash('Login success!')
-        session["USERNAME"] = user_find.user_name
-        session['Logged_in'] = True
-        session['uid'] = user_find.id
-        session['authority'] = user_find.authority
-        return redirect(url_for('main_page'))
-    else:
-        flash('Incorrect Password')
+    if (user_find.ban == 1):
+        flash('The user has been disabled')
         return redirect(url_for('login'))
+    else:
+        if (check_password_hash(user_find.password_hash, request.form["password"])):
+            flash('Login success!')
+            session["USERNAME"] = user_find.user_name
+            session['Logged_in'] = True
+            session['uid'] = user_find.id
+            session['authority'] = user_find.authority
+            return redirect(url_for('main_page'))
+        else:
+            flash('Incorrect Password')
+            return redirect(url_for('login'))
 
 
 @app.route('/login/reg_mes')
@@ -1231,6 +1293,7 @@ def get_customer(users):
         item['email'] = user.email
         item['time'] = user.register_time
         item['money'] = user.money
+        item['ban'] = user.ban
         allusers.append(item)
     return allusers
 
@@ -1259,3 +1322,13 @@ def get_product(products):
         item['type'] = p.type
         allproducts.append(item)
     return allproducts
+
+@app.route('/ban/<int:id>', methods=['GET', 'POST'])
+def ban(id):
+    user = User.query.filter(User.id == id).first()
+    if(user.ban == 0):
+        user.ban = 1
+    else:
+        user.ban = 0
+    db.session.commit()
+    return redirect(url_for('customer'))

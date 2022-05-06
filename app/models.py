@@ -22,6 +22,7 @@ class User(db.Model):
     count = db.Column(db.Integer, default=0)
     situation = db.Column(db.Boolean, nullable=True)
     messages = db.relationship('Message', back_populates='author', cascade='all')
+    ban = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<User {}>'.format(self.user_name)
