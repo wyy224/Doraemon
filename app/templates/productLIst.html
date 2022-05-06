@@ -65,7 +65,7 @@
                     <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
                     {% if authority == 1 %}
-                        <li><a href="/customer" class="i18n">Customer</a></li>
+                        <li><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></li>
                         <li><a href="/productList" class="i18n">Products</a></li>
                         <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
@@ -103,7 +103,7 @@
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
                             {% if authority == 1 %}
-                            <span class="i18n"><a href="/customer" class="i18n">Customer</a></span>
+                            <span class="i18n"><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></span>
                             <span class="mr-2">Products</span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
@@ -194,7 +194,7 @@
                                     <div class="ivu-table-cell">
                                         <div class="ivu-table-cell-tooltip ivu-tooltip">
                                             <div class="ivu-tooltip-rel">
-                                                <span class="ivu-table-cell-tooltip-content">${{ c.type }}
+                                                <span class="ivu-table-cell-tooltip-content">{{ c.type }}
                                                 </span>
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
                                             <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
                                                 <a href="single/{{ c.id }}">View</a>
                                             </button>
-                                            <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
+                                            <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;" onclick="location.href='/modify_commodity/{{ c.id }}'">
                                                 <span>Edit</span>
                                             </button>
                                         </div>

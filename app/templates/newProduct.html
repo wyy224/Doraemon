@@ -65,7 +65,7 @@
                     <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
                     {% if authority == 1 %}
-                        <li><a href="/customer" class="i18n">Customer</a></li>
+                        <li><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></li>
                         <li><a href="/productList" class="i18n">Products</a></li>
                         <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
@@ -103,11 +103,11 @@
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
                             {% if authority == 1 %}
-                            <span class="i18n"><a href="/customer" class="i18n">Customer</a></span>
-                            <span class="mr-2"><a href="/productList" class="i18n">Products</a></span>
+                            <span class="i18n"><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></span>
+                            <span class="mr-2">Products</span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
-                            <span class="i18n" contrastName="TOPUPLIST">Top up list</span>
+                            <span class="i18n" contrastName="TOPUPLIST"><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></span>
                         </p>
                         <h1 class="bread i18n">New Product</h1>
                     </div>
@@ -124,10 +124,10 @@
                                         <h4>Basic Information</h4>
                                         <div class="form-item-view">
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="PRODUCTNAME">Product name</label>
+                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="PRODUCTNAME"'>Product name</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
-                                                         <input autocomplete="off" name="product name" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
+                                                         <input value="{{ c.commodity_name }}" autocomplete="off" name="product name" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
                                                      </div>
                                                  </div>
                                              </div>
@@ -135,7 +135,7 @@
                                                  <label class="ivu-form-item-label" style="width: 120px;" contrastName="STOCK">Stock</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
-                                                         <input autocomplete="off" name="quantity" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
+                                                         <input value="{{ c.cargo_quantity }}" autocomplete="off" name="quantity" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
                                                      </div>
                                                  </div>
                                              </div>
@@ -143,7 +143,7 @@
                                                  <label class="ivu-form-item-label" style="width: 120px;" contrastName="PRICE">Price</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
-                                                         <input autocomplete="off" name="price" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
+                                                         <input value="{{ c.price }}" autocomplete="off" name="price" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
                                                      </div>
                                                  </div>
                                              </div>
@@ -152,8 +152,8 @@
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-select ivu-select-single ivu-select-default" style="width: 164px;">
                                                         <select class="form-control" value="1" name="type">
-                                                            <option value="1" class="i18n" contrastName="PAINO">piano</option>
-                                                            <option value="2" class="i18n" contrastName="DRUM">drum</option>
+                                                            <option value="piano" class="i18n" contrastName="PAINO">piano</option>
+                                                            <option value="drum" class="i18n" contrastName="DRUM">drum</option>
                                                             <option value="horn" class="i18n" contrastName="HORN">horn</option>
                                                             <option value="trombone" class="i18n" contrastName="TROMBONE">trombone</option>
                                                             <option value="trumpet" class="i18n" contrastName="TRUMPET">trumpet</option>
@@ -188,7 +188,7 @@
                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="INTRODUCTION">Introduction</label>
                                                 <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                     <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-textarea" style="width: 260px;">
-                                                        <textarea wrap="soft" name="introduction" autocomplete="off" spellcheck="false" placeholder="" rows="4" class="ivu-input"></textarea>
+                                                        <textarea wrap="soft" name="introduction" autocomplete="off" spellcheck="false" placeholder="" rows="4" class="ivu-input">{{ c.introduction }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -211,7 +211,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </section>>
     </div><!-- END COLORLIB-PAGE -->
 
