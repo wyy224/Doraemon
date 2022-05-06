@@ -629,21 +629,40 @@ def single_add():
     return redirect(url_for('purchase'))
 
 
-@app.route('/newsingle', methods=['GET', 'POST'])
-def newsingle():
+@app.route('/newProduct', methods=['GET', 'POST'])
+def newproduct():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
     if request.method == 'POST':
-        print("1111111")
-        newcommodity = Commodity(commodity_name=request.form['product name'], cargo_quantity=request.form['quantity'],
-                                 price=request.form['price'], introduction=request.form['introduction'],
-                                 type=request.form['type'])
+        newcommodity = Commodity(commodity_name=request.form.get('product name'), cargo_quantity=request.form.get('quantity'),
+                                 price=request.form.get('price'), introduction=request.form.get('introduction'),
+                                 type=request.form.get('type'))
+        dir = "../static/instruments/"
+        if request.files.get('pic1').filename != "":
+            f = request.files.get('pic1')
+            newcommodity.pic_path1 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        if request.files.get('pic2').filename != "":
+            f = request.files.get('pic2')
+            newcommodity.pic_path2 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        if request.files.get('pic3').filename != "":
+            f = request.files.get('pic3')
+            newcommodity.pic_path3 = dir + f.filename
+            f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+        if request.files.get('sound').filename != "":
+            s = request.files.get('sound')
+            s_name = newcommodity.commodity_name +".mp3"
+            if os.path.exists(os.path.join(Config.MUSIC_SAVE_PATH, s_name)):
+                os.remove(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
+            s.save(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
         db.session.add(newcommodity)
         db.session.commit()
         session['cid'] = newcommodity.id
-        print("22222222")
-        return redirect(url_for('review_pic'))
+        return redirect(url_for('home'))
     else:
-        return render_template('newsingle.html', islogin=islogined(), types=all_type, type_value=all_type.values())
-
+        return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon, c=None, authority=authority, types=all_type, type_value=all_type.values())
 
 @app.route('/Orders')
 def Orders():
@@ -687,12 +706,15 @@ def singleOrder(id):
     session['allorders'] = alllist
 
     list = session.get('allorders')
-    order = list[int(id) - 1]
+    order_num = db.session.query(OrderDetail).filter(OrderDetail.order_id < id).count()
+    order = list[order_num]
     user1 = User.query.filter(User.id == session.get('uid')).first()
     sta = order['status']
 
+    detail = OrderDetail.query.filter(OrderDetail.id == id).first()
+
     return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
-                           sta=sta)
+                           sta=sta, detail=detail)
 
 
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
@@ -1027,105 +1049,139 @@ def get_avatar(filename):
                                filename, as_attachment=True)
 
 
-@app.route('/commodity_pic_review')
-def review_pic():
-    c = session['cid']
-    commodity = Commodity.query.filter(Commodity.id == c).first()
-    return render_template('upload_review.html', commodity=commodity)
-
-
-@app.route('/pic1_session_add')
-def add_pic1():
-    session['commodity_pic'] = 1
-    return redirect(url_for('upload'))
-
-
-@app.route('/pic2_session_add')
-def add_pic2():
-    session['commodity_pic'] = 2
-    return redirect(url_for('upload'))
-
-
-@app.route('/pic3_session_add')
-def add_pic3():
-    session['commodity_pic'] = 3
-    return redirect(url_for('upload'))
-
-
-@app.route('/change-commodity/', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        f = request.files.get('file')
-        raw_filename = avatars.save_avatar(f)
-        session['c_filename'] = raw_filename
-        print("../static/instruments/" + session['c_filename'])
-        c = session['cid']
-        commodity = Commodity.query.filter(Commodity.id == c).first()
-        pic_position = session['commodity_pic']
-        if pic_position == 1:
-            commodity.pic_path1 = "../static/instruments/" + session['c_filename']
-        if pic_position == 2:
-            commodity.pic_path2 = "../static/instruments/" + session['c_filename']
-        if pic_position == 3:
-            commodity.pic_path3 = "../static/instruments/" + session['c_filename']
-        db.session.commit()
-        return redirect("/change-commodity/crop/")
-    return render_template('upload.html')
-
-
-@app.route('/change-commodity/crop/', methods=['GET', 'POST'])
-def crop():
-    if request.method == 'POST':
-        x = request.form.get('x')
-        y = request.form.get('y')
-        w = request.form.get('w')
-        h = request.form.get('h')
-        commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
-        filenames = avatars.crop_avatar(session['c_filename'], x, y, w, h)
-        url_s = filenames[0]
-        url_m = filenames[1]
-        url_l = filenames[2]
-        pic_position = session['commodity_pic']
-        if pic_position == 1:
-            commodity.pic_path1 = "../static/instruments/" + url_l
-        if pic_position == 2:
-            commodity.pic_path2 = "../static/instruments/" + url_l
-        if pic_position == 3:
-            commodity.pic_path3 = "../static/instruments/" + url_l
-        db.session.commit()
-        session.pop('commodity_pic', None)
-        flash('Upload picture successfully', 'success')
-
-        return redirect("/commodity_pic_review")
-    return render_template('crop.html')
+# @app.route('/commodity_pic_review')
+# def review_pic():
+#     c = session['cid']
+#     commodity = Commodity.query.filter(Commodity.id == c).first()
+#     return render_template('upload_review.html', commodity=commodity)
+#
+#
+# @app.route('/pic1_session_add')
+# def add_pic1():
+#     session['commodity_pic'] = 1
+#     return redirect(url_for('upload'))
+#
+#
+# @app.route('/pic2_session_add')
+# def add_pic2():
+#     session['commodity_pic'] = 2
+#     return redirect(url_for('upload'))
+#
+#
+# @app.route('/pic3_session_add')
+# def add_pic3():
+#     session['commodity_pic'] = 3
+#     return redirect(url_for('upload'))
+#
+#
+# @app.route('/change-commodity/', methods=['GET', 'POST'])
+# def upload():
+#     if request.method == 'POST':
+#         f = request.files.get('file')
+#         raw_filename = avatars.save_avatar(f)
+#         session['c_filename'] = raw_filename
+#         print("../static/instruments/" + session['c_filename'])
+#         c = session['cid']
+#         commodity = Commodity.query.filter(Commodity.id == c).first()
+#         pic_position = session['commodity_pic']
+#         if pic_position == 1:
+#             commodity.pic_path1 = "../static/instruments/" + session['c_filename']
+#         if pic_position == 2:
+#             commodity.pic_path2 = "../static/instruments/" + session['c_filename']
+#         if pic_position == 3:
+#             commodity.pic_path3 = "../static/instruments/" + session['c_filename']
+#         db.session.commit()
+#         return redirect("/change-commodity/crop/")
+#     return render_template('upload.html')
+#
+#
+# @app.route('/change-commodity/crop/', methods=['GET', 'POST'])
+# def crop():
+#     if request.method == 'POST':
+#         x = request.form.get('x')
+#         y = request.form.get('y')
+#         w = request.form.get('w')
+#         h = request.form.get('h')
+#         commodity = Commodity.query.filter(Commodity.id == session["cid"]).first()
+#         filenames = avatars.crop_avatar(session['c_filename'], x, y, w, h)
+#         url_s = filenames[0]
+#         url_m = filenames[1]
+#         url_l = filenames[2]
+#         pic_position = session['commodity_pic']
+#         if pic_position == 1:
+#             commodity.pic_path1 = "../static/instruments/" + url_l
+#         if pic_position == 2:
+#             commodity.pic_path2 = "../static/instruments/" + url_l
+#         if pic_position == 3:
+#             commodity.pic_path3 = "../static/instruments/" + url_l
+#         db.session.commit()
+#         session.pop('commodity_pic', None)
+#         flash('Upload picture successfully', 'success')
+#
+#         return redirect("/commodity_pic_review")
+#     return render_template('crop.html')
 
 
 # modify commodity page
-@app.route('/modify_commodity', methods=['GET', 'POST'])
-def modify_single():
+@app.route('/modify_commodity/<int:id>', methods=['GET', 'POST'])
+def modify_single(id):
     if islogined() and session['authority'] == 1:
-        id = session['cid']
+        # id = session['cid']
+        # if request.method == 'POST':
+        #     print("modify")
+        #     commodity = Commodity.query.get(int(id))
+        #     commodity.commodity_name = request.form['product name']
+        #     commodity.cargo_quantity = request.form['quantity']
+        #     commodity.price = request.form['price']
+        #     commodity.introduction = request.form['introduction']
+        #     db.session.commit()
+        #     return redirect('/commodity_pic_review')
+        # else:
+        #     print("to start modify")
+        #     IsModify = True
+        user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+        user_icon = setIcon()
+        authority = 1
+        commodity = Commodity.query.get(int(id))
         if request.method == 'POST':
-            print("modify")
-            commodity = Commodity.query.get(int(id))
-            commodity.commodity_name = request.form['product name']
-            commodity.cargo_quantity = request.form['quantity']
-            commodity.price = request.form['price']
-            commodity.introduction = request.form['introduction']
+            commodity.commodity_name=request.form.get('product name')
+            commodity.cargo_quantity=request.form.get('quantity')
+            commodity.price=request.form.get('price')
+            commodity.introduction=request.form.get('introduction')
+            commodity.type=request.form.get('type')
+            dir = "../static/instruments/"
+            if request.files.get('pic1').filename != "":
+                f = request.files.get('pic1')
+                commodity.pic_path1 = dir + f.filename
+                f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+            if request.files.get('pic2').filename != "":
+                f = request.files.get('pic2')
+                commodity.pic_path2 = dir + f.filename
+                f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+            if request.files.get('pic3').filename != "":
+                f = request.files.get('pic3')
+                commodity.pic_path3 = dir + f.filename
+                f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
+            if request.files.get('sound').filename != "":
+                s = request.files.get('sound')
+                s_name = commodity.commodity_name + ".mp3"
+                if not os.path.exists(os.path.join(Config.MUSIC_SAVE_PATH, s_name)):
+                    os.remove(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
+                s.save(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
+            db.session.add(commodity)
             db.session.commit()
-            return redirect('/commodity_pic_review')
-        else:
-            print("to start modify")
-            IsModify = True
-            authority = 1
-            commodity = Commodity.query.get(int(id))
-            return render_template('newsingle.html', islogin=islogined(), commodity=commodity, types=all_type,
-                                   type_value=all_type.values(), authority=authority, modify=IsModify)
+            session['cid'] = commodity.id
+            return redirect(url_for('productList'))
+        return render_template('newProduct.html',user=user, icon=user_icon, islogin=islogined(), c=commodity, types=all_type,
+                                   type_value=all_type.values(), authority=authority,)
     return redirect('/home')
 
 
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
     if islogined():
         user_icon = setIcon()
         authority = session.get('authority')
@@ -1154,7 +1210,7 @@ def customer():
                                types=all_type,
                                ype_value=all_type.values(), icon=user_icon)
 
-    return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers, types=all_type,
+    return render_template('customer.html', islogin=islogined(), user=user,authority=authority, allusers=allusers, types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
 
 
@@ -1169,3 +1225,26 @@ def get_customer(users):
         item['money'] = user.money
         allusers.append(item)
     return allusers
+
+@app.route('/productList')
+def productList():
+    user = User.query.filter(User.user_name == session.get('USERNAME')).first()
+    user_icon = setIcon()
+    authority = session.get('authority')
+    products = Commodity.query.all()
+    allproducts = get_product(products)
+    return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon, islogin=islogined(),
+                           )
+
+def get_product(products):
+    allproducts = []
+    for p in products:
+        item = dict()
+        item['id'] = p.id
+        item['name'] = p.commodity_name
+        item['quantity'] = p.cargo_quantity
+        item['time'] = p.release_time
+        item['price'] = p.price
+        item['type'] = p.type
+        allproducts.append(item)
+    return allproducts

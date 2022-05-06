@@ -162,12 +162,11 @@
                                             Cart
                                         </button>
                                     {% endif %}
-                                    {% if authority ==1 %}
-                                        <button type="button" class="toys-cart ptoys-cart add i18n"
-                                                onclick="location.href='/modify_commodity'" contrastName="EDIT_PRODUCT">
-                                            edit product
-                                        </button>
-                                    {% else %}
+{#                                        <button type="button" class="toys-cart ptoys-cart add i18n"#}
+{#                                                onclick="location.href='/modify_commodity'" contrastName="EDIT_PRODUCT">#}
+{#                                            edit product#}
+{#                                        </button>#}
+                                    {% if authority !=1 %}
                                         <button class="toys-cart ptoys-cart add i18n"
                                                 onclick="form1.action='/single/add'" type="submit"
                                                 contrastName="BUY_PRODUCT">buy product
