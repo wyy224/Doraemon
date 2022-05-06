@@ -128,3 +128,9 @@ tr {
   user-select: none;
   transition: color .2s linear,background-color .2s linear,border .2s linear,box-shadow .2s linear,-webkit-box-shadow .2s linear;
 }
+
+@media all and (max-width: 767px){
+  body{
+    zoom: 34%;
+  }
+}

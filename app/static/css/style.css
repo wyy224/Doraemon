@@ -892,14 +892,7 @@ h4.typo-sub-heading {
 	}
 }
 
-@media(max-width:800px) {
-	h4.typo-sub-heading {
-		font-size: 22px;
-	}
-	h3.typo-main-heading {
-		font-size: 2.3em;
-	}
-}
+
 
 @media(max-width:640px) {
 	h3.typo-main-heading {
@@ -1631,4 +1624,16 @@ h3.typo-main-heading {
 .row2{
     height: 100%;
     width: 250%;
+}
+
+@media(max-width:800px) {
+	h4.typo-sub-heading {
+		font-size: 22px;
+	}
+	h3.typo-main-heading {
+		font-size: 2.3em;
+	}
+    .row2{
+        width: 200%;
+    }
 }

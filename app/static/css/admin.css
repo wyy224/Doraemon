@@ -66,3 +66,9 @@ h4{
   line-height: 1;
   font-size: 21px;
 }
+
+@media all and (max-width: 767px){
+  body{
+    zoom: 50%;
+  }
+}
