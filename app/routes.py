@@ -133,7 +133,7 @@ def contact_admin(id):
 
 @app.route('/adjust')
 def adjust():
-    user = User.query.filter_by(authority=0).all()
+    user = User.query.filter_by(authority=0).order_by((User.situation == 0).desc()).all()
 
     return render_template('adjust.html', user=user)
 
@@ -489,8 +489,7 @@ def shop():
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
     collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
-    x= new_commodities
-
+    x = new_commodities
 
     user_id = session.get('uid')
 
@@ -501,12 +500,10 @@ def shop():
         else:
             commodity.is_collected = False
 
-    list =dict()
-
+    list = dict()
 
     for a in x:
         list[a.id] = a.release_time.strftime('%Y-%m-%d')
-
 
     return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=x,
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
@@ -638,7 +635,8 @@ def newproduct():
     user_icon = setIcon()
     authority = session.get('authority')
     if request.method == 'POST':
-        newcommodity = Commodity(commodity_name=request.form.get('product name'), cargo_quantity=request.form.get('quantity'),
+        newcommodity = Commodity(commodity_name=request.form.get('product name'),
+                                 cargo_quantity=request.form.get('quantity'),
                                  price=request.form.get('price'), introduction=request.form.get('introduction'),
                                  type=request.form.get('type'))
         dir = "../static/instruments/"
@@ -656,7 +654,7 @@ def newproduct():
             f.save(os.path.join(Config.AVATARS_SAVE_PATH, f.filename))
         if request.files.get('sound').filename != "":
             s = request.files.get('sound')
-            s_name = newcommodity.commodity_name +".mp3"
+            s_name = newcommodity.commodity_name + ".mp3"
             if os.path.exists(os.path.join(Config.MUSIC_SAVE_PATH, s_name)):
                 os.remove(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
             s.save(os.path.join(Config.MUSIC_SAVE_PATH, s_name))
@@ -665,7 +663,9 @@ def newproduct():
         session['cid'] = newcommodity.id
         return redirect(url_for('home'))
     else:
-        return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon, c=None, authority=authority, types=all_type, type_value=all_type.values())
+        return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon, c=None,
+                               authority=authority, types=all_type, type_value=all_type.values())
+
 
 @app.route('/Orders')
 def Orders():
@@ -1150,11 +1150,11 @@ def modify_single(id):
         authority = 1
         commodity = Commodity.query.get(int(id))
         if request.method == 'POST':
-            commodity.commodity_name=request.form.get('product name')
-            commodity.cargo_quantity=request.form.get('quantity')
-            commodity.price=request.form.get('price')
-            commodity.introduction=request.form.get('introduction')
-            commodity.type=request.form.get('type')
+            commodity.commodity_name = request.form.get('product name')
+            commodity.cargo_quantity = request.form.get('quantity')
+            commodity.price = request.form.get('price')
+            commodity.introduction = request.form.get('introduction')
+            commodity.type = request.form.get('type')
             dir = "../static/instruments/"
             if request.files.get('pic1').filename != "":
                 f = request.files.get('pic1')
@@ -1178,8 +1178,9 @@ def modify_single(id):
             db.session.commit()
             session['cid'] = commodity.id
             return redirect(url_for('productList'))
-        return render_template('newProduct.html',user=user, icon=user_icon, islogin=islogined(), c=commodity, types=all_type,
-                                   type_value=all_type.values(), authority=authority,)
+        return render_template('newProduct.html', user=user, icon=user_icon, islogin=islogined(), c=commodity,
+                               types=all_type,
+                               type_value=all_type.values(), authority=authority, )
     return redirect('/home')
 
 
@@ -1216,7 +1217,8 @@ def customer():
                                types=all_type,
                                ype_value=all_type.values(), icon=user_icon)
 
-    return render_template('customer.html', islogin=islogined(), user=user,authority=authority, allusers=allusers, types=all_type,
+    return render_template('customer.html', islogin=islogined(), user=user, authority=authority, allusers=allusers,
+                           types=all_type,
                            ype_value=all_type.values(), icon=user_icon)
 
 
@@ -1232,6 +1234,7 @@ def get_customer(users):
         allusers.append(item)
     return allusers
 
+
 @app.route('/productList')
 def productList():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
@@ -1239,8 +1242,10 @@ def productList():
     authority = session.get('authority')
     products = Commodity.query.all()
     allproducts = get_product(products)
-    return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon, islogin=islogined(),
+    return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon,
+                           islogin=islogined(),
                            )
+
 
 def get_product(products):
     allproducts = []
