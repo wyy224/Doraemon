@@ -14,6 +14,7 @@ class Config(object):
 
 	AVA_UPLOAD_DIR = os.path.join(basedir, 'static/uploaded_AVA')
 	AVATARS_SAVE_PATH = os.path.join(basedir, 'static/instruments')
+	MUSIC_SAVE_PATH = os.path.join(basedir, 'static/music')
 
 
 	# logging.basicConfig(filename="record.log", level=logging.INFO, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')

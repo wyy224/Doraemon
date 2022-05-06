@@ -14,12 +14,24 @@
             window.scrollTo(0, 1);
         }
     </script>
+
     <style>
         .right:before {
           background-image: url("{{ icon }}");
           background-size: 50px;
         }
-    </style>
+        </style>
+
+        <style>
+        .left:before {
+          background-image: url("/static/uploaded_AVA/{{ contact_icon }}");
+          background-size: 50px;
+        }
+        </style>
+
+
+
+
     <!--//meta tags ends here-->
     <!--booststrap-->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
@@ -68,7 +80,7 @@
 
                     {% for send in message %}
                         {% if send.author_id == uid %}
-                            <li class="right">{{ send.content }}</li>
+                            <li class="right">{{ send.user_name }}:{{ send.content }}</li>
                         {% else %}
                             <li class="left">{{ send.user_name }}:{{ send.content }}</li>
                         {% endif %}
@@ -266,7 +278,7 @@
             let msgbox = document.createElement('div')
             msgbox.className = 'message'
             if (data.user === '{{ username }}') {
-                msg = `<li class="right"><b>${data.message}</li>`
+                msg = `<li class="right"><b>${data.user}</b>:  ${data.message}</li>`
             } else {
                 msg = `<li class="left" ><b>${data.user}</b>:  ${data.message}</li>`
             }
