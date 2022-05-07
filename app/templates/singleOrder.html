@@ -80,7 +80,9 @@
         </nav>
 
         <div class="colorlib-footer">
-            <h3>You can click here ~</h3>
+            <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
+                切换为中文
+            </button>
             <div class="d-flex justify-content-center">
                 <form action="#" class="colorlib-subscribe-form">
                     <div class="form-group d-flex">
@@ -103,16 +105,16 @@
                             <span class="i18n"><a href="/collection" contrastName="COLLECTION"
                                                   class="i18n">Collection</a></span>
                             <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
-                            <span class="mr-2">Orders></span>
+                            <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
                             {% if authority == 1 %}
                             <span class="i18n"><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></span>
-                            <span class="mr-2"><a href="/productList" class="i18n">Products</a></span>
+                            <span class="mr-2"><a href="/productList" class="i18n" contrastName="PRODUCTS">Products</a></span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
-                            <span class="i18n" contrastName="TOPUPLIST"><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></span>
+                            <span ><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></span>
                         </p>
-                        <h1 class="bread" class="i18n" contrastName="ORDER_DETAILS">Order Details</h1>
+                        <h1 class="bread i18n" contrastName="ORDER_DETAILS">Order Details</h1>
                     </div>
                 </div>
             </div>
@@ -135,27 +137,24 @@
                         <div class="slider-item js-fullheight"
                              style="background-image: url({{ order.pic_path }});">
                             {% if order.urgent == 1 %}
-                                <span class="product-new-top-left i18n"
-                                      style="background: #c9040c" >Urgent</span>
+                                 <span class="product-new-top-left i18n"
+                                          style="background: #c9040c" contrastName="URGENT">Urgent</span>
                                 {% else %}
                                     <span class="product-new-top-left i18n"
-                                      style="background: #28a745" >Normal</span>
+                                          style="background: #28a745"  contrastName="NORMAL">Normal</span>
                                 {% endif %}
                             {% if sta == 'Not deliver' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #c9040c" >Not deliver</span>
+                                          style="background: #c9040c" contrastName="NOT_DELIVER">Not deliver</span>
                             {% elif sta == 'In transit' %}
                                 <span class="product-new-top i18n"
-                                      style="background: #e0a800"
-                                >In transit</span>
+                                          style="background: #e0a800" contrastName="IN_TRANSIT">In transit</span>
                             {% elif sta == 'Delivered' %}
                                 <span class="product-new-top i18n"
-                                      style="background: cornflowerblue"
-                                >Delivered</span>
+                                          style="background: cornflowerblue" contrastName="DELIVERED">Delivered</span>
                             {% elif sta == 'Signed in' %}
                                 <span class="product-new-top i18n"
-                                      style="background: green"
-                                >Signed in</span>
+                                          style="background: green" contrastName="SIGNED_IN">Signed in</span>
                             {% endif %}
                         </div>
 
@@ -166,21 +165,21 @@
                 </div>
                 <div class="author-info text p-3 p-md-5">
                     <div class="desc">
-                        <h1 class="mb-4 i18n" contrastName="OREDER_DETAILS"><span>Order{{ order.id }} Details</span>:</h1>
-                        <p class="mb-4 i18n" contrastName="PRODUCT2"><b>Product:</b> {{ order.commodity_name }}</p>
-                        <p class="mb-4 i18n" contrastName="PRICE"><b>Price:</b> ${{ order.price }} </p>
-                        <p class="mb-4 i18n" ><b>Num:</b> {{ detail.commodity_num }} </p>
-                        <p class="mb-4 i18n" contrastName="ADDRESS"><b>Delivery address: </b>{{ order.address }}</p>
+                        <h1 ><span><a class="i18n" contrastName="ORDER">Order</a>{{ order.id }}<a class="i18n" contrastName="DETAILS">Details</a></span>:</h1>
+                        <p class="mb-4"><b class="i18n" contrastName="PRODUCT2">Product:</b> {{ order.commodity_name }}</p>
+                        <p class="mb-4"><b class="i18n" contrastName="PRICE2">Price:</b> ${{ order.price }} </p>
+                        <p class="mb-4" ><b class="i18n" contrastName="NUM">Num:</b> {{ detail.commodity_num }} </p>
+                        <p class="mb-4" ><b class="i18n" contrastName="ADDRESS">Delivery address: </b>{{ order.address }}</p>
                         {% if order.transport == '1' %}
-                        <p class="mb-4 i18n" ><b>Transport: </b>delivery home </p>
+                        <p class="mb-4" ><b class="i18n" contrastName="TRANSPORT">Transport: </b><a class="i18n" contrastName="DELIVERY_HOME">delivery home</a> </p>
                         {% elif order.transport == '2' %}
-                        <p class="mb-4 i18n" ><b>Transport: </b>pick up at the store </p>
+                        <p class="mb-4 i18n" ><b class="i18n" contrastName="TRANSPORT">Transport: </b><a class="i18n" contrastName="PICK_UP">pick up at the store</a> </p>
                         {% endif %}
-                        <p class="mb-4 i18n" ><b>Consignee name: </b>{{ order.name }}</p>
-                        <p class="mb-4 i18n" ><b>Phone number: </b>{{ order.phone_num }}</p>
+                        <p class="mb-4" ><b class="i18n" contrastName="CONSIGNEE">Consignee name: </b>{{ order.name }}</p>
+                        <p class="mb-4" ><b class="i18n" contrastName="PHONE">Phone number: </b>{{ order.phone_num }}</p>
                         {% if sta != 'Signed in' %}
                             {% if user1.authority == 0 %}
-                                <a class="mb-4 i18n" href="/edit/{{ order.detail }}"><b>Edit</b></a>
+                                <a class="mb-4 i18n" href="/edit/{{ order.detail }}" contrastName="EDIT"><b>Edit</b></a>
                             {% endif %}
                         {% endif %}
 
@@ -197,7 +196,7 @@
                                 {% if  order.transport != '2'  %}
                                     <form action="order/urgent/{{ order.detail }}" method="post">
                                     <button onclick="{if(confirm('Please confirm that you want to change the urgent status！')){return true;}return false;}"
-                                            class="i18n" >Change the urgent status
+                                            class="i18n" contrastName="CTUS">Change the urgent status
                                     </button>
                                     </form>
 
@@ -231,7 +230,7 @@
                                     </select>
                                     <br>
                                     <button onclick="{if(confirm('Please confirm that you want to change the status of this order!')){return true;}return false;}"
-                                            class="i18n" >Change order status
+                                            class="i18n" contrastName="COS">Change order status
                                     </button>
                                 </form>
                             {% else %}
@@ -322,4 +321,7 @@
         })
     }
 </script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/i18n/language.js"></script>
+<script src="../static/js/i18n/jquery.i18n.properties.js"></script>
 

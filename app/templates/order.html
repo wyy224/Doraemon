@@ -120,9 +120,9 @@
                             {% if authority == 1 %}
                             <span class="i18n"><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></span>
                             <span class="mr-2"><a href="/productList" class="i18n" contrastName="PRODUCTS">Products</a></span>
-                            <span class="mr-2">Orders</span>
+                            <span class="mr-2 i18n" contrastName="ORDERS">Orders</span>
                             {% endif %}
-                            <span class="i18n" contrastName="TOPUPLIST"><a href="/CheckTopup" class="i18n">Top up list</a></span>
+                            <span class="mr-2" ><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up list</a></span>
                         </p>
                         {% if authority ==1 %}
                             <h1 class="bread i18n" contrastName="ALL_ORDERS">All Orders</h1>
@@ -145,30 +145,27 @@
                                          height="400px"></a>
                                 {% if order.urgent == 1 %}
                                     <span class="product-new-top-left i18n"
-                                          style="background: #c9040c">Urgent</span>
+                                          style="background: #c9040c" contrastName="URGENT">Urgent</span>
                                 {% else %}
                                     <span class="product-new-top-left i18n"
-                                          style="background: #28a745">Normal</span>
+                                          style="background: #28a745"  contrastName="NORMAL">Normal</span>
                                 {% endif %}
                                 {% if order.status == 'Not deliver' %}
                                     <span class="product-new-top i18n"
-                                          style="background: #c9040c">Not deliver</span>
+                                          style="background: #c9040c" contrastName="NOT_DELIVER">Not deliver</span>
                                 {% elif order.status == 'In transit' %}
                                     <span class="product-new-top i18n"
-                                          style="background: #e0a800"
-                                    >In transit</span>
+                                          style="background: #e0a800" contrastName="IN_TRANSIT">In transit</span>
                                 {% elif order.status == 'Delivered' %}
                                     <span class="product-new-top i18n"
-                                          style="background: cornflowerblue"
-                                    >Delivered</span>
+                                          style="background: cornflowerblue" contrastName="DELIVERED">Delivered</span>
                                 {% elif order.status == 'Signed in' %}
                                     <span class="product-new-top i18n"
-                                          style="background: green"
-                                    >Signed in</span>
+                                          style="background: green" contrastName="SIGNED_IN">Signed in</span>
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title"><a
-                                            href="singleOrder/{{ order.detail }}">Order{{ order.id }}: {{ order.commodity_name }} </a>
+                                            href="singleOrder/{{ order.detail }}"><a class="i18n" contrastName="ORDER">Order</a>{{ order.id }}: {{ order.commodity_name }} </a>
                                     </h5>
                                     <p class="card-text"><span class="i18n"
                                                                contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}
@@ -186,31 +183,28 @@
                                     <img class="card-img-top" src="{{ order.pic_path }}" alt="Card image cap"
                                          height="400px"></a>
                                 {% if order.urgent == 1 %}
-                                    <span class="product-new-top-left i18n"
-                                          style="background: #c9040c">Urgent</span>
+                                     <span class="product-new-top-left i18n"
+                                          style="background: #c9040c" contrastName="URGENT">Urgent</span>
                                 {% else %}
                                     <span class="product-new-top-left i18n"
-                                          style="background: #28a745">Normal</span>
+                                          style="background: #28a745"  contrastName="NORMAL">Normal</span>
                                 {% endif %}
                                 {% if order.status == 'Not deliver' %}
                                     <span class="product-new-top i18n"
-                                          style="background: #c9040c">Not deliver</span>
+                                          style="background: #c9040c" contrastName="NOT_DELIVER">Not deliver</span>
                                 {% elif order.status == 'In transit' %}
-                                    <span class="product-new-top i18n"
-                                          style="background: #e0a800"
-                                    >In transit</span>
+                                   <span class="product-new-top i18n"
+                                          style="background: #e0a800" contrastName="IN_TRANSIT">In transit</span>
                                 {% elif order.status == 'Delivered' %}
                                     <span class="product-new-top i18n"
-                                          style="background: cornflowerblue"
-                                    >Delivered</span>
+                                          style="background: cornflowerblue" contrastName="DELIVERED">Delivered</span>
                                 {% elif order.status == 'Signed in' %}
                                     <span class="product-new-top i18n"
-                                          style="background: green"
-                                    >Signed in</span>
+                                          style="background: green" contrastName="SIGNED_IN">Signed in</span>
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title"><a
-                                            href="singleOrder/{{ order.detail }}">Order{{ order.id }}: {{ order.commodity_name }} </a>
+                                            href="singleOrder/{{ order.detail }}"><a class="i18n" contrastName="ORDER">Order</a>{{ order.id }}: {{ order.commodity_name }} </a>
                                     </h5>
                                     <p class="card-text"><span class="i18n"
                                                                contrastName="PAY_TIME">Purchase time: </span>{{ order.purchase_time }}
