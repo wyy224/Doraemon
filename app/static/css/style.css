@@ -505,7 +505,7 @@ font-size: 14px;
 /*-- //inner-banner --*/ 
 /*--blog--*/
 .blog,.premium,.sub-below-address{
-    background:#26bb48;
+    background:cadetblue;
 }
 /*--//blog--*/
 /*-- about-- */
@@ -760,7 +760,7 @@ color:#000;}
     -moz-background-size: cover;
     -o-background-size: cover;
     -ms-background-size: cover;
-    height:534px;}
+    height:355px;}
 /*--//Premium-- */
 .img-toy-w3l-top{background: url(../image/Head.jpg)no-repeat center;
     background-size: cover;
@@ -793,7 +793,7 @@ height:816px;}
     border: 0;
 }
 .address-w3l-right {
-    background:#ffcb2d;
+    background:#e3b014;
     padding: 2em 0em;
 }
 .address-gried span{ 
@@ -993,7 +993,7 @@ filter: alpha(opacity=0);
 .navbar-light .navbar-nav .nav-link {
     letter-spacing: 1px;
     padding: 6px 38px;	
-}
+}W
 .search-right input[type="search"] {
     width: 80%;
 }
@@ -1613,7 +1613,7 @@ h3.typo-main-heading {
     width: 100%;
     height: 100%;
     flex-flow: column;
-    background-color: mediumpurple;
+    background-color: #73679b;
 }
 
 .left-ads-display{
