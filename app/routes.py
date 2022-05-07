@@ -371,7 +371,8 @@ def product():
 @app.route('/purchase', methods=['GET', 'POST'])
 def purchase():
     if islogined():
-        user = User.query.filter(User.id == session.get('id')).first()
+        user = User.query.filter(User.id == session.get('uid')).first()
+        print(user)
         if (user.ban == 1):
             flash('The user has been disabled')
             return redirect(url_for('log_out'))
