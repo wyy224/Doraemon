@@ -628,10 +628,17 @@ def single(id):
     reviews = get_reviews(commodity.id)
     if form.validate_on_submit():
         if session.get('uid') is not None:
+            user = User.query.filter(User.id == session.get('uid')).first()
+            if (user.ban == 1):
+                flash('The user has been disabled')
+                return redirect(url_for('logout'))
             review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
                             text=form.text.data)
             db.session.add(review)
             db.session.commit()
+            return redirect(url_for('single', id=id))
+        else:
+            return redirect(url_for('login'))
     return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews,
                            commodity=commodity,
                            types=all_type,
