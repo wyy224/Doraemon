@@ -35,8 +35,7 @@ all_type = dict({
     '10': 'Saxophone',
     '11': 'Ukulele',
     '12': 'guitar',
-    '13': 'harmonicas',
-    '14': 'zhengs'
+    '13': 'zhengs'
 })
 
 avatars = Avatars()
