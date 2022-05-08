@@ -124,7 +124,7 @@
                                         <h4>Basic Information</h4>
                                         <div class="form-item-view">
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="PRODUCTNAME">Product name</label>
+                                                 <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="PRODUCTNAME">Product name</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
                                                          <input value="{{ c.commodity_name }}" autocomplete="off" name="product name" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
@@ -132,7 +132,7 @@
                                                  </div>
                                              </div>
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="STOCK">Stock</label>
+                                                 <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="STOCK">Stock</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
                                                          <input value="{{ c.cargo_quantity }}" autocomplete="off" name="quantity" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
@@ -140,7 +140,7 @@
                                                  </div>
                                              </div>
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="PRICE">Price</label>
+                                                 <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="PRICE">Price</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-text" style="width: 260px;">
                                                          <input value="{{ c.price }}" autocomplete="off" name="price" spellcheck="false" type="text" placeholder="Please enter..." class="ivu-input ivu-input-default">
@@ -148,7 +148,7 @@
                                                  </div>
                                              </div>
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                 <label class="ivu-form-item-label" style="width: 120px;" contrastName="TYPE">Type</label>
+                                                 <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="TYPE">Type</label>
                                                  <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                      <div class="ivu-select ivu-select-single ivu-select-default" style="width: 164px;">
                                                         <select class="form-control" value="1" name="type">
@@ -170,11 +170,11 @@
                                                  </div>
                                              </div>
                                         </div>
-                                        <h4 >Commodity Picture</h4>
+                                        <h4 class="i18n" contrastName="COMMODITY_PICTURE">Commodity Picture</h4>
                                         <div  class="form-item-view">
                                             <div class="form-item-view">
                                                 <div class="form-item-view-el required ivu-form-item">
-                                                    <label class="ivu-form-item-label" style="width: 120px;">Picture</label>
+                                                    <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="PICTURE">Picture</label>
                                                     <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                         <div style="display: flex;">
                                                             <div class="ivu-upload" style="margin-left: 10px;">
@@ -189,10 +189,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h4>Product Description</h4>
+                                        <h4 class="i18n" contrastName="PRODUCT_DESCRIPTION">Product Description</h4>
                                         <div class="form-item-view">
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                <label class="ivu-form-item-label" style="width: 120px;" contrastName="INTRODUCTION">Introduction</label>
+                                                <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="INTRODUCTION">Introduction</label>
                                                 <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                     <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-textarea" style="width: 260px;">
                                                         <textarea wrap="soft" name="introduction" autocomplete="off" spellcheck="false" placeholder="" rows="4" class="ivu-input">{{ c.introduction }}</textarea>
@@ -202,7 +202,7 @@
                                         </div>
                                         <div class="form-item-view">
                                             <div class="ivu-form-item ivu-form-item-required">
-                                                <label class="ivu-form-item-label" style="width: 120px;">Sound</label>
+                                                <label class="ivu-form-item-label i18n" style="width: 120px;" contrastName="SOUND">Sound</label>
                                                 <div class="ivu-form-item-content" style="margin-left: 120px;">
                                                     <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type-textarea" style="width: 260px;">
                                                         <input type="file" name = "sound" class="ivu-upload-input">
@@ -211,8 +211,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="ivu-btn" style="margin-right: 5px;"> UPLOAD</button>
-{#                                    <button class="ivu-btn" style="margin-right: 5px;">UPLOAD</button>#}
+                                    <button class="ivu-btn i18n" style="margin-right: 5px;" contrastName="UPLOAD"> UPLOAD</button>
+{#                                    <button class="ivu-btn i18n" style="margin-right: 5px;" contrastName="UPLOAD">UPLOAD</button>#}
                                 </form>
                             </div>
                         </div>
