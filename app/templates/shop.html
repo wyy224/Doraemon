@@ -67,25 +67,46 @@
                      style="background: rgb(230,230,230)">
                     <ul class="navbar-nav ">
                         <li id="1">
-                            <a class="nav-link" onclick="selection(1) ">0-1000</a>
+                            <a class="nav-link" href="/change/1">0-1000</a>
                         </li>
 
                         <li id="2">
-                            <a onclick="selection(2)" class="nav-link">1000-2500</a>
+                            <a href="/change/2" class="nav-link">1000-2500</a>
                         </li>
                         <li id="3">
-                            <a onclick="selection(3)" class="nav-link">2500-4000</a>
+                            <a href="/change/3" class="nav-link">2500-4000</a>
                         </li>
                         <li id="4">
-                            <a onclick="selection(4)" class="nav-link">4000-5500</a>
+                            <a href="/change/4" class="nav-link">4000-5500</a>
                         </li>
                         <li id="5">
-                            <a onclick="selection(5)" class="nav-link">5500-7000</a>
+                            <a href="/change/5" class="nav-link">5500-7000</a>
                         </li>
                         <li id="6">
-                            <a onclick="selection(6)" class="nav-link">7000-</a>
+                            <a href="/change/6" class="nav-link">7000-</a>
                         </li>
                     </ul>
+{#                    <ul class="navbar-nav ">#}
+{#                        <li id="1">#}
+{#                            <a class="nav-link" onclick="selection(1) ">0-1000</a>#}
+{#                        </li>#}
+{##}
+{#                        <li id="2">#}
+{#                            <a onclick="selection(2)" class="nav-link">1000-2500</a>#}
+{#                        </li>#}
+{#                        <li id="3">#}
+{#                            <a onclick="selection(3)" class="nav-link">2500-4000</a>#}
+{#                        </li>#}
+{#                        <li id="4">#}
+{#                            <a onclick="selection(4)" class="nav-link">4000-5500</a>#}
+{#                        </li>#}
+{#                        <li id="5">#}
+{#                            <a onclick="selection(5)" class="nav-link">5500-7000</a>#}
+{#                        </li>#}
+{#                        <li id="6">#}
+{#                            <a onclick="selection(6)" class="nav-link">7000-</a>#}
+{#                        </li>#}
+{#                    </ul>#}
                 </div>
 
             </nav>
@@ -489,22 +510,22 @@
             });
         }
 
-        function selection(id) {
-            var li = document.getElementById(id);
-            li.setAttribute("class", "nav-item active");
-            var i = 1;
-            while (i < 7) {
-                var el = document.getElementById(i);
-                if (i != id && el.hasAttribute("class")) {
-                    el.removeAttribute("class", "nav-item active")
-                }
-                i++;
-            }
-            jQuery.post('/api/shop/price_section', {'price': id}).done(function (response) {
-            });
-            location.reload();
-            {#window.location.href='http://127.0.0.1:5000/shop';#}
-        }
+        {#function selection(id) {#}
+        {#    var li = document.getElementById(id);#}
+        {#    li.setAttribute("class", "nav-item active");#}
+        {#    var i = 1;#}
+        {#    while (i < 7) {#}
+        {#        var el = document.getElementById(i);#}
+        {#        if (i != id && el.hasAttribute("class")) {#}
+        {#            el.removeAttribute("class", "nav-item active")#}
+        {#        }#}
+        {#        i++;#}
+        {#    }#}
+        {#    jQuery.post('/api/shop/price_section', {'price': id}).done(function (response) {#}
+        {#    });#}
+        {#    location.reload();#}
+        {#    window.location.href='http://127.0.0.1:5000/shop';#}
+        {#}#}}
     </script>
 
     <!-- //here ends scrolling icon -->
