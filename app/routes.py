@@ -545,7 +545,7 @@ def shop():
     print(session.get('price_section_start'))
     if session.get('price_section_start') is None:
         page = request.args.get('page', 1, type=int)
-        commodities = Commodity.query.paginate(page, per_page=6, error_out=False)
+        commodities = Commodity.query.paginate(page, per_page=15, error_out=False)
         print(3)
         print(commodities)
     else:
