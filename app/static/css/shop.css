@@ -973,7 +973,7 @@ color: #000;
 	left:-1em;
 }
 .bootstrap-tab-text-grids{
-	margin:3em 0 0 0em;
+	margin:2em 0 0 0em;
 }
 .bootstrap-tab-text-grid-right p{
 	margin:2em 0 0;
@@ -983,6 +983,10 @@ color: #000;
 }
 .bootstrap-tab-text-grid:nth-child(2){
 	margin:3em 0 0;
+}
+.bootstrap-tab-text-grid{
+	border: 1px solid #ccc;
+
 }
 .add-review form{
 	margin:2em 0 0;
