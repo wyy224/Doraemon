@@ -16,7 +16,7 @@ def set_db():
     db.session.add(profile1)
 
     # create users
-    user1 = User(user_name='user1', email='12345678@qq.com', icon='user1_AVA.jpeg')
+    user1 = User(user_name='user1', email='12345678@qq.com', icon='user1_AVA.jpeg', money=10000)
     user1.set_password('000000')
     db.session.add(user1)
     profile2 = Profile(user_id=2)
@@ -43,12 +43,12 @@ def set_db():
     # add commodity
 
     piano = Commodity(commodity_name='piano', cargo_quantity=100, pic_path1='../static/instruments/piano.jpg',
-                      price=3000, introduction='piano', type='piano')
+                      price=3000, introduction='This is a piano.', type='piano')
     db.session.add(piano)
 
     drum = Commodity(commodity_name='drum', cargo_quantity=100,
                      pic_path1='../static/instruments/drum.png',
-                     price=3000, introduction='drum', type='drum')
+                     price=3000, introduction='This is a drum.', type='drum')
     db.session.add(drum)
 
     db.session.commit()
