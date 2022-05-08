@@ -122,6 +122,8 @@ def contact():
             room_num = str(room)
             session['room'] = room
             message = Message.query.filter_by(room=room_num).all()
+            admin = User.query.filter(User.authority == 1).first()
+            contact_icon = admin.icon
         else:
             return redirect(url_for('adjust'))
 
@@ -131,7 +133,7 @@ def contact():
 
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
                            type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
-                           message=message, uid=uid)
+                           message=message, uid=uid, contact_icon=contact_icon)
 
 
 @app.route('/contact_admin/<int:id>', methods=['GET', 'POST'])
@@ -175,11 +177,9 @@ def adjust():
         if uname != '':
             filterList.append(User.user_name.like('%' + uname + '%'))
 
-        filterList.append(User.authority==0)
-
+        filterList.append(User.authority == 0)
 
         user = User.query.filter(*filterList).all()
-
 
     return render_template('adjust.html', user=user)
 
@@ -310,8 +310,6 @@ def change_cart():
         db.session.delete(product)
     db.session.commit()
     return jsonify({'returnValue': 1})
-
-
 
 
 # @app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
@@ -578,6 +576,7 @@ def shop():
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
                            authority=authority, collect_commodities=collect_commodities, list=list, user=user)
 
+
 @app.route('/change/<int:p>', methods=['GET', 'POST'])
 def change(p):
     if p == 1:
@@ -590,7 +589,6 @@ def change(p):
         session['price_section_start'] = 7000
         session['price_section_end'] = 10000000000000000000000000
     return redirect(url_for('shop'))
-
 
 
 # @app.route('/api/shop/price_section', methods=['POST'])
@@ -673,6 +671,7 @@ def single(id):
                            commodity=commodity,
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
+
 
 @app.route('/api/music', methods=["GET", "POST"])
 def check_music():
@@ -1097,8 +1096,8 @@ def login():
         else:
             return reg_mes()
     else:
-        return render_template('login.html',types=all_type, type_value=all_type.values())
-    return render_template('login.html',types=all_type, type_value=all_type.values())
+        return render_template('login.html', types=all_type, type_value=all_type.values())
+    return render_template('login.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/login/login_mes')
@@ -1158,12 +1157,12 @@ def logout():
     # session.clear()
     # return redirect('/main_page')
 
+
 @app.route('/logout', methods=["GET", "POST"])
 def log_out():
     session.clear()
     flash('The user has been disabled')
     return redirect(url_for('login'))
-
 
 
 @app.route('/main_page')
@@ -1387,8 +1386,7 @@ def customer():
         if email != '':
             filterList.append(User.email.like('%' + email + '%'))
 
-
-        users= User.query.filter(*filterList).all()
+        users = User.query.filter(*filterList).all()
         allusers = get_customer(users)
 
         return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers,
