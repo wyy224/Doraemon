@@ -559,8 +559,8 @@ def shop():
         print(session.get('price_section_end'))
     session.pop('price_section_start', None)
     session.pop('price_section_end', None)
-    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
-    collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:5]
+    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:3]
+    collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:3]
     x = new_commodities
 
     user_id = session.get('uid')
