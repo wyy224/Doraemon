@@ -337,7 +337,7 @@
                     var tds=trs[i].cells;
                     name.push(tds[1].innerText);
                     num.push(tds[4].innerText/tds[2].innerText);
-                    price = price+parseInt(tds[3].innerText);
+                    price = price+parseInt(tds[4].innerText);
                 }
             }
             jQuery.post('/api/ShoppingCart/purchase',{'name':JSON.stringify(name),'num':JSON.stringify(num), 'price':price}).done(function (response) {
