@@ -66,7 +66,7 @@
                     {% endif %}
                     {% if authority == 1 %}
                         <li><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></li>
-                        <li><a href="/productList" class="i18n">Products</a></li>
+                        <li><a href="/productList" class="i18n" contrastName="PRODUCTS">Products</a></li>
                         <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
 					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
@@ -101,39 +101,40 @@
                                                   class="i18n">Collection</a></span>
                             <span class="mr-2"><a href="/ShoppingCart" class="i18n" contrastName="S_C">Shopping Cart</a></span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
+
                             {% endif %}
                             {% if authority == 1 %}
                             <span class="i18n"><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></span>
-                            <span class="mr-2"><a href="/productList" class="i18n">Products</a></span>
+                            <span class="mr-2"><a href="/productList" class="i18n" contrastName="PRODUCTS">Products</a></span>
                             <span class="mr-2"><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></span>
                             {% endif %}
-                            <span class="i18n" contrastName="TOPUPLIST">Top up list</span>
+                            <span class="i18n" contrastName="TOPUP_L">Top up List</span>
                         </p>
-                        <h1 class="bread i18n" contrastName="MY_COLLECT">Top up List</h1>
+                        <h1 class="bread i18n" contrastName="TOPUP_L">Top up List</h1>
                     </div>
                 </div>
             </div>
         </section>
         <div class="ivu-table ivu-table-default ivu-table-border" style="background-color: rgba(255,255,240,0.7);text-align: center">
-              <span style="font-size: 25px;font-family: fantasy;">Top up List</span>
+              <span style="font-size: 25px;font-family: fantasy;" class="i18n" contrastName="TOPUP_L">Top up List</span>
               <div class="ivu-table-header">
                   <table cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
                       <thead>
                         <tr>
                             <th class="ivu-table-column-sPsr1K">
-                                <div class="ivu-table-cell"><span class="">Customer</span></div>
+                                <div class="ivu-table-cell"><span class="i18n" contrastName="CUSTOMER">Customer</span></div>
                             </th>
                             <th class="ivu-table-column-0Ty1Sa">
-                                <div class="ivu-table-cell"><span class="">Top up Time</span></div>
+                                <div class="ivu-table-cell"><span class="i18n" contrastName="TOP_UP_TIME">Top up Time</span></div>
                             </th>
                             <th class="ivu-table-column-BsnJUZ">
-                                <div class="ivu-table-cell"><span class="">Top up Amount</span></div>
+                                <div class="ivu-table-cell"><span class="i18n" contrastName="TOP_UP_AMOUNT">Top up Amount</span></div>
                             </th>
                             <th class="ivu-table-column-HpbwFs">
-                                <div class="ivu-table-cell"><span class="">Top up Situation</span></div>
+                                <div class="ivu-table-cell"><span class="i18n" contrastName="TOP_UP_SITUATION">Top up Situation</span></div>
                             </th>
                             {% if authority == 1 %}
-                                <th>Confirmation</th>
+                                <th class="i18n" contrastName="CONFIRMATION">Confirmation</th>
                             {% endif %}
                         </tr>
                       </thead>

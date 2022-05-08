@@ -69,7 +69,7 @@
                     {% endif %}
                     {% if authority == 1 %}
                         <li><a href="/customer" class="i18n" contrastName="CUSTOMER">Customer</a></li>
-                        <li><a href="/productList" class="i18n">Products</a></li>
+                        <li><a href="/productList" class="i18n" contrastName="PRODUCTS">Products</a></li>
                         <li><a href="/Orders" class="i18n" contrastName="ORDERS">Orders</a></li>
                     {% endif %}
 					<li><a href="/contact" class="i18n" contrastName="SERVICES">Services</a></li>
@@ -129,44 +129,44 @@
                         <div class="single-page">
                             <div class="data-v-1dd13e7c">
                                 <div data-v-1dd13e7c="" class="card">
-                                    <h4 data-v-1dd13e7c=""> Basic Information </h4>
+                                    <h4 data-v-1dd13e7c="" class="i18n" contrastName="BASIC_INFORMATION"> Basic Information </h4>
                                     <div data-v-1dd13e7c="" class="card">
                                         <div data-v-1dd13e7c="" class="count-list flex">
                                             <div data-v-1dd13e7c="" class="count-item">
                                                 <div data-v-1dd13e7c="">
                                                     <div data-v-1dd13e7c="" class="counts">{{ info.prod }}</div>
-                                                    <div data-v-1dd13e7c="">Number of products</div>
+                                                    <div data-v-1dd13e7c="" class="i18n" contrastName="NOP">Number of products</div>
                                                 </div>
                                             </div>
                                             <div data-v-1dd13e7c="" class="count-item">
                                                 <div data-v-1dd13e7c="">
                                                     <div data-v-1dd13e7c="" class="counts">{{ info.cus }}</div>
-                                                    <div data-v-1dd13e7c="">Number of customers</div>
+                                                    <div data-v-1dd13e7c="" class="i18n" contrastName="NOC">Number of customers</div>
                                                 </div>
                                             </div>
                                             <div data-v-1dd13e7c="" class="count-item">
                                                 <div data-v-1dd13e7c="">
                                                     <div data-v-1dd13e7c="" class="counts">{{ info.order }}</div>
-                                                    <div data-v-1dd13e7c="">Number of orders</div>
+                                                    <div data-v-1dd13e7c="" class="i18n" contrastName="NOO">Number of orders</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div data-v-1dd13e7c="" class="card">
-                                    <h4 data-v-1dd13e7c="">Today's overview</h4>
+                                    <h4 data-v-1dd13e7c="" class="i18n" contrastName="TO">Today's overview</h4>
                                     <div data-v-1dd13e7c="" class="todo-list flex">
                                         <div data-v-1dd13e7c="" class="todo-item">
                                             <div data-v-1dd13e7c="" class="counts">{{ new.order }}</div>
-                                            <div data-v-1dd13e7c="">Orders Today</div>
+                                            <div data-v-1dd13e7c="" class="i18n" contrastName="ORDERS_TODAY">Orders Today</div>
                                         </div>
                                         <div data-v-1dd13e7c="" class="todo-item">
                                             <div data-v-1dd13e7c="" class="counts">{{ new.cus }}</div>
-                                            <div data-v-1dd13e7c="">New customers today</div>
+                                            <div data-v-1dd13e7c="" class="i18n" contrastName="NCT">New customers today</div>
                                         </div>
                                         <div data-v-1dd13e7c="" class="todo-item">
                                             <div data-v-1dd13e7c="" class="counts">{{ new.cmnt }}</div>
-                                            <div data-v-1dd13e7c="">New comments today</div>
+                                            <div data-v-1dd13e7c="" class="i18n" contrastName="NEW_COMMENTS_TODAY">New comments today</div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,52 +175,7 @@
                     {% endif %}
 				</div>
 			</section>
-			<section class="ftco-section instagram">
-				<div class="container">
-					<div class="row justify-content-center mb-2 pb-3">
-	          <div class="col-md-7 heading-section heading-section-2 text-center ftco-animate">
-	            <h2 class="mb-4 i18n" contrastName="RE_COLLECTION">Recent Collections</h2>
-	          </div>
-	        </div>  
-					<div class="row no-gutters">
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/saxophone.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/saxophone.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/clarionet.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/clarionet.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/ukulele.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/ukulele.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/erhu.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/erhu.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		        <div class="col-sm-12 col-md ftco-animate">
-		          <a href="../static/instruments/piano.jpg" class="insta-img image-popup" style="background-image: url(../static/instruments/piano.jpg);">
-		            <div class="icon d-flex justify-content-center">
-		              <span class="icon-instagram align-self-center"></span>
-		            </div>
-		          </a>
-		        </div>
-		      </div>
-				</div>
-			</section>
+
 		</div><!-- END COLORLIB-MAIN -->
 	</div><!-- END COLORLIB-PAGE -->
 

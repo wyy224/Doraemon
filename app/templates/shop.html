@@ -30,6 +30,7 @@
     <!--//price range-->
     <!--stylesheets-->
     <link href="../static/css/style.css" rel='stylesheet' type='text/css' media="all">
+
     <!--//stylesheets-->
 
     <!-- banner -->
@@ -54,7 +55,8 @@
     <section class="contact py-lg-4 py-md-3 py-sm-3 py-3">
 
         <div class="container-fluid py-lg-5 py-md-4 py-sm-4 py-3">
-            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3 i18n" contrastName="INSTRUMENTS_SHOP">Instruments Shop</h3>
+            <h3 class="title text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3 i18n" contrastName="INSTRUMENTS_SHOP">Instruments
+                Shop</h3>
             <nav class="navbar navbar-expand-lg navbar-light">
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent"
@@ -118,9 +120,11 @@
                                 <img src="{{ commodity.pic_path1 }}" alt="" class="img-fluid">
                             </div>
                             <div class="col-xs-8 img-deal1">
-                                <a href="single/{{ commodity.id }}">commodity name:{{ commodity.commodity_name }}</a><br>
+                                <a href="single/{{ commodity.id }}">commodity
+                                    name:{{ commodity.commodity_name }}</a><br>
                                 <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
-                                <span class="i18n" contrastName="RELEASE_TIME">release_time:</span><span>{{ list[ commodity.id ] }}</span>
+                                <span class="i18n"
+                                      contrastName="RELEASE_TIME">release_time:</span><span>{{ list[ commodity.id ] }}</span>
                             </div>
                             <div class="clearfix"></div>
 
@@ -143,9 +147,11 @@
                                 <img src="{{ commodity.pic_path1 }}" alt="" class="img-fluid">
                             </div>
                             <div class="col-xs-8 img-deal1">
-                                <a href="single/{{ commodity.id }}">commodity name:{{ commodity.commodity_name }}</a><br>
+                                <a href="single/{{ commodity.id }}">commodity
+                                    name:{{ commodity.commodity_name }}</a><br>
                                 <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
-                                <span class="i18n" contrastName="COLLECT_NUM">collect_num:</span><span>{{ commodity.collect_num }}</span>
+                                <span class="i18n"
+                                      contrastName="COLLECT_NUM">collect_num:</span><span>{{ commodity.collect_num }}</span>
                             </div>
                             <div class="clearfix"></div>
 
@@ -168,17 +174,18 @@
                                     <div class="men-thumb-item">
 
 
-                                        <img src="{{ commodity.pic_path1 }}" class="img-thumbnail img-fluid" alt="">
+                                        <img src="{{ commodity.pic_path1 }}" class="img-thumbnail img-fluid" alt="" >
 
 
                                         <div class="men-cart-pro">
                                             <div class="inner-men-cart-pro">
-                                                <a href="single/{{ commodity.id }}" class="link-product-add-cart i18n" contrastName="QV">Quick
+                                                <a href="single/{{ commodity.id }}" class="link-product-add-cart i18n"
+                                                   contrastName="QV">Quick
                                                     View</a>
                                             </div>
                                         </div>
 
-                                        <span class="product-new-top i18n" ontrastName="NEW">New</span>
+
 
                                     </div>
 
@@ -195,7 +202,8 @@
                                                     </h4>
                                                     <div class="grid-price mt-2">
                                                         <span class="money ">${{ commodity.price }}</span><br>
-                                                        <span class="i18n" contrastName="COLLECT_NUM">collect_num:</span>
+                                                        <span class="i18n"
+                                                              contrastName="COLLECT_NUM">collect_num:</span>
                                                         <span id="collect_num">{{ commodity.collect_num }}</span>
                                                     </div>
                                                 </div>
@@ -212,16 +220,16 @@
                                                 <input type="hidden" value="{{ commodity.id }}"
                                                        id="commodity_id">
                                                 {% if authority != 1 %}
-                                                <button id="button_collect{{ commodity.id }}"
-                                                        class="toys-cart ptoys-cart"
-                                                        {% if commodity.is_collected %}
-                                                        style="background: rgb(255, 193, 7)"
-                                                        {% else %}
-                                                        style="background: #00b9ff"
-                                                        {% endif %}
-                                                        onclick=collect("{{ commodity.id }}")>
-                                                    <i class="fas fa-star"></i>
-                                                </button>
+                                                    <button id="button_collect{{ commodity.id }}"
+                                                            class="toys-cart ptoys-cart"
+                                                            {% if commodity.is_collected %}
+                                                            style="background: rgb(255, 193, 7)"
+                                                            {% else %}
+                                                            style="background: #00b9ff"
+                                                            {% endif %}
+                                                            onclick=collect("{{ commodity.id }}")>
+                                                        <i class="fas fa-star"></i>
+                                                    </button>
                                                 {% endif %}
                                                 {#                                                    </form>#}
                                             </div>
@@ -242,74 +250,45 @@
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
-                        <div class="address-gried-2">
-                            <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
-                            <p class="i18n" contrastName="GYBCOI">
-                                Give you best choices of instruments!
-                            </p>
-                        </div>
-                </div>
-                <div class="col-lg-6 col-md-6 address-w3l-right text-center">
-                    <div class="address-gried ">
-                        <span class="far fa-map"></span>
-                        <p>25478 Road St.121<br>USA New Hill
-                        <p>
-                        </p></div>
-                    <div class="address-gried mt-3">
-                        <span class="fas fa-phone-volume"></span>
-                        <p> +(000)123 4565<br>+(010)123 4565</p>
-                    </div>
-                    <div class=" address-gried mt-3">
-                        <span class="far fa-envelope"></span>
-                        <p><a href="mailto:info@example.com">info@example1.com</a>
-                            <br><a href="mailto:info@example.com">info@example2.com</a>
+         <div class="container-fluid">
+         <div class="row">
+           <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
+                    <div class="address-gried-2">
+                        <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
+                        <p class="i18n" contrastName="GYBCOI">
+                            Give you best choices of instruments!
                         </p>
                     </div>
                 </div>
+            <div class="col-lg-6 col-md-6 address-w3l-right text-center">
+<!--               <div class="address-gried ">-->
+<!--                  <span class="far fa-map"></span>-->
+<!--                  <p>25478 Road St.121<br>USA New Hill-->
+<!--                  <p>-->
+<!--               </p></div>-->
+               <div class="address-gried mt-3">
+                  <span class="fas fa-phone-volume"></span>
+                  <p> 13718691558<br></p>
+               </div>
+               <div class=" address-gried mt-3">
+                  <span class="far fa-envelope"></span>
+                  <p><a href="mailto:info@example.com">519315516@qq.com</a>
+<!--                     <br><a href="mailto:info@example.com">info@example2.com</a>-->
+                  </p>
+               </div>
             </div>
-        </div>
-    </section>
-    <!--//subscribe-address-->
-    <section class="sub-below-address py-lg-4 py-md-3 py-sm-3 py-3">
-        <div class="container py-lg-5 py-md-5 py-sm-4 py-3">
-            <h3 class="title clr text-center mb-lg-5 mb-md-4 mb-sm-4 mb-3">Get In Touch Us</h3>
-            <div class="icons mt-4 text-center">
-                <ul>
-                    <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
-                    <li><a href="#"><span class="fas fa-envelope"></span></a></li>
-                    <li><a href="#"><span class="fas fa-rss"></span></a></li>
-                    <li><a href="#"><span class="fab fa-vk"></span></a></li>
-                </ul>
-                <p class="my-3">velit sagittis vehicula. Duis posuere
-                    ex in mollis iaculis. Suspendisse tincidunt
-                    velit sagittis vehicula. Duis posuere
-                    velit sagittis vehicula. Duis posuere
-                </p>
-            </div>
-            <div class="email-sub-agile">
-                <form action="#" method="post">
-                    <div class="form-group sub-info-mail">
-                        <input type="email" class="form-control email-sub-agile" placeholder="Email">
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn subscrib-btnn">Subscribe</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <!--//subscribe-->
-    <!-- footer -->
-    <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
-        <div class="copy-agile-right">
-            <p>
-                Copyright &copy; 2022.Company name All rights reserved.
-            </p>
-        </div>
-    </footer>
+         </div>
+		 </div>
+      </section>
+      <!--//subscribe-address-->
+
+      <!--//subscribe-->
+      <!-- footer -->
+      <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
+         <div class="copy-agile-right">
+            <p class="i18n" contrastName="BTTT">Back to the top</p>
+         </div>
+      </footer>
     <!-- //footer -->
     <!-- Modal 1-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -483,30 +462,31 @@
                 "commodity": commodity
 
             };
-            if ("{{ user_id }}" == "None") {
-                alert("please login");
-            } else
-                Ajax('post', '/collect', sendData, function (data) {
-                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
-                        document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
-                        var a = document.getElementById("collect_num").innerHTML;
-                        var b = (a-0)-1;
-                        var c =document.getElementById("collect_num").innerHTML=b;
+            if ("{{ user.ban }}" == 1) {
+                alert("The user has been disabled");
+            } else if ("{{ user_id }}" == "None") {
+                alert('Not logged in');
+            } else Ajax('post', '/collect', sendData, function (data) {
+                if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
+                    document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
+                    var a = document.getElementById("collect_num").innerHTML;
+                    var b = (a - 0) - 1;
+                    var c = document.getElementById("collect_num").innerHTML = b;
 
 
-                    } else {
-                        document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
-                        var a = document.getElementById("collect_num").innerHTML;
-                        var b = (a-0)+1;
-                        var c =document.getElementById("collect_num").innerHTML=b;
-                    }
-                    alert(data)
-                    {#console.log("123");#}
-                    {#location.reload();#}
+                } else {
+                    document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
+                    var a = document.getElementById("collect_num").innerHTML;
+                    var b = (a - 0) + 1;
+                    var c = document.getElementById("collect_num").innerHTML = b;
+                }
+                alert(data)
+                {#console.log("123");#}
+                {#location.reload();#}
 
-                }, function (error) {
-                    console.log(error);
-                });
+            }, function (error) {
+                console.log(error);
+            });
         }
 
         function selection(id) {
