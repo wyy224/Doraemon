@@ -842,9 +842,9 @@ def singleOrder(id):
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
 def change_status(id):
     status = request.form['status']
-    list = session.get('allorders')
-    order1 = list[int(id) - 1]
-    order = Order.query.filter(Order.id == order1['id']).first()
+    od_del = OrderDetail.query.get(id)
+    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
+    order = Order.query.filter(Order.id == details.order_id).first()
     order.status = status
     db.session.commit()
     return redirect(url_for('singleOrder', id=id))
@@ -918,9 +918,9 @@ def receiveOder(id):
     if (user.ban == 1):
         flash('The user has been disabled')
         return redirect(url_for('log_out'))
-    list = session.get('allorders')
-    order1 = list[int(id) - 1]
-    order = Order.query.filter(Order.id == order1['id']).first()
+    od_del = OrderDetail.query.get(id)
+    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
+    order = Order.query.filter(Order.id == details.order_id).first()
     order.status = "Signed in"
     order.Urgent = 0
     db.session.commit()
