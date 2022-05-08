@@ -678,6 +678,7 @@ def single(id):
 def check_music():
     m = request.form.get('music')
     m_name = os.path.basename(m)
+    print(m_name)
     dir = os.path.join(Config.MUSIC_SAVE_PATH, m_name)
     if os.path.exists(dir):
         return jsonify({'returnValue': 1})
