@@ -645,6 +645,16 @@ def single(id):
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
 
+@app.route('/api/music', methods=["GET", "POST"])
+def check_music():
+    m = request.form.get('music')
+    m_name = os.path.basename(m)
+    dir = os.path.join(Config.MUSIC_SAVE_PATH, m_name)
+    if os.path.exists(dir):
+        return jsonify({'returnValue': 1})
+    else:
+        return jsonify({'returnValue': 0})
+
 
 def get_reviews(p):
     reviews = db.session.query(Review).filter(Review.commodity_id == p).order_by(Review.created.desc()).all()

@@ -438,13 +438,21 @@
             });
         });
         var audio = document.getElementById("audio");
-
         function play_pause_music() {
-            if (audio.paused) {
-                audio.play();
-            } else if (audio.played) {
-                audio.pause();
-            }
+            jQuery.post('/api/music',{'music': audio.src}).done(function (response) {
+                let server_code = response['returnValue']
+                if (server_code == 1) {
+                    if (audio.paused) {
+                        audio.play();
+                    } else if (audio.played) {
+                        audio.pause();
+                    }
+                }else {
+                    alert("Admin has not uploaded music yet")
+                }
+            }).fail(function (){
+                console.log("Fail reset");
+            })
         }
     </script>
     <!-- start-smoth-scrolling -->
