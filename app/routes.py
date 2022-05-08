@@ -29,6 +29,14 @@ all_type = dict({
     '4': 'trombone',
     '5': 'trumpet',
     '6': 'violin',
+    '7': 'Clarionet',
+    '8': 'Erhu',
+    '9': 'Harmonica',
+    '10': 'Saxophone',
+    '11': 'Ukulele',
+    '12': 'guitar',
+    '13': 'harmonicas',
+    '14': 'zhengs'
 })
 
 avatars = Avatars()
@@ -305,6 +313,8 @@ def change_cart():
     return jsonify({'returnValue': 1})
 
 
+
+
 # @app.route('/ShoppingCart/purchase', methods=['GET', 'POST'])
 # def pay_from_cart():
 #     data = request.get_data()
@@ -535,9 +545,15 @@ def shop():
     print(session.get('price_section_start'))
     if session.get('price_section_start') is None:
         commodities = Commodity.query.all()
+        print(3)
+        print(commodities)
     else:
         commodities = Commodity.query.filter(
             Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')))
+        print('1')
+        print(session.get('price_section_start'))
+        print('2')
+        print(session.get('price_section_end'))
     session.pop('price_section_start', None)
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
@@ -563,12 +579,8 @@ def shop():
                            types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
                            authority=authority, collect_commodities=collect_commodities, list=list, user=user)
 
-
-@app.route('/api/shop/price_section', methods=['POST'])
-def get_price_section():
-    p = int(request.form.get('price'))
-    # session.pop('price_section_start',None)
-    # session.pop('price_section_end', None)
+@app.route('/change/<int:p>', methods=['GET', 'POST'])
+def change(p):
     if p == 1:
         session['price_section_start'] = 0
         session['price_section_end'] = 1000
@@ -577,8 +589,26 @@ def get_price_section():
         session['price_section_end'] = 1000 + (p - 1) * 1500
     elif p >= 7:
         session['price_section_start'] = 7000
-        session['price_section_end'] = 100000000
-    return jsonify({'returnValue': 1})
+        session['price_section_end'] = 10000000000000000000000000
+    return redirect(url_for('shop'))
+
+
+
+# @app.route('/api/shop/price_section', methods=['POST'])
+# def get_price_section():
+#     p = int(request.form.get('price'))
+#     # session.pop('price_section_start',None)
+#     # session.pop('price_section_end', None)
+#     if p == 1:
+#         session['price_section_start'] = 0
+#         session['price_section_end'] = 1000
+#     elif 2 <= p < 7:
+#         session['price_section_start'] = 1000 + (p - 2) * 1500
+#         session['price_section_end'] = 1000 + (p - 1) * 1500
+#     elif p >= 7:
+#         session['price_section_start'] = 7000
+#         session['price_section_end'] = 100000000
+#     return jsonify({'returnValue': 1})
 
 
 @app.route('/collect', methods=['GET', 'POST'])
