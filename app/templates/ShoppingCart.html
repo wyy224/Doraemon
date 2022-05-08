@@ -203,7 +203,7 @@
                     tds[4].innerText=(tds[2].innerText*target.previousElementSibling.value).toFixed(2);
                     //修改小计里面的价格
                     change(tds[1].innerText,'add',1);
-                    location.reload()
+
                     break;
                 case 'reduce'://减少商品数量
                     var tr=target.parentNode.parentNode;//找到点击过那一行
@@ -213,7 +213,7 @@
                     tds[4].innerText=(tds[2].innerText*target.nextElementSibling.value).toFixed(2);
                     //修改小计里面的价格
                     change(tds[1].innerText,'reduce',1);
-                    location.reload()
+
                     break;
                 case 'text'://直接修改数量那一栏input的值
                     var tr=target.parentNode.parentNode;
@@ -222,7 +222,7 @@
                         tds[4].innerText=(tds[2].innerText*this.value).toFixed(2);
                         change(tds[1].innerText,'change',this.value);
                         this.onblur=null;//销毁事件
-                        location.reload()
+
                     };
                     break;
                 case 'del i18n': //删除商品
@@ -235,7 +235,7 @@
                         tbody.removeChild(tr);
                         debugger
                     }
-                    location.reload()
+
                     break;
                 case 'pay_for': //付款
                     var tr=target.parentNode.parentNode;
@@ -251,7 +251,7 @@
                     {
                         change('','delAll',1);
                         tbody.innerHTML='';
-                        location.reload()
+
                     }
                     break;
                 case 'cancel':
@@ -313,7 +313,7 @@
         function change(name, type, num) {
             jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
                     });
-
+                window.location.reload(true)
                 }
     });
 
@@ -324,6 +324,8 @@
         $(function(){
         })
         function openDialog(){
+
+
             document.getElementById('light').style.display='block';
             document.getElementById('fade').style.display='block'
         }
