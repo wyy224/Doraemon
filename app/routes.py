@@ -29,6 +29,14 @@ all_type = dict({
     '4': 'trombone',
     '5': 'trumpet',
     '6': 'violin',
+    '7': 'Clarionet',
+    '8': 'Erhu',
+    '9': 'Harmonica',
+    '10': 'Saxophone',
+    '11': 'Ukulele',
+    '12': 'guitar',
+    '13': 'harmonicas',
+    '14': 'zhengs'
 })
 
 avatars = Avatars()
@@ -581,7 +589,7 @@ def change(p):
         session['price_section_end'] = 1000 + (p - 1) * 1500
     elif p >= 7:
         session['price_section_start'] = 7000
-        session['price_section_end'] = 100000000
+        session['price_section_end'] = 10000000000000000000000000
     return redirect(url_for('shop'))
 
 

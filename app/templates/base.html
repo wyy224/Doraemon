@@ -129,16 +129,16 @@
 
                     <li class="nav-item dropdown">
                         {% if authority ==1 %}
-                            <a class="nav-link dropdown-toggle i18n" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" contrastName="CUSTOMER">
+                            <a class="nav-link i18n" href="/adjust" contrastName="CUSTOMER">
                                 Customer
                             </a>
                         {% else %}
-                            <a class="nav-link dropdown-toggle i18n" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" contrastName="SERVICE">
+                            <a class="nav-link i18n" href="/contact" contrastName="SERVICE">
                                 Service
                             </a>
                         {% endif %}
+
+
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             {% if authority !=1 %}
                                 <a onclick="location.href='/contact'" class="nav-link i18n" contrastName="CONTACT">Contact</a>
