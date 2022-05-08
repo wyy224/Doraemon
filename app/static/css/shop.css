@@ -1205,7 +1205,9 @@ button.toys-cart {
 	.product-men img {
      height: 60%;
 }
-
+	.col-lg-4.col-md-3.right-side-cart {
+		width: 99%;
+	}
 }
 @media(max-width:600px){
 	.colr {
