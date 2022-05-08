@@ -310,7 +310,6 @@
                     });
             location.reload()
         }
-
     });
 
 
@@ -328,16 +327,19 @@
             document.getElementById('fade').style.display='none'
         }
         function purchase() {
-            var trs=$('#tbody1 tr');
+            var trs=$('#tbody tr');
             var name = new Array();
             var num = new Array();
             var price = 0;
-            trs.forEach(function (tr) {
-                var tds=tr.cells;
-                name.push(tds[0].innerText);
-                num.push(tds[2].innerText);
-                price = price+parseInt(tds[3].innerText);
-            })
+            for (var i = 0; i < trs.length; i++) {
+                var checkbox = trs[i].cells[0].children[0];
+                if (checkbox.checked) {
+                    var tds=trs[i].cells;
+                    name.push(tds[1].innerText);
+                    num.push(tds[4].innerText/tds[2].innerText);
+                    price = price+parseInt(tds[3].innerText);
+                }
+            }
             jQuery.post('/api/ShoppingCart/purchase',{'name':JSON.stringify(name),'num':JSON.stringify(num), 'price':price}).done(function (response) {
 
             });
