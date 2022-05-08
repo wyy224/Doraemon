@@ -1098,8 +1098,8 @@ def login():
         else:
             return reg_mes()
     else:
-        return render_template('login.html')
-    return render_template('login.html')
+        return render_template('login.html',types=all_type, type_value=all_type.values())
+    return render_template('login.html',types=all_type, type_value=all_type.values())
 
 
 @app.route('/login/login_mes')
