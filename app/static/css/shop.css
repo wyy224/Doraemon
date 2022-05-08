@@ -1202,6 +1202,9 @@ button.toys-cart {
 	h3.agileits-sear-head {
 		width: 50%;
 	}
+	.product-men img {
+     height: 60%;
+}
 
 }
 @media(max-width:600px){

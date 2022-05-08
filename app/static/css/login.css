@@ -161,6 +161,9 @@ input:focus::placeholder{
 }
 
 @media all and (max-width: 767px) {
+    body{
+        zoom: 75%;
+    }
     .log{
         position: absolute;
         top: 350px;
