@@ -134,7 +134,7 @@
         </div>
 {#        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay#}
 {#                </button> </div>#}
-        <button type="button" class="js i18n" onclick="openDialog()" contrastName="PAY">&nbsp;Pay&nbsp;</button>
+        <button type="button" class="js i18n" onclick="openDialog()" contrastName="PAY">&nbsp;Pay(If you have done something on this page, please refresh the page before purchasing)&nbsp;</button>
 
     </div>
         <div id="light" class="white_content">
@@ -311,7 +311,7 @@
             }
         }
         function change(name, type, num) {
-            jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
+            jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {location.reload(true)
                     });
 
                 }
