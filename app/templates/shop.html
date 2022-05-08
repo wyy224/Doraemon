@@ -86,27 +86,27 @@
                             <a href="/change/6" class="nav-link">7000-</a>
                         </li>
                     </ul>
-{#                    <ul class="navbar-nav ">#}
-{#                        <li id="1">#}
-{#                            <a class="nav-link" onclick="selection(1) ">0-1000</a>#}
-{#                        </li>#}
-{##}
-{#                        <li id="2">#}
-{#                            <a onclick="selection(2)" class="nav-link">1000-2500</a>#}
-{#                        </li>#}
-{#                        <li id="3">#}
-{#                            <a onclick="selection(3)" class="nav-link">2500-4000</a>#}
-{#                        </li>#}
-{#                        <li id="4">#}
-{#                            <a onclick="selection(4)" class="nav-link">4000-5500</a>#}
-{#                        </li>#}
-{#                        <li id="5">#}
-{#                            <a onclick="selection(5)" class="nav-link">5500-7000</a>#}
-{#                        </li>#}
-{#                        <li id="6">#}
-{#                            <a onclick="selection(6)" class="nav-link">7000-</a>#}
-{#                        </li>#}
-{#                    </ul>#}
+                    {#                    <ul class="navbar-nav ">#}
+                    {#                        <li id="1">#}
+                    {#                            <a class="nav-link" onclick="selection(1) ">0-1000</a>#}
+                    {#                        </li>#}
+                    {##}
+                    {#                        <li id="2">#}
+                    {#                            <a onclick="selection(2)" class="nav-link">1000-2500</a>#}
+                    {#                        </li>#}
+                    {#                        <li id="3">#}
+                    {#                            <a onclick="selection(3)" class="nav-link">2500-4000</a>#}
+                    {#                        </li>#}
+                    {#                        <li id="4">#}
+                    {#                            <a onclick="selection(4)" class="nav-link">4000-5500</a>#}
+                    {#                        </li>#}
+                    {#                        <li id="5">#}
+                    {#                            <a onclick="selection(5)" class="nav-link">5500-7000</a>#}
+                    {#                        </li>#}
+                    {#                        <li id="6">#}
+                    {#                            <a onclick="selection(6)" class="nav-link">7000-</a>#}
+                    {#                        </li>#}
+                    {#                    </ul>#}
                 </div>
 
             </nav>
@@ -184,7 +184,7 @@
 
             </div>
             <div class="left-ads-display col-lg-9">
-                {% for commodity in commodities %}
+                {% for commodity in commodities.items %}
                     <div class="row2">
 
                         <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
@@ -195,7 +195,7 @@
                                     <div class="men-thumb-item">
 
 
-                                        <img src="{{ commodity.pic_path1 }}" class="img-thumbnail img-fluid" alt="" >
+                                        <img src="{{ commodity.pic_path1 }}" class="img-thumbnail img-fluid" alt="">
 
 
                                         <div class="men-cart-pro">
@@ -205,7 +205,6 @@
                                                     View</a>
                                             </div>
                                         </div>
-
 
 
                                     </div>
@@ -268,12 +267,74 @@
         </div>
 
     </section>
+
+    <<ul class="pagination-nav">
+        <li class="page-item-nav">
+            {% if  commodities.has_prev %}
+                <a class="page-link-nav" href="/shop?page={{ commodities.page-1 }}"
+                   aria-label="Previous">
+            {% endif %}
+            {% if  not commodities.has_prev %}
+                <a class="page-link-nav" href="/shop?page={{ commodities.page }}"
+                   aria-label="Previous">
+            {% endif %}
+            <span aria-hidden="true">«</span>
+            </a>
+        </li>
+
+        {% if  commodities.has_prev %}
+            <li class="page-item-nav">
+                <a class="page-link-nav"
+                   href="/shop?page={{ commodities.page-1 }}">
+                    {{ commodities.page-1 }}</a>
+            </li>
+        {% endif %}
+
+
+        <li class="page-item-nav">
+            <a class="page-link-nav"
+               href="/shop?page={{ commodities. page }}"
+               style="background: #adb5bd">{{ commodities. page }}</a>
+        </li>
+
+
+        {% if  commodities.has_next %}
+            <li class="page-item-nav">
+                <a class="page-link-nav"
+                   href="/shop?page={{ commodities. page+1 }}">
+                    {{ commodities. page+1 }}</a>
+            </li>
+        {% endif %}
+
+
+        <li class="page-item-nav">
+            {% if  commodities.has_next %}
+                <a class="page-link-nav" href="/shop?page={{ commodities.page+1 }}"
+                   aria-label="Next">
+            {% endif %}
+            {% if not commodities.has_next %}
+                <a class="page-link-nav" href="/shop?page={{ commodities.page }}"
+                   aria-label="Next">
+            {% endif %}
+
+            <span aria-hidden="true">»</span>
+            </a>
+        </li>
+    </ul>
+
+
+
+    </ul>
+    <ul style="display: flex;justify-content: center">
+        <span class="i18n" contrastName="TOTAL2">Total: </span>{{ commodities.pages }} <span class="i18n"
+                                                                                             contrastName="PAGES">pages</span>
+    </ul>
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
-         <div class="container-fluid">
-         <div class="row">
-           <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
                     <div class="address-gried-2">
                         <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
                         <p class="i18n" contrastName="GYBCOI">
@@ -281,35 +342,35 @@
                         </p>
                     </div>
                 </div>
-            <div class="col-lg-6 col-md-6 address-w3l-right text-center">
-<!--               <div class="address-gried ">-->
-<!--                  <span class="far fa-map"></span>-->
-<!--                  <p>25478 Road St.121<br>USA New Hill-->
-<!--                  <p>-->
-<!--               </p></div>-->
-               <div class="address-gried mt-3">
-                  <span class="fas fa-phone-volume"></span>
-                  <p> 13718691558<br></p>
-               </div>
-               <div class=" address-gried mt-3">
-                  <span class="far fa-envelope"></span>
-                  <p><a href="mailto:info@example.com">519315516@qq.com</a>
-<!--                     <br><a href="mailto:info@example.com">info@example2.com</a>-->
-                  </p>
-               </div>
+                <div class="col-lg-6 col-md-6 address-w3l-right text-center">
+                    <!--               <div class="address-gried ">-->
+                    <!--                  <span class="far fa-map"></span>-->
+                    <!--                  <p>25478 Road St.121<br>USA New Hill-->
+                    <!--                  <p>-->
+                    <!--               </p></div>-->
+                    <div class="address-gried mt-3">
+                        <span class="fas fa-phone-volume"></span>
+                        <p> 13718691558<br></p>
+                    </div>
+                    <div class=" address-gried mt-3">
+                        <span class="far fa-envelope"></span>
+                        <p><a href="mailto:info@example.com">519315516@qq.com</a>
+                            <!--                     <br><a href="mailto:info@example.com">info@example2.com</a>-->
+                        </p>
+                    </div>
+                </div>
             </div>
-         </div>
-		 </div>
-      </section>
-      <!--//subscribe-address-->
+        </div>
+    </section>
+    <!--//subscribe-address-->
 
-      <!--//subscribe-->
-      <!-- footer -->
-      <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
-         <div class="copy-agile-right">
+    <!--//subscribe-->
+    <!-- footer -->
+    <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
+        <div class="copy-agile-right">
             <p class="i18n" contrastName="BTTT">Back to the top</p>
-         </div>
-      </footer>
+        </div>
+    </footer>
     <!-- //footer -->
     <!-- Modal 1-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

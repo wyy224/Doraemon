@@ -541,12 +541,15 @@ def shop():
         user_icon = 'NULL'
     print(session.get('price_section_start'))
     if session.get('price_section_start') is None:
-        commodities = Commodity.query.all()
+        page = request.args.get('page', 1, type=int)
+        commodities = Commodity.query.paginate(page, per_page=6, error_out=False)
         print(3)
         print(commodities)
     else:
+        page = request.args.get('page', 1, type=int)
         commodities = Commodity.query.filter(
-            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')))
+            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end'))).paginate(
+            page, per_page=6, error_out=False)
         print('1')
         print(session.get('price_section_start'))
         print('2')
@@ -560,7 +563,7 @@ def shop():
     user_id = session.get('uid')
     user = User.query.filter(User.id == user_id).first()
 
-    for commodity in commodities:
+    for commodity in commodities.items:
         collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
         if collections:
             commodity.is_collected = True
