@@ -403,6 +403,9 @@ def purchase():
                 print(info)
                 print(showList)
         else:
+            if commodity is None:
+                message = 'Empty cart'
+                return render_template('payfail.html', message=message)
             price = commodity.price
             num = session['purchase_num']
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()

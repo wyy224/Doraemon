@@ -308,7 +308,9 @@
         function change(name, type, num) {
             jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
                     });
+            location.reload()
         }
+
     });
 
 
