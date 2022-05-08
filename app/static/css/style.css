@@ -1131,6 +1131,21 @@ h4.typo-sub-heading {
     margin-bottom: 12px;
 }
 }
+@media all and (min-width: 1200px){
+    .left-ads-display{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+}
+@media all and (max-width: 1200px){
+    .left-ads-display{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+}
+
 @media(max-width:991px){
 	.info-contact-agile ul li span {
     font-size: 16px;
@@ -1189,6 +1204,7 @@ background: #fff;
 }
 }
 @media(max-width:900px){
+
 	.slider-img {
     min-height: 652px;
 }
@@ -1208,6 +1224,7 @@ background: #fff;
 }
 }
 @media(max-width:800px){
+
 .icons ul li a span, .cart-icons ul li span, .icons-social ul li span {
     font-size: 14px;
     width: 35px;
@@ -1260,8 +1277,10 @@ h4.typo-sub-heading {
 .abut-gride h5 {
 font-size: 22px;
 }
+
 }
 @media(max-width:767px){
+
 .search-right input[type="search"] {
     width: 74%;
 }
@@ -1611,11 +1630,7 @@ h3.typo-main-heading {
     background-color: #73679b;
 }
 
-.left-ads-display{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-}
+
 .row2{
     height: 100%;
     width: 250%;
