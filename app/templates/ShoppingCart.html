@@ -37,58 +37,63 @@
 </template>
 <link href="../static/css/shopping_cart.css" rel='stylesheet' type='text/css' media="all">
 <style>
-        .black_overlay{
-            display: none;
-            position: absolute;
-            top: 0%;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index:1001;
-            -moz-opacity: 0.8;
-            opacity:.80;
-            filter: alpha(opacity=88);
-        }
-        .white_content {
-            display: none;
-            position: absolute;
-            width: 80%;
-            height: 50%;
-            top: 25%;
-            padding: 20px;
-            background-color: white;
-            z-index:1002;
-            overflow: auto;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .pay_cancel{
-            display: flex;
-            justify-content: space-evenly;
-            padding: 10px;
-        }
- </style>
+    .black_overlay {
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 1001;
+        -moz-opacity: 0.8;
+        opacity: .80;
+        filter: alpha(opacity=88);
+    }
+
+    .white_content {
+        display: none;
+        position: absolute;
+        width: 80%;
+        height: 50%;
+        top: 25%;
+        padding: 20px;
+        background-color: white;
+        z-index: 1002;
+        overflow: auto;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .pay_cancel {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 10px;
+    }
+</style>
 <style>
-        .translate_button{
-            background: transparent;
-            border: none;
-            text-decoration: underline;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-        }
-        .translate_button:focus{outline:0}
-    </style>
+    .translate_button {
+        background: transparent;
+        border: none;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+    }
+
+    .translate_button:focus {
+        outline: 0
+    }
+</style>
 
 <div class="box" id="box">
     <table>
         <thead>
         <tr style="background-color: black;color: white;">
             <th><a href="main_page" style="color: white" class="i18n" contrastName="BACK"> < Home </a></th>
-            <th colspan="4" class="i18n" contrastName="MYCART"> My Shopping Cart </th>
+            <th colspan="4" class="i18n" contrastName="MYCART"> My Shopping Cart</th>
             <th>
                 <button onclick="execI18n()" class="i18n translate_button" contrastName="TRANSLATE">
                     切换为中文
@@ -107,7 +112,7 @@
             <th class="i18n" contrastName="NUM_U">Number of units</th>
             <th class="i18n" contrastName="SUM">Sum</th>
             <th class="i18n" contrastName="OPERA">Operations</th>
-{#            <th>Purchase</th>#}
+            {#            <th>Purchase</th>#}
         </tr>
         </thead>
         <tbody id="tbody">
@@ -132,26 +137,31 @@
             <span class="i18n" contrastName="TOTAL">Total: $</span>
             <span class="total" id="total">0</span>
         </div>
-{#        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay#}
-{#                </button> </div>#}
-        <button type="button" class="js i18n" onclick="openDialog()" contrastName="PAY">&nbsp;Pay (If there is a problem, please refresh the shopping cart page)&nbsp;</button>
+        {#        <div class="js"><button type="button" class="pay" onclick="location.href='http://127.0.0.1:5000/purchase'">Pay#}
+        {#                </button> </div>#}
+        <button type="button" class="js i18n" onclick="openDialog()" contrastName="PAY">&nbsp;Pay (If there is a
+            problem, please refresh the shopping cart page)&nbsp;
+        </button>
 
     </div>
-        <div id="light" class="white_content">
-            <span style="font-size: 25px;font-family: fantasy;" class="i18n" contrastName="CONFIRM_ORDER">Confirm Orders</span>
+    <div id="light" class="white_content">
+        <span style="font-size: 25px;font-family: fantasy;" class="i18n"
+              contrastName="CONFIRM_ORDER">Confirm Orders</span>
         <table>
             <thead style="background-color: black;color: white;">
-                <th class="i18n" contrastName="ITEMS">Items</th>
-                <th class="i18n" contrastName="UNIT_P">Unit price</th>
-                <th class="i18n" contrastName="NUM_U">Number of units</th>
-                <th class="i18n" contrastName="SUM">Sum</th>
+            <th class="i18n" contrastName="ITEMS">Items</th>
+            <th class="i18n" contrastName="UNIT_P">Unit price</th>
+            <th class="i18n" contrastName="NUM_U">Number of units</th>
+            <th class="i18n" contrastName="SUM">Sum</th>
             </thead>
             <tbody id="tbody1">
             </tbody>
         </table>
         <div class="pay_cancel">
-            <a style="background: black;color: white;padding: 10px" onclick="purchase()" class="i18n" contrastName="PAY">Pay</a>
-            <a style="background: black;color: white;padding: 10px" onclick = "closeDialog()" class="i18n" contrastName="CANCEL">Cancel</a>
+            <a style="background: black;color: white;padding: 10px" onclick="purchase()" class="i18n"
+               contrastName="PAY">Pay</a>
+            <a style="background: black;color: white;padding: 10px" onclick="closeDialog()" class="i18n"
+               contrastName="CANCEL">Cancel</a>
         </div>
     </div>
     <div id="fade" class="black_overlay"></div>
@@ -160,144 +170,144 @@
 
 <script src='../static/js/shopping_cart.js'></script>
 <script>
-       function $(exp){//获取元素
+    function $(exp) {//获取元素
         var el;
-        if (/^#\w+$/.test(exp)){
-            el=document.querySelector(exp);
+        if (/^#\w+$/.test(exp)) {
+            el = document.querySelector(exp);
         } else {
-            el=document.querySelectorAll(exp);
+            el = document.querySelectorAll(exp);
         }
         return el;
     }
+
     jQuery.get('/api/ShoppingCart/get_pro', function (response) {
         var arr = [];
         var prods = response['products'];
         prods.forEach(function (element) {
             arr[arr.length] = {src: element['pic'], txt: element['name'], price: element['price'], num: element['num']};
         });
-        var temp=$('#temp').innerHTML;
-        var temp1=$('#temp1').innerHTML;
-        var tbody=$('#tbody');
-        var tbody1=$('#tbody1')
+        var temp = $('#temp').innerHTML;
+        var temp1 = $('#temp1').innerHTML;
+        var tbody = $('#tbody');
+        var tbody1 = $('#tbody1')
         arr.forEach(function (el) {//把数据插入到HTML中
-            tbody.innerHTML += temp.replace("{src}", el.src).replace("{id}",el.txt).replace("{txt}", el.txt).replace("{price}", el.price)
-                .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
-            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{id}",el.txt+'_checked').replace("{txt}", el.txt).replace("{price}", el.price)
-                .replace("{subtotal}", el.price*el.num).replace("{num}", el.num);
+            tbody.innerHTML += temp.replace("{src}", el.src).replace("{id}", el.txt).replace("{txt}", el.txt).replace("{price}", el.price)
+                .replace("{subtotal}", el.price * el.num).replace("{num}", el.num);
+            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{id}", el.txt + '_checked').replace("{txt}", el.txt).replace("{price}", el.price)
+                .replace("{subtotal}", el.price * el.num).replace("{num}", el.num);
         });
-        var trs=$('#tbody tr');
-        var box=$('#box');
-        var aside=$('#bottom aside')[0];
-        box.onclick=function (ev) {
+        var trs = $('#tbody tr');
+        var box = $('#box');
+        var aside = $('#bottom aside')[0];
+        box.onclick = function (ev) {
             //利用事件冒泡的原理，把事件添加给父级box
-            var e=ev||event;
-            var target=e.target||e.srcElement;//获取当前点击对象
+            var e = ev || event;
+            var target = e.target || e.srcElement;//获取当前点击对象
             console.log(e.target.className);
-            var cls=target.className;
-            if (cls.indexOf("check")!=-1)cls='check';
+            var cls = target.className;
+            if (cls.indexOf("check") != -1) cls = 'check';
             switch (cls) {
                 case 'add'://添加商品数量
-                    var tr=target.parentNode.parentNode;//找到点击过那一行
-                    var tds=tr.cells;
+                    var tr = target.parentNode.parentNode;//找到点击过那一行
+                    var tds = tr.cells;
                     target.previousSibling.value++;//数量那一栏的数字加一
-                    tds[4].innerText=(tds[2].innerText*target.previousElementSibling.value).toFixed(2);
+                    tds[4].innerText = (tds[2].innerText * target.previousElementSibling.value).toFixed(2);
                     //修改小计里面的价格
-                    change(tds[1].innerText,'add',1);
+                    change(tds[1].innerText, 'add', 1);
                     break;
                 case 'reduce'://减少商品数量
-                    var tr=target.parentNode.parentNode;//找到点击过那一行
-                    var tds=tr.cells;
-                    if (target.nextElementSibling.value!=1) target.nextElementSibling.value--;
+                    var tr = target.parentNode.parentNode;//找到点击过那一行
+                    var tds = tr.cells;
+                    if (target.nextElementSibling.value != 1) target.nextElementSibling.value--;
                     //数量那一栏减一
-                    tds[4].innerText=(tds[2].innerText*target.nextElementSibling.value).toFixed(2);
+                    tds[4].innerText = (tds[2].innerText * target.nextElementSibling.value).toFixed(2);
                     //修改小计里面的价格
-                    change(tds[1].innerText,'reduce',1);
+                    change(tds[1].innerText, 'reduce', 1);
                     break;
                 case 'text'://直接修改数量那一栏input的值
-                    var tr=target.parentNode.parentNode;
-                    var tds=tr.cells;
-                    target.onblur=function () {//失去焦点时执行
-                        tds[4].innerText=(tds[2].innerText*this.value).toFixed(2);
-                        change(tds[1].innerText,'change',this.value);
-                        this.onblur=null;//销毁事件
+                    var tr = target.parentNode.parentNode;
+                    var tds = tr.cells;
+                    target.onblur = function () {//失去焦点时执行
+                        tds[4].innerText = (tds[2].innerText * this.value).toFixed(2);
+                        change(tds[1].innerText, 'change', this.value);
+                        this.onblur = null;//销毁事件
                     };
                     break;
                 case 'del i18n': //删除商品
-                    var tr=target.parentNode.parentNode;
-                    var tds=tr.cells;
-                    var really=confirm('Are you sure to delete?');
-                    if(really)
-                    {
-                        change(tds[1].innerText,'delete',1);
+                    var tr = target.parentNode.parentNode;
+                    var tds = tr.cells;
+                    var really = confirm('Are you sure to delete?');
+                    if (really) {
+                        change(tds[1].innerText, 'delete', 1);
                         tbody.removeChild(tr);
                         debugger
                     }
                     break;
                 case 'pay_for': //付款
-                    var tr=target.parentNode.parentNode;
-                    var tds=tr.cells;
-                    purchase(tds[1].innerText,target.previousSibling.value);
+                    var tr = target.parentNode.parentNode;
+                    var tds = tr.cells;
+                    purchase(tds[1].innerText, target.previousSibling.value);
                     break;
                 case 'check'://复选框选择商品
-                    var tr=target.parentNode.parentNode;
-                    chk(target,tr);//执行复选框函数
+                    var tr = target.parentNode.parentNode;
+                    chk(target, tr);//执行复选框函数
                     break;
                 case 'delAll i18n'://删除全部商品
-                    if (confirm('Are you sure to delete all?'))
-                    {
-                        change('','delAll',1);
-                        tbody.innerHTML='';
+                    if (confirm('Are you sure to delete all?')) {
+                        change('', 'delAll', 1);
+                        tbody.innerHTML = '';
                     }
                     break;
                 case 'cancel':
-                    var index=target.getAttribute('data-index');
-                    trs[index].cells[0].children[0].checked=false;
+                    var index = target.getAttribute('data-index');
+                    trs[index].cells[0].children[0].checked = false;
             }
             total();//计算价格
         };
-        var total_all=$('#total');
-        var num=$('#num');
+        var total_all = $('#total');
+        var num = $('#num');
         total();
-        var checkAll=$('#box .checkAll');
+        var checkAll = $('#box .checkAll');
 
         function total() {//计算价格
-            var sum=0,number=0;
-            trs=$('tbody tr');
-            var str='';
-            trs.forEach(function (tr,i) {
+            var sum = 0, number = 0;
+            trs = $('tbody tr');
+            var str = '';
+            trs.forEach(function (tr, i) {
                 //遍历每一行判断，将已选择商品添加到显示隐藏里面
-                var tds=tr.cells;
-                if (tds[0].children[0].checked){
-                    sum+=parseFloat(tds[4].innerText);
-                    number+=parseInt(tds[3].children[1].value);
+                var tds = tr.cells;
+                if (tds[0].children[0].checked) {
+                    sum += parseFloat(tds[4].innerText);
+                    number += parseInt(tds[3].children[1].value);
 
                     // str+=`<div><img src="images/${i+1}.jpg"><span class="cancel" data-index="${i}">Cancel</span></div>`
                 }
-                total_all.innerText=sum.toFixed(2);
-                num.innerText=number;
-                aside.innerHTML=str;
+                total_all.innerText = sum.toFixed(2);
+                num.innerText = number;
+                aside.innerHTML = str;
             })
         }
-        function chk(target,tr) {//复选框判断
-            var cls=target.className;
-            if (cls==='check'){//点击非全选复选框
+
+        function chk(target, tr) {//复选框判断
+            var cls = target.className;
+            if (cls === 'check') {//点击非全选复选框
                 var flag = true;
-                var id=tr.id+'_checked'
-                var unshow=document.getElementById(id);
-                if(!target.checked) unshow.style.setProperty('display','none');
+                var id = tr.id + '_checked'
+                var unshow = document.getElementById(id);
+                if (!target.checked) unshow.style.setProperty('display', 'none');
                 else {
-                    unshow.style.removeProperty('display','none');
+                    unshow.style.removeProperty('display', 'none');
                 }
                 /*当存在一个复选框未选中，全选框为false*/
                 for (var i = 0; i < trs.length; i++) {
                     var checkbox = trs[i].cells[0].children[0];
-                    if (checkbox.checked==false) {
+                    if (checkbox.checked == false) {
                         flag = false;
                         break
                     }
                 }
                 checkAll[0].checked = checkAll[1].checked = flag;
-            }else {//点击全选复选框，所有复选框的状态保持一致
+            } else {//点击全选复选框，所有复选框的状态保持一致
                 for (var i = 0; i < trs.length; i++) {
                     var checkbox = trs[i].cells[0].children[0];
                     checkbox.checked = target.checked;
@@ -305,9 +315,10 @@
                 checkAll[0].checked = checkAll[1].checked = target.checked;
             }
         }
+
         function change(name, type, num) {
-            jQuery.post('/api/ShoppingCart/change',{'name':name,'type':type, 'num':num}).done(function (response) {
-                    });
+            jQuery.post('/api/ShoppingCart/change', {'name': name, 'type': type, 'num': num}).done(function (response) {
+            });
         }
     });
 
@@ -315,35 +326,42 @@
 </script>
 
 <script type="text/javascript">
-        $(function(){
-        })
-        function openDialog(){
-            document.getElementById('light').style.display='block';
-            document.getElementById('fade').style.display='block'
-        }
-        function closeDialog(){
-            document.getElementById('light').style.display='none';
-            document.getElementById('fade').style.display='none'
-        }
-        function purchase() {
-            var trs=$('#tbody tr');
-            var name = new Array();
-            var num = new Array();
-            var price = 0;
-            for (var i = 0; i < trs.length; i++) {
-                var checkbox = trs[i].cells[0].children[0];
-                if (checkbox.checked) {
-                    var tds=trs[i].cells;
-                    name.push(tds[1].innerText);
-                    num.push(tds[4].innerText/tds[2].innerText);
-                    price = price+parseInt(tds[4].innerText);
-                }
-            }
-            jQuery.post('/api/ShoppingCart/purchase',{'name':JSON.stringify(name),'num':JSON.stringify(num), 'price':price}).done(function (response) {
+    $(function () {
+    })
 
-            });
-            window.location.href='/purchase';
+    function openDialog() {
+        document.getElementById('light').style.display = 'block';
+        document.getElementById('fade').style.display = 'block'
+    }
+
+    function closeDialog() {
+        document.getElementById('light').style.display = 'none';
+        document.getElementById('fade').style.display = 'none'
+    }
+
+    function purchase() {
+        var trs = $('#tbody tr');
+        var name = new Array();
+        var num = new Array();
+        var price = 0;
+        for (var i = 0; i < trs.length; i++) {
+            var checkbox = trs[i].cells[0].children[0];
+            if (checkbox.checked) {
+                var tds = trs[i].cells;
+                name.push(tds[1].innerText);
+                num.push(tds[4].innerText / tds[2].innerText);
+                price = price + parseInt(tds[4].innerText);
+            }
         }
+        jQuery.post('/api/ShoppingCart/purchase', {
+            'name': JSON.stringify(name),
+            'num': JSON.stringify(num),
+            'price': price
+        }).done(function (response) {
+            window.location.href = '/purchase';
+        });
+
+    }
 </script>
 <script src="../static/js/jquery.min.js"></script>
 <script src="../static/js/i18n/language.js"></script>
