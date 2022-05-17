@@ -678,6 +678,15 @@ def single(id):
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
 
+@app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
+def single_delete(id):
+    commodity = Commodity.query.filter(Commodity.id == id).first()
+    db.session.delete(commodity)
+    db.session.commit()
+    return redirect(url_for('productList'))
+
+
+
 
 @app.route('/api/music', methods=["GET", "POST"])
 def check_music():
