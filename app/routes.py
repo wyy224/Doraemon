@@ -332,7 +332,7 @@ def change_cart():
 
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', types=all_type, type_value=all_type.values())
 
 
 @app.route('/icon')
