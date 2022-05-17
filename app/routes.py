@@ -348,7 +348,7 @@ def product():
     if not all_type[types]:
         return redirect(url_for('base'))
     page = request.args.get('page', 1, type=int)
-    products = Commodity.query.filter_by(type=all_type[types]).paginate(page,
+    products = Commodity.query.filter_by(type=all_type[types], is_delete=0).paginate(page,
                                                                         per_page=5,
                                                                         error_out=False)
     user_id = session.get('uid')
@@ -365,7 +365,7 @@ def product():
     else:
         authority = 0
         user_icon = 'NULL'
-    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:5]
+    new_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.id.desc()).all()[0:5]
     x = new_commodities
     for a in x:
         a.release_time = a.release_time.strftime('%Y-%m-%d')
@@ -545,13 +545,13 @@ def shop():
     print(session.get('price_section_start'))
     if session.get('price_section_start') is None:
         page = request.args.get('page', 1, type=int)
-        commodities = Commodity.query.paginate(page, per_page=15, error_out=False)
+        commodities = Commodity.query.filter(Commodity.is_delete == 0).paginate(page, per_page=15, error_out=False)
         print(3)
         print(commodities)
     else:
         page = request.args.get('page', 1, type=int)
         commodities = Commodity.query.filter(
-            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end'))).paginate(
+            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')), Commodity.is_delete == 0).paginate(
             page, per_page=6, error_out=False)
         print('1')
         print(session.get('price_section_start'))
@@ -559,8 +559,8 @@ def shop():
         print(session.get('price_section_end'))
     session.pop('price_section_start', None)
     session.pop('price_section_end', None)
-    new_commodities = Commodity.query.order_by(Commodity.id.desc()).all()[0:3]
-    collect_commodities = Commodity.query.order_by(Commodity.collect_num.desc()).all()[0:3]
+    new_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.id.desc()).all()[0:3]
+    collect_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.collect_num.desc()).all()[0:3]
     x = new_commodities
 
     user_id = session.get('uid')
@@ -681,7 +681,7 @@ def single(id):
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
     commodity = Commodity.query.filter(Commodity.id == id).first()
-    db.session.delete(commodity)
+    commodity.is_delete = 1
     db.session.commit()
     return redirect(url_for('productList'))
 
@@ -1432,7 +1432,7 @@ def productList():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     authority = session.get('authority')
-    products = Commodity.query.all()
+    products = Commodity.query.filter(Commodity.is_delete == 0).all()
     allproducts = get_product(products)
     return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon,
                            islogin=islogined(),

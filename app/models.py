@@ -64,6 +64,7 @@ class Commodity(db.Model):
     type = db.Column(db.String(32), nullable=False)
     collect_num = db.Column(db.Integer, default=0)
     is_collect = db.Column(db.Boolean, default=False, nullable=False)
+    is_delete = db.Column(db.Boolean, default=False, nullable=False)
 
 
 # A table of shopping cart
