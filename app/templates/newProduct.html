@@ -186,6 +186,32 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <p><b>Picture1:</b></p>
+                                                    <div>
+                                                        {% if c.pic_path1 is not none %}
+                                                        <img src="{{ c.pic_path1 }}" width=300 height=300>
+                                                        {% else %}
+                                                            <b>No picture</b>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <p><b>Picture2:</b></p>
+                                                    <div>
+                                                        {% if c.pic_path2 is not none %}
+                                                        <img src="{{ c.pic_path2 }}" width=300 height=300>
+                                                        {% else %}
+                                                            <b>No picture</b>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <p><b>Picture3:</b></p>
+                                                    <div>
+                                                        {% if c.pic_path3 is not none %}
+                                                        <img src="{{ c.pic_path3 }}" width=300 height=300>
+                                                        {% else %}
+                                                            <b>No picture</b>
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
