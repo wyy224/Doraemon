@@ -172,8 +172,6 @@
                                 <a href="single/{{ commodity.id }}">commodity
                                     name:{{ commodity.commodity_name }}</a><br>
                                 <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
-                                <span class="i18n"
-                                      contrastName="COLLECT_NUM">collect_num:</span><span>{{ commodity.collect_num }}</span>
                             </div>
                             <div class="clearfix"></div>
 
@@ -225,7 +223,7 @@
                                                         <span class="money ">${{ commodity.price }}</span><br>
                                                         <span class="i18n"
                                                               contrastName="COLLECT_NUM">collect_num:</span>
-                                                        <span id="collect_num">{{ commodity.collect_num }}</span>
+                                                        <span id="collect_num{{ commodity.id }}">{{ commodity.collect_num }}</span>
                                                     </div>
                                                 </div>
 
@@ -554,16 +552,16 @@
                 } else {
                     if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
                         document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
-                        var a = document.getElementById("collect_num").innerHTML;
+                        var a = document.getElementById("collect_num" + commodity).innerHTML;
                         var b = (a - 0) - 1;
-                        var c = document.getElementById("collect_num").innerHTML = b;
+                        var c = document.getElementById("collect_num" + commodity).innerHTML = b;
 
 
                     } else {
                         document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
-                        var a = document.getElementById("collect_num").innerHTML;
+                        var a = document.getElementById("collect_num" + commodity).innerHTML;
                         var b = (a - 0) + 1;
-                        var c = document.getElementById("collect_num").innerHTML = b;
+                        var c = document.getElementById("collect_num" + commodity).innerHTML = b;
                     }
                     alert(data)
                     {#console.log("123");#}

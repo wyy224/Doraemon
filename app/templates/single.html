@@ -213,23 +213,24 @@
                                 <!--//tab_one-->
                                 <div class="tab2">
                                     <div class="single_page">
-                                        {% for review in reviews %}
-                                            <div class="bootstrap-tab-text-grids">
-                                            <div class="bootstrap-tab-text-grid">
-                                                <div class="bootstrap-tab-text-grid-left">
-                                                    <img style="width: 120px;height: 120px" src={{ review.ava }}>
+                                        <div id="comment">
+                                            {% for review in reviews %}
+                                                <div class="bootstrap-tab-text-grid">
+                                                    <div class="bootstrap-tab-text-grid-left">
+                                                        <img style="width: 120px;height: 120px" src={{ review.ava }}>
+                                                    </div>
+                                                    <div class="bootstrap-tab-text-grid-right">
+                                                        <ul>
+                                                            <li>{{ review.user }}</li>
+                                                            {#                                             <li><a href="#"><i class="fa fa-reply-all" aria-hidden="true"></i> Reply</a></li>#}
+                                                        </ul>
+                                                        <strong>{{ review.title }}</strong>
+                                                        <p>{{ review.text }}</p>
+                                                    </div>
+                                                    <div class="clearfix"></div>
                                                 </div>
-                                                <div class="bootstrap-tab-text-grid-right">
-                                                    <ul>
-                                                        <li><a href="#">{{ review.user }}</a></li>
-                                                        {#                                             <li><a href="#"><i class="fa fa-reply-all" aria-hidden="true"></i> Reply</a></li>#}
-                                                    </ul>
-                                                    <strong>{{ review.title }}</strong>
-                                                    <p>{{ review.text }}</p>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        {% endfor %}
+                                            {% endfor %}
+                                        </div>
                                         {% if authority == 0 %}
                                             {% if send_power ==1 %}
                                                 {#                                            <div class="add-review">#}
@@ -261,6 +262,7 @@
                                                 {#                                                    {{ form.send }}#}
                                                 {#                                                </form>#}
                                                 {#                                            </div>#}
+                                                <br>
                                                 <form method="post">
                                                     <label>
                                                         <input type="text" name="title" id="title"
@@ -276,15 +278,15 @@
                                                 </form>
                                             {% endif %}
                                         {% endif %}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--//tabs-->
                 </div>
+                <!--//tabs-->
             </div>
+        </div>
         </div>
     </section>
     <!--subscribe-address-->
@@ -435,8 +437,28 @@
             $('#send').click(function () {
                 var title = $('input[name = title]').val()
                 var content = $('input[name = comment_content]').val()
+                var comment = document.getElementById('comment')
                 jQuery.post('/api/send_comment', {'title': title, 'content': content}).done(function (response) {
                     if (response['returnValue'] == 1) {
+                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid">'
+                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid-left">'
+                        comment.innerHTML = comment.innerHTML +  '<img style="width: 120px;height: 120px" src=/static/uploaded_AVA/{{ user.icon }}>'
+                        comment.innerHTML = comment.innerHTML + '</div>'
+                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid-right">'
+                        comment.innerHTML = comment.innerHTML + '<ul>'
+                        comment.innerHTML = comment.innerHTML + '<li>'
+                        comment.innerHTML = comment.innerHTML + '{{ user.user_name }}'
+                        comment.innerHTML = comment.innerHTML + '</li>'
+                        comment.innerHTML = comment.innerHTML + '</ul>'
+                        comment.innerHTML = comment.innerHTML + '<strong>'
+                        comment.innerHTML = comment.innerHTML +  title
+                        comment.innerHTML = comment.innerHTML + '</strong>'
+                        comment.innerHTML = comment.innerHTML + '<p>'
+                        comment.innerHTML = comment.innerHTML +  content
+                        comment.innerHTML = comment.innerHTML + '</p>'
+                        comment.innerHTML = comment.innerHTML + '</div>'
+                        comment.innerHTML = comment.innerHTML + '<div class="clearfix"></div>'
+                        comment.innerHTML = comment.innerHTML + '</div>'
                         document.getElementById('title').value = ''
                         document.getElementById('comment_content').value = ''
                         alert('Send successfully!')
@@ -449,6 +471,7 @@
                     }
 
                 });
+
             })
         });
     </script>

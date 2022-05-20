@@ -668,8 +668,17 @@ def single(id):
     reviews = get_reviews(commodity.id)
     if session.get('uid') is not None:
         send_power = 1
+        user = User.query.filter(User.id == session.get('uid')).first()
+        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+                               commodity=commodity,
+                               types=all_type,
+                               type_value=all_type.values(), authority=authority, send_power=send_power, user=user)
     else:
         send_power = 0
+        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+                               commodity=commodity,
+                               types=all_type,
+                               type_value=all_type.values(), authority=authority, send_power=send_power,user=None)
     # if form.validate_on_submit():
     #     if session.get('uid') is not None:
     #         user = User.query.filter(User.id == session.get('uid')).first()
@@ -683,10 +692,7 @@ def single(id):
     #         return redirect(url_for('single', id=id))
     #     else:
     #         return redirect(url_for('login'))
-    return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
-                           commodity=commodity,
-                           types=all_type,
-                           type_value=all_type.values(), authority=authority, send_power=send_power)
+
 
 
 @app.route('/api/send_comment', methods=['GET', 'POST'])

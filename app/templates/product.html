@@ -128,7 +128,7 @@
                                                         <div class="grid-price mt-2">
                                                             <span class="money ">{{ product.price }}</span><br>
                                                             <span class="i18n" contrastName="COLLECT_NUM">collect_num:</span>
-                                                            <span id="collect_num">{{ product.collect_num }}</span>
+                                                            <span id="collect_num{{ product.id }}">{{ product.collect_num }}</span>
                                                         </div>
                                                     </div>
 
@@ -447,16 +447,16 @@
                     if (document.getElementById("button_collect" + product).style.background === "rgb(255, 193, 7)") {
                         console.log("12")
                         document.getElementById("button_collect" + product).style.background = "#ea1d5d"
-                        var a = document.getElementById("collect_num").innerHTML;
+                        var a = document.getElementById("collect_num"+ product).innerHTML;
                         var b = (a-0)-1;
-                        var c =document.getElementById("collect_num").innerHTML=b;
+                        var c =document.getElementById("collect_num"+ product).innerHTML=b;
 
                     } else {
                         console.log("123")
                         document.getElementById("button_collect" + product).style.background = "rgb(255, 193, 7)"
-                        var a = document.getElementById("collect_num").innerHTML;
+                        var a = document.getElementById("collect_num"+ product).innerHTML;
                         var b = (a-0)+1;
-                        var c =document.getElementById("collect_num").innerHTML=b;
+                        var c =document.getElementById("collect_num"+ product).innerHTML=b;
                     }
                     alert(data)
                     {#console.log("123");#}
