@@ -658,25 +658,40 @@ def single(id):
     else:
         authority = 0
     commodity = Commodity.query.get(int(id))
-    form = ReviewForm()
+    # form = ReviewForm()
     reviews = get_reviews(commodity.id)
-    if form.validate_on_submit():
-        if session.get('uid') is not None:
-            user = User.query.filter(User.id == session.get('uid')).first()
-            if (user.ban == 1):
-                flash('The user has been disabled')
-                return redirect(url_for('log_out'))
-            review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
-                            text=form.text.data)
-            db.session.add(review)
-            db.session.commit()
-            return redirect(url_for('single', id=id))
-        else:
-            return redirect(url_for('login'))
-    return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews,
+    # if form.validate_on_submit():
+    #     if session.get('uid') is not None:
+    #         user = User.query.filter(User.id == session.get('uid')).first()
+    #         if (user.ban == 1):
+    #             flash('The user has been disabled')
+    #             return redirect(url_for('log_out'))
+    #         review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
+    #                         text=form.text.data)
+    #         db.session.add(review)
+    #         db.session.commit()
+    #         return redirect(url_for('single', id=id))
+    #     else:
+    #         return redirect(url_for('login'))
+    return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
                            commodity=commodity,
                            types=all_type,
                            type_value=all_type.values(), authority=authority)
+
+@app.route('/api/send_comment', methods=['POST'])
+def send():
+    print(11111111111111111111111111)
+    title = request.form.get('title')
+    content = request.form.get('content')
+    review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'),title=title,text=content)
+    db.session.add(review)
+    db.session.commit()
+    reviews = get_reviews(session.get('cid'))
+    return jsonify({'returnValue': 1})
+
+
+
+
 
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
@@ -854,8 +869,7 @@ def singleOrder(id):
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
 def change_status(id):
     status = request.form['status']
-    od_del = OrderDetail.query.get(id)
-    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
+    details = db.session.query(OrderDetail).filter(OrderDetail.id == id).first()
     order = Order.query.filter(Order.id == details.order_id).first()
     order.status = status
     db.session.commit()
