@@ -263,11 +263,13 @@
                                                 {#                                            </div>#}
                                                 <form method="post">
                                                     <label>
-                                                        <input type="text" name="title" id="title" onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
+                                                        <input type="text" name="title" id="title"
+                                                               onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
                                                     </label>
                                                     <br>
                                                     <label>
-                                                        <input type="text" name="comment_content" id="comment_content" onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
+                                                        <input type="text" name="comment_content" id="comment_content"
+                                                               onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
                                                     </label>
                                                     <br>
                                                     <button type="button" id="send">send</button>
@@ -434,12 +436,18 @@
                 var title = $('input[name = title]').val()
                 var content = $('input[name = comment_content]').val()
                 jQuery.post('/api/send_comment', {'title': title, 'content': content}).done(function (response) {
-                    if (response['returnValue'] == 1){
-                        document.getElementById('title').value  = ''
+                    if (response['returnValue'] == 1) {
+                        document.getElementById('title').value = ''
                         document.getElementById('comment_content').value = ''
-                        alert('Send successfully!')}
-                    else
+                        alert('Send successfully!')
+                    } else if (response['returnValue'] == 2) {
+                        document.getElementById('title').value = ''
+                        document.getElementById('comment_content').value = ''
+                        alert('This account has been disabled, unable to send comments!')
+                    } else {
                         alert('Send format error!')
+                    }
+
                 });
             })
         });

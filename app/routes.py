@@ -689,13 +689,17 @@ def single(id):
 def send():
     title = request.form.get('title')
     content = request.form.get('content')
-    if title != '' and content != '':
-        review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
-        db.session.add(review)
-        db.session.commit()
-        return jsonify({'returnValue': 1})
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if user.ban == 0:
+        if title != '' and content != '':
+                review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
+                db.session.add(review)
+                db.session.commit()
+                return jsonify({'returnValue': 1})
+        else:
+            return jsonify({'returnValue': 0})
     else:
-        return jsonify({'returnValue': 0})
+        return jsonify({'returnValue': 2})
 
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
