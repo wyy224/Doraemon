@@ -269,7 +269,8 @@
 
     </section>
 
-    <<ul class="pagination-nav">
+    <
+    <ul class="pagination-nav">
         <li class="page-item-nav">
             {% if  commodities.has_prev %}
                 <a class="page-link-nav" href="/shop?page={{ commodities.page-1 }}"
@@ -545,27 +546,29 @@
                 "commodity": commodity
 
             };
-            if ("{{ user.ban }}" == 1) {
-                alert("The user has been disabled");
-            } else if ("{{ user_id }}" == "None") {
+            if ("{{ user_id }}" == "None") {
                 alert('Not logged in');
             } else Ajax('post', '/collect', sendData, function (data) {
-                if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
-                    document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
-                    var a = document.getElementById("collect_num").innerHTML;
-                    var b = (a - 0) - 1;
-                    var c = document.getElementById("collect_num").innerHTML = b;
-
-
+                if (data == "This user has been disabled, unable to collect!") {
+                    alert(data)
                 } else {
-                    document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
-                    var a = document.getElementById("collect_num").innerHTML;
-                    var b = (a - 0) + 1;
-                    var c = document.getElementById("collect_num").innerHTML = b;
+                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
+                        document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a - 0) - 1;
+                        var c = document.getElementById("collect_num").innerHTML = b;
+
+
+                    } else {
+                        document.getElementById("button_collect" + commodity).style.background = "rgb(255, 193, 7)"
+                        var a = document.getElementById("collect_num").innerHTML;
+                        var b = (a - 0) + 1;
+                        var c = document.getElementById("collect_num").innerHTML = b;
+                    }
+                    alert(data)
+                    {#console.log("123");#}
+                    {#location.reload();#}
                 }
-                alert(data)
-                {#console.log("123");#}
-                {#location.reload();#}
 
             }, function (error) {
                 console.log(error);
