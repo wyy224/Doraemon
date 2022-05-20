@@ -349,8 +349,8 @@ def product():
         return redirect(url_for('base'))
     page = request.args.get('page', 1, type=int)
     products = Commodity.query.filter_by(type=all_type[types], is_delete=0).paginate(page,
-                                                                        per_page=5,
-                                                                        error_out=False)
+                                                                                     per_page=5,
+                                                                                     error_out=False)
     user_id = session.get('uid')
     for commodity in products.items:
         collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
@@ -551,7 +551,8 @@ def shop():
     else:
         page = request.args.get('page', 1, type=int)
         commodities = Commodity.query.filter(
-            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')), Commodity.is_delete == 0).paginate(
+            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')),
+            Commodity.is_delete == 0).paginate(
             page, per_page=6, error_out=False)
         print('1')
         print(session.get('price_section_start'))
@@ -560,7 +561,8 @@ def shop():
     session.pop('price_section_start', None)
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.id.desc()).all()[0:3]
-    collect_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.collect_num.desc()).all()[0:3]
+    collect_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.collect_num.desc()).all()[
+                          0:3]
     x = new_commodities
 
     user_id = session.get('uid')
@@ -660,6 +662,10 @@ def single(id):
     commodity = Commodity.query.get(int(id))
     # form = ReviewForm()
     reviews = get_reviews(commodity.id)
+    if session.get('uid') is not None:
+        send_power = 1
+    else:
+        send_power = 0
     # if form.validate_on_submit():
     #     if session.get('uid') is not None:
     #         user = User.query.filter(User.id == session.get('uid')).first()
@@ -676,22 +682,20 @@ def single(id):
     return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
                            commodity=commodity,
                            types=all_type,
-                           type_value=all_type.values(), authority=authority)
+                           type_value=all_type.values(), authority=authority, send_power=send_power)
 
-@app.route('/api/send_comment', methods=['POST'])
+
+@app.route('/api/send_comment', methods=['GET', 'POST'])
 def send():
-    print(11111111111111111111111111)
     title = request.form.get('title')
     content = request.form.get('content')
-    review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'),title=title,text=content)
-    db.session.add(review)
-    db.session.commit()
-    reviews = get_reviews(session.get('cid'))
-    return jsonify({'returnValue': 1})
-
-
-
-
+    if title != '' and content != '':
+        review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
+        db.session.add(review)
+        db.session.commit()
+        return jsonify({'returnValue': 1})
+    else:
+        return jsonify({'returnValue': 0})
 
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
@@ -699,8 +703,6 @@ def single_delete(id):
     commodity.is_delete = 1
     db.session.commit()
     return redirect(url_for('productList'))
-
-
 
 
 @app.route('/api/music', methods=["GET", "POST"])
