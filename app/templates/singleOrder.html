@@ -202,7 +202,7 @@
 
                                 {% endif %}
                                 <br>
-                                <form action="/status/{{ order.id }}" method="post">
+                                <form action="/status/{{ order.detail }}" method="post">
                                     <select id="status" onchange="change_country(this.value)"
                                             class="frm-field required sect" name="status">
                                         {% if sta == "Not deliver" %}

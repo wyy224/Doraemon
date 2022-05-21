@@ -349,8 +349,8 @@ def product():
         return redirect(url_for('base'))
     page = request.args.get('page', 1, type=int)
     products = Commodity.query.filter_by(type=all_type[types], is_delete=0).paginate(page,
-                                                                        per_page=5,
-                                                                        error_out=False)
+                                                                                     per_page=5,
+                                                                                     error_out=False)
     user_id = session.get('uid')
     for commodity in products.items:
         collections = Collections.query.filter_by(user_id=user_id, commodity_id=commodity.id).first()
@@ -551,7 +551,8 @@ def shop():
     else:
         page = request.args.get('page', 1, type=int)
         commodities = Commodity.query.filter(
-            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')), Commodity.is_delete == 0).paginate(
+            Commodity.price.between(session.get('price_section_start'), session.get('price_section_end')),
+            Commodity.is_delete == 0).paginate(
             page, per_page=6, error_out=False)
         print('1')
         print(session.get('price_section_start'))
@@ -560,7 +561,8 @@ def shop():
     session.pop('price_section_start', None)
     session.pop('price_section_end', None)
     new_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.id.desc()).all()[0:3]
-    collect_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.collect_num.desc()).all()[0:3]
+    collect_commodities = Commodity.query.filter(Commodity.is_delete == 0).order_by(Commodity.collect_num.desc()).all()[
+                          0:3]
     x = new_commodities
 
     user_id = session.get('uid')
@@ -618,19 +620,23 @@ def change(p):
 def collect():
     user_id = request.form.get("user_id")
     commodity_id = request.form.get("commodity")
-    exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
-    commodity5 = Commodity.query.filter_by(id=commodity_id).first()
-    if exist is not None:
-        commodity5.collect_num = commodity5.collect_num - 1
-        db.session.delete(exist)
-        db.session.commit()
-        return "cancel collect"
+    user = User.query.filter(User.id == user_id).first()
+    if user.ban == 0:
+        exist = Collections.query.filter_by(user_id=user_id, commodity_id=commodity_id).first()
+        commodity5 = Commodity.query.filter_by(id=commodity_id).first()
+        if exist is not None:
+            commodity5.collect_num = commodity5.collect_num - 1
+            db.session.delete(exist)
+            db.session.commit()
+            return "cancel collect"
+        else:
+            commodity5.collect_num = commodity5.collect_num + 1
+            collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
+            db.session.add(collect1)
+            db.session.commit()
+            return "collect success"
     else:
-        commodity5.collect_num = commodity5.collect_num + 1
-        collect1 = Collections(user_id=user_id, commodity_id=commodity_id)
-        db.session.add(collect1)
-        db.session.commit()
-        return "collect success"
+        return "This user has been disabled, unable to collect!"
 
 
 @app.route('/adjust_icon', methods=['GET', 'POST'])
@@ -658,25 +664,52 @@ def single(id):
     else:
         authority = 0
     commodity = Commodity.query.get(int(id))
-    form = ReviewForm()
+    # form = ReviewForm()
     reviews = get_reviews(commodity.id)
-    if form.validate_on_submit():
-        if session.get('uid') is not None:
-            user = User.query.filter(User.id == session.get('uid')).first()
-            if (user.ban == 1):
-                flash('The user has been disabled')
-                return redirect(url_for('log_out'))
-            review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
-                            text=form.text.data)
-            db.session.add(review)
-            db.session.commit()
-            return redirect(url_for('single', id=id))
+    if session.get('uid') is not None:
+        send_power = 1
+        user = User.query.filter(User.id == session.get('uid')).first()
+        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+                               commodity=commodity,
+                               types=all_type,
+                               type_value=all_type.values(), authority=authority, send_power=send_power, user=user)
+    else:
+        send_power = 0
+        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+                               commodity=commodity,
+                               types=all_type,
+                               type_value=all_type.values(), authority=authority, send_power=send_power,user=None)
+    # if form.validate_on_submit():
+    #     if session.get('uid') is not None:
+    #         user = User.query.filter(User.id == session.get('uid')).first()
+    #         if (user.ban == 1):
+    #             flash('The user has been disabled')
+    #             return redirect(url_for('log_out'))
+    #         review = Review(user_id=session.get('uid'), commodity_id=commodity.id, title=form.title.data,
+    #                         text=form.text.data)
+    #         db.session.add(review)
+    #         db.session.commit()
+    #         return redirect(url_for('single', id=id))
+    #     else:
+    #         return redirect(url_for('login'))
+
+
+
+@app.route('/api/send_comment', methods=['GET', 'POST'])
+def send():
+    title = request.form.get('title')
+    content = request.form.get('content')
+    user = User.query.filter(User.id == session.get('uid')).first()
+    if user.ban == 0:
+        if title != '' and content != '':
+                review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
+                db.session.add(review)
+                db.session.commit()
+                return jsonify({'returnValue': 1})
         else:
-            return redirect(url_for('login'))
-    return render_template('single.html', islogin=islogined(), icon=user_icon, form=form, reviews=reviews,
-                           commodity=commodity,
-                           types=all_type,
-                           type_value=all_type.values(), authority=authority)
+            return jsonify({'returnValue': 0})
+    else:
+        return jsonify({'returnValue': 2})
 
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
@@ -684,8 +717,6 @@ def single_delete(id):
     commodity.is_delete = 1
     db.session.commit()
     return redirect(url_for('productList'))
-
-
 
 
 @app.route('/api/music', methods=["GET", "POST"])
@@ -854,8 +885,7 @@ def singleOrder(id):
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
 def change_status(id):
     status = request.form['status']
-    od_del = OrderDetail.query.get(id)
-    details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
+    details = db.session.query(OrderDetail).filter(OrderDetail.id == id).first()
     order = Order.query.filter(Order.id == details.order_id).first()
     order.status = status
     db.session.commit()
@@ -1462,3 +1492,15 @@ def ban(id):
         user.ban = 0
     db.session.commit()
     return redirect(url_for('customer'))
+
+
+@app.route('/Forget')
+def Forget():
+    if request.method == 'POST':
+        if request.form["email"] == "":
+            return login_mes()
+        else:
+            return reg_mes()
+    else:
+        return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
+    return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
