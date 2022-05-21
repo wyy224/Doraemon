@@ -1,6 +1,7 @@
 import logging
 import os
 import json
+import random
 from uuid import uuid4
 
 from flask_socketio import SocketIO, join_room, leave_room
@@ -16,7 +17,7 @@ from flask import render_template, redirect, flash, url_for, session, request, j
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
 from sqlalchemy import and_, distinct
-
+from flask_mail import Mail,Message
 from app import app, db, Config
 
 # from app.forms import LoginForm, SignupForm, YearForm, UpdateForm
@@ -38,11 +39,18 @@ all_type = dict({
     '13': 'zhengs'
 })
 
-avatars = Avatars()
+app.config['MAIL_DEBUG'] = True
+app.config['MAIL_SERVER'] = 'smtp.office365.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'ningxin.li@hotmail.com'
+app.config['MAIL_PASSWORD'] = 'qtzflmekthkzuydn'
+# app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = True
 
+mail = Mail(app)
+avatars = Avatars()
 socketio = SocketIO()
 socketio.init_app(app)
-
 
 # logger = logging.getLogger(__name__)
 @app.route('/')
@@ -1494,13 +1502,50 @@ def ban(id):
     return redirect(url_for('customer'))
 
 
-@app.route('/Forget')
+@app.route('/Forget', methods=["GET","POST"])
 def Forget():
-    if request.method == 'POST':
-        if request.form["email"] == "":
-            return login_mes()
-        else:
-            return reg_mes()
-    else:
-        return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
+    # if request.method == 'POST':
+    #     if request.form["verify"] != "":
+    #         if request.form["password"]==request.form["password2"]:
+    #             a = 0
+    #         else:
+    #             flash("The passwords are insconsistent")
+    #     else:
+    #         flash("hi")
+    # else:
     return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
+
+@app.route('/api/getcode', methods=["POST"])
+def Getcode():
+    email = request.form.get('email')
+    msg = Message(subject='Doraemon store verification code', sender='ningxin.li@hotmail.com',
+                  recipients=[email])
+    # 随机生成6位验证码
+    captcha = ""
+    for i in range(6):
+        ch = chr(random.randrange(ord('0'), ord('9') + 1))
+        captcha += ch
+
+    msg.body = "Hello, sending you this email from Doraemon store, please check your verification code\n" + captcha
+    mail.send(msg)
+    session[email]=captcha
+    return jsonify({'returnValue': 1})
+
+@app.route('/api/updatePwd', methods=["POST"])
+def updatePwd():
+    email = request.form.get('email')
+    name = request.form.get('name')
+    code = request.form.get('verify')
+    pwd = request.form.get('pwd')
+
+    if code == session.get(email):
+        user = User.query.filter(and_(User.user_name == name, User.email == email)).first()
+        if not user:
+            return jsonify({'returnValue': 0})
+        else:
+            user.password_hash = generate_password_hash(pwd)
+            db.session.commit()
+            session.pop(email, None)
+            return jsonify({'returnValue': 1})
+    else:
+        return jsonify({'returnValue': 0})
