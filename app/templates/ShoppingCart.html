@@ -187,16 +187,12 @@
             arr[arr.length] = {src: element['pic'], txt: element['name'], price: element['price'], num: element['num']};
         });
         var temp = $('#temp').innerHTML;
-        var temp1 = $('#temp1').innerHTML;
         var tbody = $('#tbody');
-        var tbody1 = $('#tbody1')
+        var trs = $('#tbody tr');
         arr.forEach(function (el) {//把数据插入到HTML中
             tbody.innerHTML += temp.replace("{src}", el.src).replace("{id}", el.txt).replace("{txt}", el.txt).replace("{price}", el.price)
                 .replace("{subtotal}", el.price * el.num).replace("{num}", el.num);
-            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{id}", el.txt + '_checked').replace("{txt}", el.txt).replace("{price}", el.price)
-                .replace("{subtotal}", el.price * el.num).replace("{num}", el.num);
         });
-        var trs = $('#tbody tr');
         var box = $('#box');
         var aside = $('#bottom aside')[0];
         box.onclick = function (ev) {
@@ -330,11 +326,27 @@
     })
 
     function openDialog() {
+        var temp1 = $('#temp1').innerHTML;
+        var tbody1 = $('#tbody1');
+        var trs = $('#tbody tr');
+        var tb1 = [];
+        for (var i = 0; i < trs.length; i++) {
+            var checkbox = trs[i].cells[0].children[0];
+            if (checkbox.checked) {
+                var tds = trs[i].cells;
+                tb1[tb1.length] = {src: tds[1].children[0].src, txt: tds[1].innerText, price: tds[4].innerText, num: tds[4].innerText / tds[2].innerText};
+            }
+        }
+        tb1.forEach(function (el) {
+            tbody1.innerHTML += temp1.replace("{src}", el.src).replace("{id}", el.txt + '_checked').replace("{txt}", el.txt).replace("{price}", el.price)
+                .replace("{subtotal}", el.price * el.num).replace("{num}", el.num);
+        });
         document.getElementById('light').style.display = 'block';
         document.getElementById('fade').style.display = 'block'
     }
 
     function closeDialog() {
+        $('#tbody1').innerHTML ="";
         document.getElementById('light').style.display = 'none';
         document.getElementById('fade').style.display = 'none'
     }
