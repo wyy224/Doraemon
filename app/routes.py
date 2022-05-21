@@ -1492,3 +1492,15 @@ def ban(id):
         user.ban = 0
     db.session.commit()
     return redirect(url_for('customer'))
+
+
+@app.route('/Forget')
+def Forget():
+    if request.method == 'POST':
+        if request.form["email"] == "":
+            return login_mes()
+        else:
+            return reg_mes()
+    else:
+        return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
+    return render_template('Forget_P.html', types=all_type, type_value=all_type.values())

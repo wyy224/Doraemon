@@ -185,10 +185,10 @@ th{
 /* Small screens */
 @media all and (max-width: 767px) {
   .chat-thread {
-    height: 260px;
+    height: 920px;
   }
   #message-box{
-      width: 333px;
+      width: 750px;
       position: absolute;
       left:12px;
       height: 250px;
