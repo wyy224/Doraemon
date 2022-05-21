@@ -333,7 +333,7 @@
             var checkbox = trs[i].cells[0].children[0];
             if (checkbox.checked) {
                 var tds = trs[i].cells;
-                tb1[tb1.length] = {src: tds[1].children[0].src, txt: tds[1].innerText, price: tds[4].innerText, num: tds[4].innerText / tds[2].innerText};
+                tb1[tb1.length] = {src: tds[1].children[0].src, txt: tds[1].innerText, price: tds[2].innerText, num: tds[4].innerText / tds[2].innerText};
             }
         }
         tb1.forEach(function (el) {
