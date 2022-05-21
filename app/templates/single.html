@@ -264,17 +264,17 @@
                                                 {#                                            </div>#}
                                                 <br>
                                                 <form method="post">
-                                                    <label>
-                                                        <input type="text" name="title" id="title"
-                                                               onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
+                                                    <h4 class="i18n" contrastName="ADD_A_REVIEW" style="font-weight: 600">Add A Review</h4>
+                                                    <label style="margin: 25px 0px; width: 100%;">
+                                                        <input type="text" name="title" id="title" placeholder="Title" style="width: 100%; border-width: 2px">
                                                     </label>
                                                     <br>
-                                                    <label>
-                                                        <input type="text" name="comment_content" id="comment_content"
-                                                               onkeyup="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')">
+                                                    <label style="width: 100%">
+                                                        <input type="text" name="comment_content" id="comment_content" placeholder="Your comment ..." style="height: 200px; width: 100%; border-width: 2px;">
                                                     </label>
                                                     <br>
-                                                    <button type="button" id="send">send</button>
+                                                    <button type="button" id="send"
+                                                            style="height: 45px;width: 150px;background-color: #3ea63e;border: none;color: white;margin-top: 10px;">send</button>
                                                 </form>
                                             {% endif %}
                                         {% endif %}
@@ -440,25 +440,11 @@
                 var comment = document.getElementById('comment')
                 jQuery.post('/api/send_comment', {'title': title, 'content': content}).done(function (response) {
                     if (response['returnValue'] == 1) {
-                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid">'
-                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid-left">'
-                        comment.innerHTML = comment.innerHTML +  '<img style="width: 120px;height: 120px" src=/static/uploaded_AVA/{{ user.icon }}>'
-                        comment.innerHTML = comment.innerHTML + '</div>'
-                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid-right">'
-                        comment.innerHTML = comment.innerHTML + '<ul>'
-                        comment.innerHTML = comment.innerHTML + '<li>'
-                        comment.innerHTML = comment.innerHTML + '{{ user.user_name }}'
-                        comment.innerHTML = comment.innerHTML + '</li>'
-                        comment.innerHTML = comment.innerHTML + '</ul>'
-                        comment.innerHTML = comment.innerHTML + '<strong>'
-                        comment.innerHTML = comment.innerHTML +  title
-                        comment.innerHTML = comment.innerHTML + '</strong>'
-                        comment.innerHTML = comment.innerHTML + '<p>'
-                        comment.innerHTML = comment.innerHTML +  content
-                        comment.innerHTML = comment.innerHTML + '</p>'
-                        comment.innerHTML = comment.innerHTML + '</div>'
-                        comment.innerHTML = comment.innerHTML + '<div class="clearfix"></div>'
-                        comment.innerHTML = comment.innerHTML + '</div>'
+                        comment.innerHTML = comment.innerHTML + '<div class="bootstrap-tab-text-grid">' + '<div class="bootstrap-tab-text-grid-left">'
+                            +  '<img style="width: 120px;height: 120px" src=/static/uploaded_AVA/{{ user.icon }}>'
+                            + '</div>' + '<div class="bootstrap-tab-text-grid-right">'
+                            + '<ul>' + '<li>' + '{{ user.user_name }}' + '</li>' + '</ul>' + '<strong>' +  title + '</strong>' + '<p>' +  content + '</p>'
+                            + '</div>' + '<div class="clearfix"></div>' + '</div>'
                         document.getElementById('title').value = ''
                         document.getElementById('comment_content').value = ''
                         alert('Send successfully!')

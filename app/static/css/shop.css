@@ -951,10 +951,11 @@ color: #000;
 }
 .bootstrap-tab-text-grid-right{
 	float:right;
-	width:83%;
+	width:70%;
 }
 .bootstrap-tab-text-grid-right ul li{
 	display:inline-block;
+	font-family: fantasy;
 }
 .bootstrap-tab-text-grid-right ul li:nth-child(2){
 	float:right;
@@ -986,6 +987,7 @@ color: #000;
 }
 .bootstrap-tab-text-grid{
 	border: 1px solid #ccc;
+	margin: 10px 0px;
 
 }
 .add-review form{
