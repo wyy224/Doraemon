@@ -11,42 +11,9 @@ var getNavLanguage = function() {
 	}
 	return false;
 }
-
-/**
- * 设置语言类型： 默认为中文
- */
-var i18nLanguage = "en_US";
-var Language = 1;
-/*
-设置一下网站支持的语言种类
- */
-var webLanguage = ['zh_CN', 'en_US'];
-/**
- * 执行页面i18n方法
- * @return
- */
-var execI18n = function() {
-	if(Language == 0) {
-		i18nLanguage = "en_US";
-		Language = 1;
-	}
-	else {
-		i18nLanguage = "zh_CN";
-		Language = 0;
-	}
-	// 获取浏览器语言
-	// var navLanguage = getNavLanguage();
-	// if(navLanguage) {
-	// 	// 判断是否在网站支持语言数组里
-	// 	var charSize = j.inArray(navLanguage, webLanguage);
-	// 	if(charSize > -1) {
-	// 		i18nLanguage = navLanguage;
-	// 	};
-	// } else {
-	// 	console.log("not navigator");
-	// 	return false;
-	// }
-	/* 需要引入 i18n 文件*/
+var transfer = function (i18nLanguage) {
+	// console.log(j.i18n)
+	// debugger
 	if(j.i18n == undefined) {
 		return false;
 	};
@@ -94,7 +61,51 @@ var execI18n = function() {
 			});
 		}
 	});
+	// debugger
+}
+/**
+ * 设置语言类型： 默认为中文
+ */
+var i18nLanguage;
+var str = document.cookie;
+var Language = true;
+var strr = str.split("=")
+if(strr[0] == 'i18nLanguage')
+{
+	// debugger
+	i18nLanguage = strr[1];
+	if(strr[1] == 'zh_CN') Language = false;
+}
+else i18nLanguage = "en_US";
+/*
+设置一下网站支持的语言种类
+ */
+var webLanguage = ['zh_CN', 'en_US'];
+/**
+ * 执行页面i18n方法
+ * @return
+ */
+var execI18n = function() {
+	debugger
+	if(!Language) {
+		document.cookie = "i18nLanguage="+escape("en_US");
+		i18nLanguage = "en_US";
+		Language = true;
+	}
+	else {
+		debugger
+		document.cookie = "i18nLanguage="+escape("zh_CN");
+		i18nLanguage = "zh_CN";
+		Language = false;
+	}
+	/* 需要引入 i18n 文件*/
+	transfer(i18nLanguage);
 };
+var jump = function () {
+	debugger
+	transfer(i18nLanguage);
+}
+// }
 /**
  * 单独获取prop
  * @return

@@ -251,6 +251,9 @@
 </body>
 </html>
 <script>
+    $(document).ready(function (){
+      jump();
+    });
     function clickToLogout() {
         $.post('/api/logout', {}).done(function (response) {
             let server_code = response['returnValue']
