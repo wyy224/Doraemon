@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .translate_button{
+        background: transparent;
+        border: none;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .translate_button:focus{outline:0}
+</style>
 <head>
     <title>Personal information</title>
     <meta charset="utf-8">
@@ -179,7 +189,7 @@
                         <p class="mb-4" ><b class="i18n" contrastName="PHONE">Phone number: </b>{{ order.phone_num }}</p>
                         {% if sta != 'Signed in' %}
                             {% if user1.authority == 0 %}
-                                <a class="mb-4 i18n" href="/edit/{{ order.detail }}" contrastName="EDIT"><b>Edit</b></a>
+                                <button type="button" class="i18n" onclick="location.href = '/edit/{{ order.detail }}'" contrastName="EDIT"><b>Edit</b></button>
                             {% endif %}
                         {% endif %}
 
@@ -305,6 +315,9 @@
 </body>
 </html>
 <script>
+    $(document).ready(function (){
+      jump();
+    });
     function clickToLogout() {
         $.post('/api/logout', {}).done(function (response) {
             let server_code = response['returnValue']
