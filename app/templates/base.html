@@ -8,6 +8,12 @@
     }
     .translate_button:focus{outline:0}
 </style>
+<div id="loading">
+    <div id="loading_bg">
+        <div class="loader">Loading...</div>
+    </div>
+</div>
+
 <head>
     <title>Doraemon Instrument Store</title>
 </head>
@@ -167,8 +173,69 @@
             a.className = "unshow";
         },
         2000);
+
+    document.onreadystatechange=function () {
+          if (document.readyState==="complete"){
+               loadingFade();
+          }
+}
+    function loadingFade() {
+         var opacity=1;
+         //var loadingPage=document.getElementById('loading');
+         var loadingBackground=document.getElementById('loading_bg');
+         var time=setInterval(function () {
+              if (opacity<=0){
+                   clearInterval(time);
+                   //loadingPage.remove();
+                   $('#loading').remove();
+              }
+
+              loadingBackground.style.opacity=opacity;
+              opacity-=0.4;
+         },100);
+    }
+
+
+
 </script>
+<script type="text/javascript">
+    var idex = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var key = new Array("♪","♫","♩","♬");
+            var $i = $("<span></span>").text(key[idex]);
+            idex = Math.floor(Math.random()*4)
+            var x = e.pageX,
+            y = e.pageY;
+            $i.css({
+                "z-index": 5201314,
+                "top": y- 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "font-size": "30px",
+                "color": "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")"
+            });
+            $("body").append($i);
+            $i.animate({
+                "top": y - 70,
+                "left": x+90,
+                "font-size": 20,
+                "opacity": 0
+            },
+            15*100,
+            function() {
+                $i.remove();
+            });
+        });
+    });
+
+</script>
+
 <script src="../static/js/jquery.min.js"></script>
 <script src="../static/js/i18n/language.js"></script>
 <script src="../static/js/i18n/jquery.i18n.properties.js"></script>
+<link rel="stylesheet" href="../static/css/shop.css">
+
+
 {#缺陷：导航栏中跳转到选择分类之后，相应区域标题并未变色#}

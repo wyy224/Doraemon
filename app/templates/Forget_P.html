@@ -45,31 +45,72 @@
     <div class="log">
         <div class="container">
             <div class="form-box">
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return false">
                     <div class="login-box">
-                        <h2>Change Password</h2>
-                        <input type="text" placeholder="UserName" name = "username">
-                        <input type="email" placeholder="Email" name = "email">
-                        <input type="verification" placeholder="Verification code" name = "verify">
-                        <button class="code">get code</button>
-                        <input type="password" placeholder="NewPassword" name = "password">
-                        <input type="password2" placeholder="NewPassword Again" name = "password2">
-                        <button class="specific">Submit</button>
+                        <h2 class="i18n" contrastName="Change_P">Change Password</h2>
+                        <input type="text" placeholder="UserName" id = "username">
+                        <input type="email" placeholder="Email" id = "email">
+                        <input type="verification" placeholder="Verification code" id = "verify">
+                        <button class="code i18n" onclick="getcode();" contrastName="Get_Code">Get Code</button>
+                        <input type="password" placeholder="NewPassword" id = "password">
+                        <input type="password2" placeholder="NewPassword Again" id = "password2">
+                        <button class="specific i18n" onclick="change();" contrastName="Submit">Submit</button>
                     </div>
                 </form>
 
             </div>
         </div>
+    <script>
+    $(document).ready(function (){
+        jump();
+    });
+    function getcode(){
+        var email = document.getElementById("email").value;
+        if(email == ""){
+            alert("please enter your email");
+        }else{
+            $.post('/api/getcode',{'email': email}).done(function (response) {
+                let server_code = response['returnValue']
+                if (server_code == 1) {
+                // success set done
+                    alert("Pleace check your email")
+                }else {
+                    alert("Send email fail")
+                }
+            }).fail(function (){
+                console.log("Fail reset");
+            })
+        }
+    }
 
-{#        <script>#}
-{#            let login=document.getElementById('login');#}
-{#            let register=document.getElementById('register');#}
-{#            let form_box=document.getElementsByClassName('form-box')[0];#}
-{#            let register_box=document.getElementsByClassName('register-box')[0];#}
-{#            let login_box=document.getElementsByClassName('login-box')[0];#}
-{##}
-{##}
-{#        </script>#}
+    function change(){
+        var name = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var verify = document.getElementById("verify").value;
+        var pwd1 = document.getElementById("password").value;
+        var pwd2 = document.getElementById("password2").value;
+        if(email == ""|| name == "" || verify == "" || pwd1 == "" || pwd2 == ""){
+            alert("please fill in the form");
+        }else{
+            if(pwd1 != pwd2){
+                alert("The passwords are inconsistent");
+            }else{
+                $.post('/api/updatePwd',{'email': email, 'name': name, 'verify':verify, 'pwd':pwd1}).done(function (response) {
+                let server_code = response['returnValue']
+                if (server_code == 1) {
+                // success set done
+                    alert("Update new password successful")
+                    window.location.href='/login';
+                }else {
+                    alert("wrong information, please try again")
+                }
+                }).fail(function (){
+                    console.log("Fail reset");
+                })
+            }
+        }
+    }
+    </script>
     </div>
 {% endblock %}
 

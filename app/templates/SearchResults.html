@@ -195,6 +195,9 @@
       <!-- cart-js -->
       <script src="../static/js/minicart.js"></script>
       <script>
+        $(document).ready(function (){
+          jump();
+        });
          toys.render();
 
          toys.cart.on('toys_checkout', function (evt) {
