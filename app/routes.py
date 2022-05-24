@@ -722,8 +722,12 @@ def send():
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
     commodity = Commodity.query.filter(Commodity.id == id).first()
-    commodity.is_delete = 1
-    db.session.commit()
+    if commodity.is_delete == 0:
+        commodity.is_delete = 1
+        db.session.commit()
+    else:
+        commodity.is_delete = 0
+        db.session.commit()
     return redirect(url_for('productList'))
 
 
@@ -1470,7 +1474,7 @@ def productList():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     authority = session.get('authority')
-    products = Commodity.query.filter(Commodity.is_delete == 0).all()
+    products = Commodity.query.all()
     allproducts = get_product(products)
     return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon,
                            islogin=islogined(),
@@ -1487,6 +1491,7 @@ def get_product(products):
         item['time'] = p.release_time
         item['price'] = p.price
         item['type'] = p.type
+        item['delete'] = p.is_delete
         allproducts.append(item)
     return allproducts
 
