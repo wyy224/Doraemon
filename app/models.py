@@ -21,7 +21,7 @@ class User(db.Model):
     new_time = db.Column(db.DateTime, nullable=True)
     count = db.Column(db.Integer, default=0)
     situation = db.Column(db.Boolean, nullable=True)
-    messages = db.relationship('Message', back_populates='author', cascade='all')
+    messages = db.relationship('Mess', back_populates='author', cascade='all')
     ban = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
@@ -37,7 +37,9 @@ class User(db.Model):
 
 
 # A table of message list
-class Message(db.Model):
+class Mess(db.Model):
+    __tablename__ = "message"
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.Text, nullable=False)
     room = db.Column(db.String(64), nullable=False)

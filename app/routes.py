@@ -129,7 +129,7 @@ def contact():
             room = session.get('uid')
             room_num = str(room)
             session['room'] = room
-            message = Message.query.filter_by(room=room_num).all()
+            message = Mess.query.filter_by(room=room_num).all()
             admin = User.query.filter(User.authority == 1).first()
             contact_icon = admin.icon
         else:
@@ -155,7 +155,7 @@ def contact_admin(id):
         room = id
         room_num = str(id)
         session['room'] = room
-        message = Message.query.filter_by(room=room_num).all()
+        message = Mess.query.filter_by(room=room_num).all()
         choose1 = User.query.filter(User.id == id).first()
         choose1.situation = True
         db.session.commit()
@@ -222,7 +222,7 @@ def handle_message(data):
     print('sendMsg' + str(data))
     room = str(session['room'])
     print(room)
-    message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
+    message = Mess(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
     user = User.query.filter_by(id=room).first()
     user.new_time = datetime.now()
@@ -722,8 +722,12 @@ def send():
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
     commodity = Commodity.query.filter(Commodity.id == id).first()
-    commodity.is_delete = 1
-    db.session.commit()
+    if commodity.is_delete == 0:
+        commodity.is_delete = 1
+        db.session.commit()
+    else:
+        commodity.is_delete = 0
+        db.session.commit()
     return redirect(url_for('productList'))
 
 
@@ -1470,7 +1474,7 @@ def productList():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     user_icon = setIcon()
     authority = session.get('authority')
-    products = Commodity.query.filter(Commodity.is_delete == 0).all()
+    products = Commodity.query.all()
     allproducts = get_product(products)
     return render_template('productList.html', authority=authority, user=user, commodities=allproducts, icon=user_icon,
                            islogin=islogined(),
@@ -1487,6 +1491,7 @@ def get_product(products):
         item['time'] = p.release_time
         item['price'] = p.price
         item['type'] = p.type
+        item['delete'] = p.is_delete
         allproducts.append(item)
     return allproducts
 
