@@ -18,7 +18,11 @@
         <td>{subtotal}</td>
         <td>
             <span class="del i18n" contrastName="DELETE">
-                Delete
+                {% if lang == 'zh_CN' %}
+                    删除
+                {% else %}
+                    Delete
+                {% endif %}
             </span>
         </td>
     </tr>

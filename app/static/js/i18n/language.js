@@ -88,18 +88,31 @@ var webLanguage = ['zh_CN', 'en_US'];
 var execI18n = function() {
 	debugger
 	if(!Language) {
+		var lang = "en_US"
 		document.cookie = "i18nLanguage="+escape("en_US");
 		i18nLanguage = "en_US";
 		Language = true;
 	}
 	else {
 		debugger
+		var lang = "zh_CN"
 		document.cookie = "i18nLanguage="+escape("zh_CN");
 		i18nLanguage = "zh_CN";
 		Language = false;
 	}
 	/* 需要引入 i18n 文件*/
 	transfer(i18nLanguage);
+	$.post('/api/check_lang',{lang: lang
+        }).done(function (response) {
+            let server_code = response['returnValue']
+            if (server_code == 1) {
+            // success set done
+				location.reload();
+            }else {
+            }
+       }).fail(function (){
+            console.log("Fail reset");
+    })
 };
 var jump = function () {
 	debugger

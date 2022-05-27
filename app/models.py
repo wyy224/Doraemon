@@ -56,6 +56,7 @@ class Commodity(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     commodity_name = db.Column(db.String(32), nullable=False)
+    name_zh = db.Column(db.String(32), nullable=False)
     release_time = db.Column(db.DateTime, default=datetime.now)
     cargo_quantity = db.Column(db.Integer, nullable=False)
     pic_path1 = db.Column(db.String(64), nullable=True)
@@ -63,6 +64,7 @@ class Commodity(db.Model):
     pic_path3 = db.Column(db.String(64), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     introduction = db.Column(db.String(64), nullable=True)
+    intro_zh = db.Column(db.String(64), nullable=True)
     type = db.Column(db.String(32), nullable=False)
     collect_num = db.Column(db.Integer, default=0)
     is_collect = db.Column(db.Boolean, default=False, nullable=False)

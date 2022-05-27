@@ -8,10 +8,21 @@
 <div class="box" id="box" >
    <div class="toumingzi">
                     <div class="desc">
-                        <h1 class="payword1"><span>Purchase failed</span></h1>
+                        <h1 class="payword1"><span>
+                            {% if lang == 'zh_CN' %}
+                                支付失败
+                            {% else %}
+                                Purchase failed
+                            {% endif %}
+                        </span></h1>
                         <p class="payword"><b>{{ message }}</b> </p>
-                        <button class="paybt"  onclick="location.href='/top_up'">top up</button>
-                        <button class="paybt"  onclick="javascript:history.back(-1);">back</button>
+                        <button class="paybt"  onclick="location.href='/top_up'">
+                            {% if lang == 'zh_CN' %}
+                                充值
+                            {% else %}
+                                top up
+                            {% endif %}</button>
+                        <button class="paybt"  onclick="javascript:history.back(-1);">返回</button>
 
 
 
