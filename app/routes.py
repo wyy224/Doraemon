@@ -2,7 +2,6 @@ import logging
 import os
 import json
 import random
-from translate import Translator
 from uuid import uuid4
 import re
 
