@@ -38,19 +38,6 @@ var transfer = function (i18nLanguage) {
 					j(this).html(j.i18n.prop(contrastName));
 				};
 			});
-			// var insertEle_Single = j(".i18n-single")
-			// insertEle_Single.each(function() {
-			// 	this.path='../static/js/i18n/';
-			// 	var contrastName = j(this).attr('contrastName');
-			// 	// 根据i18n元素的 contrastName 获取内容写入'
-			// 	console.log(j.i18n.prop(contrastName));
-			// 	console.log(this.path);
-			// 	debugger
-			// 	if(contrastName) {
-			// 		j(this).html(j.i18n.prop(contrastName));
-			// 	};
-			// 	this.path='./static/js/i18n/';
-			// });
 			var insertInputEle = j(".i18n-input");
 			insertInputEle.each(function() {
 				var selectAttr = j(this).attr('selectattr');
@@ -66,7 +53,7 @@ var transfer = function (i18nLanguage) {
 /**
  * 设置语言类型： 默认为中文
  */
-var i18nLanguage;
+var i18nLanguage
 var str = document.cookie;
 var Language = true;
 var strr = str.split("=")
@@ -89,20 +76,18 @@ var execI18n = function() {
 	debugger
 	if(!Language) {
 		var lang = "en_US"
-		document.cookie = "i18nLanguage="+escape("en_US");
-		i18nLanguage = "en_US";
+		document.cookie = "i18nLanguage=en_US; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
 		Language = true;
 	}
 	else {
-		debugger
 		var lang = "zh_CN"
-		document.cookie = "i18nLanguage="+escape("zh_CN");
+		document.cookie = "i18nLanguage=zh_CN; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
 		i18nLanguage = "zh_CN";
 		Language = false;
 	}
 	/* 需要引入 i18n 文件*/
 	transfer(i18nLanguage);
-	$.post('/api/check_lang',{lang: lang
+	jQuery.post('/api/check_lang',{lang: lang
         }).done(function (response) {
             let server_code = response['returnValue']
             if (server_code == 1) {

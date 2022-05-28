@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url(../image/login.jpg)no-repeat center;
+    background: url(../image/login.jpg) top;
     background-size: cover;
 }
 
@@ -191,5 +191,8 @@ input:focus::placeholder{
     color: #8e9aaf;
     text-align: center;
 }
+    .blank{
+        height: 20vh;
+    }
 
 }
