@@ -204,18 +204,8 @@
                                     <div class="ivu-table-cell ivu-table-hidden">
                                         <div style="display: flex; justify-content: center;">
                                             <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
-                                                <a href="/single/{{ c.id }}">View</a>
+                                                <a href="single/{{ c.id }}">View</a>
                                             </button>
-                                            {% if c.delete == 0 %}
-                                                <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
-                                                    <a href="/single_delete/{{ c.id }}">Delete</a>
-                                                </button>
-                                            {% else %}
-                                                <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;">
-                                                    <a href="/single_delete/{{ c.id }}">Recover</a>
-                                                </button>
-                                            {% endif %}
-
                                             <button type="button" class="ivu-btn ivu-btn-info ivu-btn-small ivu-btn-ghost" style="margin-right: 5px; display: block;" onclick="location.href='/modify_commodity/{{ c.id }}'">
                                                 <span>Edit</span>
                                             </button>
@@ -263,9 +253,6 @@
 </body>
 </html>
 <script>
-    $(document).ready(function (){
-      jump();
-    });
     function clickToLogout() {
         $.post('/api/logout', {}).done(function (response) {
             let server_code = response['returnValue']
