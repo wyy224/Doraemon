@@ -96,7 +96,11 @@
                                         {{ commodity.commodity_name }}
                                     {% endif %}
                                 </a><br>
-                                <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
+                                {% if lang == 'zh_CN' %}
+                                    <a href="single/{{ commodity.id }}">价格: {{ commodity.price }}</a><br>
+                                {% else %}
+                                    <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
+                                {% endif %}
                                 <span class="i18n"
                                       contrastName="RELEASE_TIME">release_time:</span><span>{{ list[ commodity.id ] }}</span>
                             </div>
@@ -128,7 +132,11 @@
                                         {{ commodity.commodity_name }}
                                     {% endif %}
                                 </a><br>
-                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
+                                {% if lang == 'zh_CN' %}
+                                    <a href="single/{{ commodity.id }}">价格: {{ commodity.price }}</a><br>
+                                {% else %}
+                                    <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
+                                {% endif %}
                             </div>
                             <div class="clearfix"></div>
 
@@ -230,7 +238,7 @@
 
     </section>
 
-    <
+
     <ul class="pagination-nav">
         <li class="page-item-nav">
             {% if  commodities.has_prev %}
