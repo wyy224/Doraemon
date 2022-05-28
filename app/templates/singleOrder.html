@@ -181,7 +181,13 @@
                         <p class="mb-4" ><b class="i18n" contrastName="NUM">Num:</b> {{ detail.commodity_num }} </p>
                         <p class="mb-4" ><b class="i18n" contrastName="ADDRESS">Delivery address: </b>{{ order.address }}</p>
                         {% if order.transport == '1' %}
-                        <p class="mb-4" ><b class="i18n" contrastName="TRANSPORT">Transport: </b><a class="i18n" contrastName="DELIVERY_HOME">delivery home</a> </p>
+                        <p class="mb-4" ><b class="i18n" contrastName="TRANSPORT">Transport: </b><a class="i18n">
+                        {% if lang == 'zh_CN' %}
+                            送货到家
+                        {% else %}
+                            delivery home
+                        {% endif %}
+                        </a> </p>
                         {% elif order.transport == '2' %}
                         <p class="mb-4 i18n" ><b class="i18n" contrastName="TRANSPORT">Transport: </b><a class="i18n" contrastName="PICK_UP">pick up at the store</a> </p>
                         {% endif %}

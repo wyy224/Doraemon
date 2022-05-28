@@ -89,8 +89,13 @@
                                 <img src="{{ commodity.pic_path1 }}" alt="" class="img-fluid">
                             </div>
                             <div class="col-xs-8 img-deal1">
-                                <a href="single/{{ commodity.id }}">commodity
-                                    name:{{ commodity.commodity_name }}</a><br>
+                                <a href="single/{{ commodity.id }}">
+                                    {% if lang == 'zh_CN' %}
+                                        {{ commodity.name_zh }}
+                                    {% else %}
+                                        {{ commodity.commodity_name }}
+                                    {% endif %}
+                                </a><br>
                                 <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
                                 <span class="i18n"
                                       contrastName="RELEASE_TIME">release_time:</span><span>{{ list[ commodity.id ] }}</span>
@@ -116,9 +121,14 @@
                                 <img src="{{ commodity.pic_path1 }}" alt="" class="img-fluid">
                             </div>
                             <div class="col-xs-8 img-deal1">
-                                <a href="single/{{ commodity.id }}">commodity
-                                    name:{{ commodity.commodity_name }}</a><br>
-                                <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
+                                <a href="single/{{ commodity.id }}">
+                                    {% if lang == 'zh_CN' %}
+                                        {{ commodity.name_zh }}
+                                    {% else %}
+                                        {{ commodity.commodity_name }}
+                                    {% endif %}
+                                </a><br>
+                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
                             </div>
                             <div class="clearfix"></div>
 
@@ -163,7 +173,13 @@
                                                 <div class="product_price">
                                                     <h4>
 
-                                                        <a href="single/{{ commodity.id }}">{{ commodity.commodity_name }}</a>
+                                                        <a href="single/{{ commodity.id }}">
+                                                            {% if lang == 'zh_CN' %}
+                                                                {{ commodity.name_zh }}
+                                                            {% else %}
+                                                                {{ commodity.commodity_name }}
+                                                            {% endif %}
+                                                        </a>
 
                                                     </h4>
                                                     <div class="grid-price mt-2">
@@ -500,7 +516,7 @@
                 if (data == "This user has been disabled, unable to collect!") {
                     alert(data)
                 } else {
-                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
+                    if (document.getElementById("button_collect" + commodity).style.backgroundColor === "rgb(255, 193, 7)" ) {
                         document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
                         var a = document.getElementById("collect_num" + commodity).innerHTML;
                         var b = (a - 0) - 1;

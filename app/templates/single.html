@@ -101,7 +101,13 @@
                         </div>
                     </div>
                     <div class="col-lg-8 single-right-left simpleCart_shelfItem">
-                        <h3>{{ commodity.commodity_name }}</h3>
+                        <h3>
+                            {% if lang == 'zh_CN' %}
+                                {{ commodity.name_zh }}
+                            {% else %}
+                                {{ commodity.commodity_name }}
+                            {% endif %}
+                        </h3>
                         <p><span class="item_price">{{ commodity.price }}</span>
                             {#                        <del>$1,199</del>#}
                         </p>
@@ -195,9 +201,18 @@
                                 <!--/tab_one-->
                                 <div class="tab1">
                                     <div class="single_page">
-                                        <h6>{{ commodity.commodity_name }}</h6>
+                                        <h6>
+                                            {% if lang == 'zh_CN' %}
+                                                {{ commodity.name_zh }}
+                                            {% else %}
+                                                {{ commodity.commodity_name }}
+                                            {% endif %}</h6>
                                         <p>
-                                            {{ commodity.introduction }}
+                                            {% if lang == 'zh_CN' %}
+                                                {{ commodity.intro_zh }}
+                                            {% else %}
+                                                {{ commodity.introduction}}
+                                            {% endif %}
                                         </p>
                                         <p class="para">
                                             {#                                            Lorem ipsum dolor sit amet, consectetur adipisicing elPellentesque vehicula#}

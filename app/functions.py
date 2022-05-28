@@ -1,6 +1,8 @@
 from app.models import *
 from flask import session, Flask
-
+import json
+import requests
+import re
 
 # This function is use to reset the database into initialized
 def set_db():
@@ -81,6 +83,35 @@ def islogined():
     else:
         return False
 
+def translator(str):
+    """
+    input : str 需要翻译的字符串
+    output：translation 翻译后的字符串
+    """
+    # API
+    url = 'http://fanyi.youdao.com/translate?smartresult=dict&smartresult=rule&smartresult=ugc&sessionFrom=null'
+    # The transmission parameter, i, is the content to be translated
+    key = {
+        'type': "AUTO",
+        'i': str,
+        "doctype": "json",
+        "version": "2.1",
+        "keyfrom": "fanyi.web",
+        "ue": "UTF-8",
+        "action": "FY_BY_CLICKBUTTON",
+        "typoResult": "true"
+    }
+    # key is the dictionary that is sent to the Youdao Dictionary server
+    response = requests.post(url, data=key)
+    # Check whether the server succeeded
+    if response.status_code == 200:
+        # Loads the returned result into JSON format with json.loads
+        result = json.loads(response.text)
+        translation = result['translateResult'][0][0]['tgt']
+        return translation
+    else:
+        print("failed")
+        return None
 
 def create_app():
     app = Flask(__name__)

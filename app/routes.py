@@ -2,6 +2,7 @@ import logging
 import os
 import json
 import random
+from translate import Translator
 from uuid import uuid4
 
 from flask_socketio import SocketIO, join_room, leave_room
@@ -22,8 +23,7 @@ from app import app, db, Config
 
 # from app.forms import LoginForm, SignupForm, YearForm, UpdateForm
 # from app.models import User, Notes
-
-all_type = dict({
+all_type_en = dict({
     '1': 'drum',
     '2': 'piano',
     '3': 'horn',
@@ -39,6 +39,23 @@ all_type = dict({
     '13': 'zhengs'
 })
 
+all_type_cn = dict({
+    '1': '架子鼓',
+    '2': '钢琴',
+    '3': '法国号',
+    '4': '长号',
+    '5': '小号',
+    '6': '小提琴',
+    '7': '竖笛',
+    '8': '二胡',
+    '9': '口琴',
+    '10': '萨克斯',
+    '11': '尤克里里',
+    '12': '吉他',
+    '13': '筝'
+})
+all_type = all_type_en
+
 app.config['MAIL_DEBUG'] = True
 app.config['MAIL_SERVER'] = 'smtp.office365.com'
 app.config['MAIL_PORT'] = 587
@@ -52,9 +69,26 @@ avatars = Avatars()
 socketio = SocketIO()
 socketio.init_app(app)
 
+@app.route('/api/check_lang', methods=["POST"])
+def check_lang():
+    lang = request.form['lang']
+    session['lang'] = lang
+    return jsonify({'returnValue': 1})
+
+def change_type():
+    if session.get('lang') == "zh_CN":
+        return all_type_cn
+    else:
+        return all_type_en
+
+
+
 # logger = logging.getLogger(__name__)
+
 @app.route('/')
 def base():
+    if session.get('lang') == None:
+        session['lang'] = 'en_US'
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if islogined():
         user_icon = setIcon()
@@ -62,7 +96,8 @@ def base():
     else:
         user_icon = 'NULL'
         authority = 0
-    return render_template('index.html', islogin=islogined(), user=user, types=all_type, type_value=all_type.values(),
+
+    return render_template('index.html', islogin=islogined(), user=user, types=change_type(), type_value=change_type().values(),
                            icon=user_icon, authority=authority)
 
 
@@ -75,8 +110,8 @@ def search():
 
     final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
 
-    return render_template('SearchResults.html', final_search=final_search, types=all_type,
-                           type_value=all_type.values())
+    return render_template('SearchResults.html', final_search=final_search, types=change_type(),
+                           type_value=change_type().values())
 
 
 # @app.route('/customer_search', methods=['GET', 'POST'])
@@ -106,8 +141,8 @@ def about():
     else:
         user_icon = 'NULL'
         authority = 0
-    return render_template('about.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority=authority)
+    return render_template('about.html', islogin=islogined(), icon=user_icon, types=change_type(),
+                           type_value=change_type().values(), authority=authority)
 
 
 room_user = {}
@@ -118,7 +153,10 @@ def contact():
     if islogined():
         user = User.query.filter(User.id == session.get('uid')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         user_icon = setIcon()
         authority = session.get('authority')
@@ -129,7 +167,7 @@ def contact():
             room = session.get('uid')
             room_num = str(room)
             session['room'] = room
-            message = Message.query.filter_by(room=room_num).all()
+            message = Mess.query.filter_by(room=room_num).all()
             admin = User.query.filter(User.authority == 1).first()
             contact_icon = admin.icon
         else:
@@ -139,8 +177,8 @@ def contact():
         user_icon = 'NULL'
         return redirect(url_for('login'))
 
-    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=change_type(),
+                           type_value=change_type().values(), authority=authority, username=username, user=user, room=room,
                            message=message, uid=uid, contact_icon=contact_icon)
 
 
@@ -155,7 +193,7 @@ def contact_admin(id):
         room = id
         room_num = str(id)
         session['room'] = room
-        message = Message.query.filter_by(room=room_num).all()
+        message = Mess.query.filter_by(room=room_num).all()
         choose1 = User.query.filter(User.id == id).first()
         choose1.situation = True
         db.session.commit()
@@ -166,8 +204,8 @@ def contact_admin(id):
     else:
         user_icon = 'NULL'
         return redirect(url_for('login'))
-    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority=authority, username=username, user=user, room=room,
+    return render_template('contact.html', islogin=islogined(), icon=user_icon, types=change_type(),
+                           type_value=change_type().values(), authority=authority, username=username, user=user, room=room,
                            message=message, uid=uid, contact_icon=contact_icon)
 
 
@@ -222,7 +260,7 @@ def handle_message(data):
     print('sendMsg' + str(data))
     room = str(session['room'])
     print(room)
-    message = Message(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
+    message = Mess(author_id=session['uid'], room=room, content=data.get('message'), user_name=data.get('user'))
     db.session.add(message)
     user = User.query.filter_by(id=room).first()
     user.new_time = datetime.now()
@@ -266,17 +304,20 @@ def ShoppingCart():
     if islogined():
         user = User.query.filter(User.id == session.get('uid')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         else:
-            return render_template('ShoppingCart.html', types=all_type, type_value=all_type.values())
+            return render_template('ShoppingCart.html', types=change_type(), lang = session.get('lang'), type_value=change_type().values())
     else:
         return redirect(url_for('login'))
 
 
 @app.route('/SearchResults')
 def SearchResults():
-    return render_template('SearchResults.html', types=all_type, type_value=all_type.values())
+    return render_template('SearchResults.html', types=change_type(), type_value=change_type().values())
 
 
 @app.route('/api/ShoppingCart/get_pro', methods=['GET'])
@@ -287,7 +328,10 @@ def get_cart():
         item = dict()
         pd = Commodity.query.filter(Commodity.id == prod.commodity_id).first()
         item['pic'] = pd.pic_path1
-        item['name'] = pd.commodity_name
+        if session.get('lang') == 'zh_CN':
+            item['name'] = pd.name_zh
+        else:
+            item['name'] = pd.commodity_name
         item['price'] = pd.price
         item['num'] = prod.commodity_num
         list.append(item)
@@ -340,12 +384,12 @@ def change_cart():
 
 @app.route('/index')
 def index():
-    return render_template('index.html', types=all_type, type_value=all_type.values())
+    return render_template('index.html', types=change_type(), type_value=change_type().values())
 
 
 @app.route('/icon')
 def icon():
-    return render_template('icon.html', types=all_type, type_value=all_type.values())
+    return render_template('icon.html', types=change_type(), type_value=change_type().values())
 
 
 @app.route('/product')
@@ -377,8 +421,8 @@ def product():
     x = new_commodities
     for a in x:
         a.release_time = a.release_time.strftime('%Y-%m-%d')
-    return render_template('product.html', islogin=islogined(), products=products, types=all_type,
-                           type_value=all_type.values(),
+    return render_template('product.html', islogin=islogined(), lang = session.get('lang'), products=products, types=change_type(),
+                           type_value=change_type().values(),
                            authority=authority, new_commodities=x, icon=user_icon, type=types,
                            user_id=user_id)
 
@@ -389,7 +433,10 @@ def purchase():
         user = User.query.filter(User.id == session.get('uid')).first()
         print(user)
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         print(session.get('cid'))
         commodity = Commodity.query.filter(Commodity.id == session.get('cid')).first()
@@ -404,7 +451,10 @@ def purchase():
             for c in session.get('order_list'):
                 info = dict()
                 c_name = c['name']
-                commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                if session.get('lang') == 'zh_CN':
+                    commodity = Commodity.query.filter(Commodity.name_zh == c_name).first()
+                else:
+                    commodity = Commodity.query.filter(Commodity.commodity_name == c_name).first()
                 info['commodity'] = commodity
                 info['num'] = c['num']
                 showList.append(info)
@@ -412,8 +462,11 @@ def purchase():
                 print(showList)
         else:
             if commodity is None:
-                message = 'Empty cart'
-                return render_template('payfail.html', message=message)
+                if session.get("lang") == "zh_CN":
+                    message = "空购物车"
+                else:
+                    message = 'Empty cart'
+                return render_template('payfail.html',lang=session.get('lang'), message=message)
             price = commodity.price
             num = session['purchase_num']
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
@@ -438,20 +491,29 @@ def purchase():
                     for c in session.get('order_list'):
                         c_name = c['name']
                         c_num = c['num']
-                        com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
+                        if session.get('lang') == 'zh_CN':
+                            com = Commodity.query.filter(Commodity.name_zh == c_name).first()
+                        else:
+                            com = Commodity.query.filter(Commodity.commodity_name == c_name).first()
                         orderdetail = OrderDetail(commodity_id=com.id, order_id=neworder.id, commodity_num=c_num)
                         db.session.add(orderdetail)
                         if (com.cargo_quantity < int(c_num)):
-                            message = "No more stock"
-                            return render_template('payfail.html', message=message)
+                            if session.get("lang") == "zh_CN":
+                                message = "库存不足"
+                            else:
+                                message = "No more stock"
+                            return render_template('payfail.html',lang=session.get('lang'), message=message)
 
                         com.cargo_quantity -= int(c_num)
                         cart = Cart.query.filter(Cart.commodity_id == com.id).all()
                         for a in cart:
                             db.session.delete(a)
                 else:
-                    message = "Insufficient account balance"
-                    return (render_template('payfail.html', message=message))
+                    if session.get("lang") == "zh_CN":
+                        message = "账户余额不足"
+                    else:
+                        message = "Insufficient account balance"
+                    return (render_template('payfail.html',lang=session.get('lang'), message=message))
             else:
 
                 quantity = int(request.form['num'])
@@ -463,21 +525,27 @@ def purchase():
                                               commodity_num=request.form['num'])
                     print("before:", com.cargo_quantity)
                     if com.cargo_quantity < int(request.form['num']):
-                        message = "No more stock"
-                        return render_template('payfail.html', message=message)
+                        if session.get("lang") == "zh_CN":
+                            message = "库存不足"
+                        else:
+                            message = "No more stock"
+                        return render_template('payfail.html',lang=session.get('lang'), message=message)
                     com.cargo_quantity -= int(request.form['num'])
                     print("after:", com.cargo_quantity)
                     db.session.add(orderdetail)
                 else:
-                    message = "Insufficient account balance"
-                    return (render_template('payfail.html', message=message))
+                    if session.get("lang") == "zh_CN":
+                        message = "账户余额不足"
+                    else:
+                        message = "Insufficient account balance"
+                    return (render_template('payfail.html', lang=session.get('lang'),message=message))
             session.pop('cid', None)
             session.pop('order_list', None)
             session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
 
-        return render_template('pay.html', commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
+        return render_template('pay.html', lang = session.get('lang'), commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
                                showlist=showList, num=num)
     else:
         return redirect('/login')
@@ -508,7 +576,10 @@ def topup():
     if islogined():
         user = User.query.filter(User.id == session.get('uid')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         username = session['USERNAME']
         if request.method == 'POST':
@@ -532,13 +603,13 @@ def service():
     else:
         user_icon = 'NULL'
         authority = 0
-    return render_template('service.html', islogin=islogined(), icon=user_icon, types=all_type,
-                           type_value=all_type.values(), authority=authority)
+    return render_template('service.html', islogin=islogined(), icon=user_icon, types=change_type(),
+                           type_value=change_type().values(), authority=authority)
 
 
 @app.route('/typography')
 def typography():
-    return render_template('typography.html', types=all_type, ype_value=all_type.values())
+    return render_template('typography.html', types=change_type(), ype_value=change_type().values())
 
 
 @app.route('/shop', methods=['GET', 'POST'])
@@ -588,8 +659,8 @@ def shop():
     for a in x:
         list[a.id] = a.release_time.strftime('%Y-%m-%d')
 
-    return render_template('shop.html', islogin=islogined(), commodities=commodities, new_commodities=x,
-                           types=all_type, type_value=all_type.values(), icon=user_icon, user_id=user_id,
+    return render_template('shop.html', islogin=islogined(), lang=session.get('lang'), commodities=commodities, new_commodities=x,
+                           types=change_type(), type_value=change_type().values(), icon=user_icon, user_id=user_id,
                            authority=authority, collect_commodities=collect_commodities, list=list, user=user)
 
 
@@ -677,16 +748,16 @@ def single(id):
     if session.get('uid') is not None:
         send_power = 1
         user = User.query.filter(User.id == session.get('uid')).first()
-        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon, reviews=reviews,
                                commodity=commodity,
-                               types=all_type,
-                               type_value=all_type.values(), authority=authority, send_power=send_power, user=user)
+                               types=change_type(),
+                               type_value=change_type().values(), authority=authority, send_power=send_power, user=user)
     else:
         send_power = 0
-        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon, reviews=reviews,
                                commodity=commodity,
-                               types=all_type,
-                               type_value=all_type.values(), authority=authority, send_power=send_power,user=None)
+                               types=change_type(),
+                               type_value=change_type().values(), authority=authority, send_power=send_power,user=None)
     # if form.validate_on_submit():
     #     if session.get('uid') is not None:
     #         user = User.query.filter(User.id == session.get('uid')).first()
@@ -724,6 +795,9 @@ def single_delete(id):
     commodity = Commodity.query.filter(Commodity.id == id).first()
     if commodity.is_delete == 0:
         commodity.is_delete = 1
+        collection1 = Collections.query.filter(Collections.commodity_id == id).all()
+        for col in collection1:
+            db.session.delete(col)
         db.session.commit()
     else:
         commodity.is_delete = 0
@@ -764,7 +838,10 @@ def cart_add():
         if session.get('uid') is not None:
             user = User.query.filter(User.id == session.get('uid')).first()
             if (user.ban == 1):
-                flash('The user has been disabled')
+                if session.get('lang') == 'zh_CN':
+                    flash('用户被禁用')
+                else:
+                    flash('The user has been disabled')
                 return redirect(url_for('log_out'))
             commodity_id = request.form.get('commodity_id', None)
             commodity_num = request.form['number']
@@ -788,7 +865,10 @@ def cart_add():
 def single_add():
     user = User.query.filter(User.id == session.get('uid')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     session['purchase_num'] = request.form['number']
     return redirect(url_for('purchase'))
@@ -800,10 +880,15 @@ def newproduct():
     user_icon = setIcon()
     authority = session.get('authority')
     if request.method == 'POST':
+        name_list = request.form.get('product name').split('-')
+        list = []
+        for i in name_list:
+            list.append(translator(i))
+        intro = translator((request.form.get('introduction')).replace('-', ' '))
         newcommodity = Commodity(commodity_name=request.form.get('product name'),
-                                 cargo_quantity=request.form.get('quantity'),
+                                 name_zh = ('-'.join(list)), cargo_quantity=request.form.get('quantity'),
                                  price=request.form.get('price'), introduction=request.form.get('introduction'),
-                                 type=request.form.get('type'))
+                                 intro_zh=intro,type=request.form.get('type'))
         dir = "../static/instruments/"
         if request.files.get('pic1').filename != "":
             f = request.files.get('pic1')
@@ -829,7 +914,7 @@ def newproduct():
         return redirect(url_for('home'))
     else:
         return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon, c=None,
-                               authority=authority, types=all_type, type_value=all_type.values())
+                               authority=authority, types=change_type(), type_value=change_type().values())
 
 
 @app.route('/Orders')
@@ -837,7 +922,11 @@ def Orders():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                if session.get('lang') == 'zh_CN':
+                    flash('用户被禁用')
+                else:
+                    flash('The user has been disabled')
             return redirect(url_for('log_out'))
         user_icon = setIcon()
         orders = Order.query.filter(Order.user_id == session.get('uid')).order_by(Order.Urgent.desc()).all()
@@ -855,7 +944,7 @@ def Orders():
         print(session['allorders'])
         authority = session.get('authority')
 
-        return render_template('order.html', user=user, icon=user_icon, islogin=islogined(), orders=list,
+        return render_template('order.html', user=user, icon=user_icon, lang=session.get('lang'), islogin=islogined(), orders=list,
                                allorders=alllist,
                                authority=authority)
 
@@ -867,7 +956,10 @@ def Orders():
 def singleOrder(id):
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
 
     user_icon = setIcon()
@@ -890,7 +982,7 @@ def singleOrder(id):
 
     detail = OrderDetail.query.filter(OrderDetail.id == id).first()
 
-    return render_template('singleOrder.html', user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
+    return render_template('singleOrder.html', lang = session.get('lang'), user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
                            sta=sta, detail=detail)
 
 
@@ -901,7 +993,7 @@ def change_status(id):
     order = Order.query.filter(Order.id == details.order_id).first()
     order.status = status
     db.session.commit()
-    return redirect(url_for('singleOrder', id=id))
+    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
 
 
 def get_orders(p, list):
@@ -915,10 +1007,16 @@ def get_orders(p, list):
         item['detail'] = od.id
         item['pic_path'] = c.pic_path1
         item['status'] = p.status
-        item['commodity_name'] = c.commodity_name
+        if session.get('lang') == 'zh_CN':
+            item['commodity_name'] = c.name_zh
+        else:
+            item['commodity_name'] = c.commodity_name
         item['purchase_time'] = p.purchase_time
         item['address'] = p.address
-        item['introduction'] = c.introduction
+        if session.get('lang') == 'zh_CN':
+            item['introduction'] = c.intro_zh
+        else:
+            item['introduction'] = c.introduction
         item['price'] = c.price * od.commodity_num
         item['transport'] = p.transport
         item['name'] = order_detail1.name
@@ -933,7 +1031,10 @@ def get_orders(p, list):
 def deleteOrder(id):
     user = User.query.filter(User.id == session.get('uid')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     od_del = OrderDetail.query.get(id)
     # check if one order has multiple details
@@ -963,14 +1064,17 @@ def urgent(id):
     else:
         order.Urgent = 1
     db.session.commit()
-    return redirect(url_for('singleOrder', id=id))
+    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
 
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
 def receiveOder(id):
     user = User.query.filter(User.id == session.get('uid')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     od_del = OrderDetail.query.get(id)
     details = db.session.query(OrderDetail).filter(OrderDetail.order_id == od_del.order_id).first()
@@ -978,14 +1082,17 @@ def receiveOder(id):
     order.status = "Signed in"
     order.Urgent = 0
     db.session.commit()
-    return redirect(url_for('singleOrder', id=id))
+    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     user = User.query.filter(User.id == session.get('uid')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     od_ed = OrderDetail.query.get(id)
     details = db.session.query(Order).filter(Order.id == od_ed.order_id).first()
@@ -996,7 +1103,7 @@ def edit(id):
         details.name = request.form['name']
         details.transport = request.form['transport']
         db.session.commit()
-        return redirect(url_for('singleOrder', id=id))
+        return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
 
     return render_template('editorder.html', details=details)
 
@@ -1006,7 +1113,10 @@ def home():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         else:
             profile = Profile.query.filter(Profile.user_id == user.id).first()
@@ -1020,8 +1130,8 @@ def home():
                 profile.name = ''
             info = get_info()
             new = get_new()
-            return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=all_type,
-                                   type_value=all_type.values(), info=info, new=new, icon=user_icon,
+            return render_template('home.html', islogin=islogined(), user=user, profile=profile, types=change_type(),
+                                   type_value=change_type().values(), info=info, new=new, icon=user_icon,
                                    authority=authority)
     else:
         return redirect(url_for('login'))
@@ -1055,13 +1165,16 @@ def collection():
     if islogined():
         user = User.query.filter(User.user_name == session.get('USERNAME')).first()
         if (user.ban == 1):
-            flash('The user has been disabled')
+            if session.get('lang') == 'zh_CN':
+                flash('用户被禁用')
+            else:
+                flash('The user has been disabled')
             return redirect(url_for('log_out'))
         else:
             user_icon = setIcon()
             authority = session.get('authority')
             collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-            return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), collects=collects,
+            return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), lang = session.get('lang'),collects=collects,
                                    authority=authority)
     else:
         return redirect(url_for('login'))
@@ -1071,7 +1184,10 @@ def collection():
 def CheckTopup():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     user_icon = setIcon()
     authority = session.get('authority')
@@ -1097,7 +1213,10 @@ def Confirm(id):
 def modify():
     user = User.query.filter(User.user_name == session.get('USERNAME')).first()
     if (user.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('log_out'))
     user_icon = setIcon()
     authority = session.get('authority')
@@ -1122,7 +1241,10 @@ def modify():
             else:
                 os.remove(os.path.join(ava_dir, ava_filename))
                 file_obj.save(os.path.join(ava_dir, ava_filename))
-            flash('AVA uploaded and saved')
+            if session.get('lang') == 'zh_CN':
+                flash('头像已上传且保存')
+            else:
+                flash('AVA uploaded and saved')
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('modify.html', islogin=islogined(), user=user, icon=user_icon, profile=profile, form=form,
@@ -1153,29 +1275,43 @@ def login():
         else:
             return reg_mes()
     else:
-        return render_template('login.html', types=all_type, type_value=all_type.values())
-    return render_template('login.html', types=all_type, type_value=all_type.values())
+        return render_template('login.html', types=change_type(), type_value=change_type().values())
+    return render_template('login.html', types=change_type(), type_value=change_type().values())
 
 
 @app.route('/login/login_mes')
 def login_mes():
     user_find = User.query.filter(User.user_name == request.form["username2"]).first()
     if not user_find:
-        flash('Incorrect username')
+        if session.get('lang') == 'zh_CN':
+            flash('不正确的用户名')
+        else:
+            flash('Incorrect username')
         return redirect(url_for('login'))
     if (user_find.ban == 1):
-        flash('The user has been disabled')
+        if session.get('lang') == 'zh_CN':
+            flash('用户被禁用')
+        else:
+            flash('The user has been disabled')
         return redirect(url_for('login'))
     else:
         if (check_password_hash(user_find.password_hash, request.form["password"])):
-            flash('Login success!')
+            if session.get('lang') == 'zh_CN':
+                flash('登录成功')
+            else:
+                flash('Login success!')
             session["USERNAME"] = user_find.user_name
             session['Logged_in'] = True
             session['uid'] = user_find.id
             session['authority'] = user_find.authority
+            if session.get('lang') == None:
+                session['lang'] = 'en_US'
             return redirect(url_for('main_page'))
         else:
-            flash('Incorrect Password')
+            if session.get('lang') == 'zh_CN':
+                flash('不正确的密码')
+            else:
+                flash('Incorrect Password')
             return redirect(url_for('login'))
 
 
@@ -1183,11 +1319,17 @@ def login_mes():
 def reg_mes():
     user_in_db = User.query.filter(User.user_name == request.form["username1"]).first()
     if user_in_db:
-        flash('User has sign up!')
+        if session.get('lang') == 'zh_CN':
+            flash('用户已经注册')
+        else:
+            flash('User has sign up!')
         return redirect(url_for('login'))
     else:
         if request.form["password1"] != request.form["password2"]:
-            flash('Passwords do not match!')
+            if session.get('lang') == 'zh_CN':
+                flash('密码不一致')
+            else:
+                flash('Passwords do not match!')
             return redirect(url_for('login'))
         else:
             passw_hash = generate_password_hash(request.form["password1"])
@@ -1197,9 +1339,14 @@ def reg_mes():
             profile = Profile(user_id=user.id)
             db.session.add(profile)
             db.session.commit()
-            flash('User registered with username:{}'.format(request.form["username1"]))
+            if session.get('lang') == 'zh_CN':
+                flash('用户注册成功')
+            else:
+                flash('User registered with username:{}'.format(request.form["username1"]))
             session['USERNAME'] = user.user_name
             session['uid'] = user.id
+            if session.get('lang') == None:
+                session['lang'] = 'en_US'
             print(session)
             return redirect(url_for('main_page'))
 
@@ -1209,17 +1356,22 @@ def reg_mes():
 def logout():
     # session.pop("USERNAME", None)
     # session.pop("uid", None)
+    lang = session.get('lang')
     session.clear()
+    session['lang'] = lang
     return jsonify({'returnValue': 1})
     # session.clear()
     # return redirect('/main_page')
 
 
-@app.route('/logout', methods=["GET", "POST"])
-def log_out():
-    session.clear()
-    flash('The user has been disabled')
-    return redirect(url_for('login'))
+# @app.route('/logout', methods=["GET", "POST"])
+# def log_out():
+#     session.clear()
+#     if session.get('lang') == 'zh_CN':
+#         flash('用户被禁用')
+#     else:
+#         flash('The user has been disabled')
+#     return redirect(url_for('login'))
 
 
 @app.route('/main_page')
@@ -1232,8 +1384,8 @@ def main_page():
         name = "visitor"
         user_icon = 'NULL'
         authority = 0
-    return render_template('index.html', islogin=islogined(), username=name, types=all_type,
-                           ype_value=all_type.values(), icon=user_icon, authority=authority)
+    return render_template('index.html', islogin=islogined(), username=name, types=change_type(),
+                           ype_value=change_type().values(), icon=user_icon, authority=authority)
 
 
 @app.route('/commodity', methods=['GET', 'POST'])
@@ -1358,10 +1510,19 @@ def modify_single(id):
         authority = 1
         commodity = Commodity.query.get(int(id))
         if request.method == 'POST':
+            os.rename(os.path.join(Config.MUSIC_SAVE_PATH, commodity.commodity_name+'.mp3'),
+                       os.path.join(Config.MUSIC_SAVE_PATH, request.form.get('product name')+'.mp3'))
             commodity.commodity_name = request.form.get('product name')
+            name_list = request.form.get('product name').split('-')
+            list = []
+            for i in name_list:
+                list.append(translator(i))
+            commodity.name_zh = '-'.join(list)
             commodity.cargo_quantity = request.form.get('quantity')
             commodity.price = request.form.get('price')
             commodity.introduction = request.form.get('introduction')
+            intro = translator((request.form.get('introduction')).replace('-', ' '))
+            commodity.intro_zh = intro
             commodity.type = request.form.get('type')
             dir = "../static/instruments/"
             if request.files.get('pic1').filename != "":
@@ -1387,8 +1548,8 @@ def modify_single(id):
             session['cid'] = commodity.id
             return redirect(url_for('productList'))
         return render_template('newProduct.html', user=user, icon=user_icon, islogin=islogined(), c=commodity,
-                               types=all_type,
-                               type_value=all_type.values(), authority=authority, )
+                               types=change_type(),
+                               type_value=change_type().values(), authority=authority, )
     return redirect('/home')
 
 
@@ -1447,12 +1608,12 @@ def customer():
         allusers = get_customer(users)
 
         return render_template('customer.html', islogin=islogined(), authority=authority, allusers=allusers,
-                               types=all_type,
-                               ype_value=all_type.values(), icon=user_icon, user=user)
+                               types=change_type(),
+                               ype_value=change_type().values(), icon=user_icon, user=user)
 
     return render_template('customer.html', islogin=islogined(), user=user, authority=authority, allusers=allusers,
-                           types=all_type,
-                           ype_value=all_type.values(), icon=user_icon)
+                           types=change_type(),
+                           ype_value=change_type().values(), icon=user_icon)
 
 
 def get_customer(users):
@@ -1486,7 +1647,10 @@ def get_product(products):
     for p in products:
         item = dict()
         item['id'] = p.id
-        item['name'] = p.commodity_name
+        if session.get('lang') == "zh_CN":
+            item['name'] = p.name_zh
+        else:
+            item['name'] = p.commodity_name
         item['quantity'] = p.cargo_quantity
         item['time'] = p.release_time
         item['price'] = p.price
@@ -1518,7 +1682,7 @@ def Forget():
     #     else:
     #         flash("hi")
     # else:
-    return render_template('Forget_P.html', types=all_type, type_value=all_type.values())
+    return render_template('Forget_P.html', types=change_type(), type_value=change_type().values())
 
 @app.route('/api/getcode', methods=["POST"])
 def Getcode():

@@ -118,7 +118,12 @@
                                style="background-image: url({{ collects.commodity.pic_path1 }});">
                                 <div class="overlay"></div>
                                 <div class="text ml-4 mb-4">
-                                    <h3>{{ collects.commodity.commodity_name }}</h3>
+                                    <h3>
+                                        {% if lang == 'zh_CN' %}
+                                            {{ collects.commodity.name_zh }}
+                                        {% else %}
+                                            {{ collects.commodity.commodity_name }}
+                                        {% endif %}</h3>
 
                                 </div>
                             </a>
