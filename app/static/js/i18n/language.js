@@ -87,7 +87,7 @@ var execI18n = function() {
 	}
 	/* 需要引入 i18n 文件*/
 	transfer(i18nLanguage);
-	$.post('/api/check_lang',{lang: lang
+	jQuery.post('/api/check_lang',{lang: lang
         }).done(function (response) {
             let server_code = response['returnValue']
             if (server_code == 1) {
