@@ -454,7 +454,7 @@
                 alert("please login");
             } else
                 Ajax('post', '/collect', sendData, function (data) {
-                    if (document.getElementById("button_collect" + product).style.background === "rgb(255, 193, 7)") {
+                    if (document.getElementById("button_collect" + product).style.backgroundColor === "rgb(255, 193, 7)") {
                         console.log("12")
                         document.getElementById("button_collect" + product).style.background = "#ea1d5d"
                         var a = document.getElementById("collect_num"+ product).innerHTML;

@@ -516,7 +516,7 @@
                 if (data == "This user has been disabled, unable to collect!") {
                     alert(data)
                 } else {
-                    if (document.getElementById("button_collect" + commodity).style.background === "rgb(255, 193, 7)") {
+                    if (document.getElementById("button_collect" + commodity).style.backgroundColor === "rgb(255, 193, 7)" ) {
                         document.getElementById("button_collect" + commodity).style.background = "#00b9ff"
                         var a = document.getElementById("collect_num" + commodity).innerHTML;
                         var b = (a - 0) - 1;
