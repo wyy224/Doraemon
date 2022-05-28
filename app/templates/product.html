@@ -59,13 +59,13 @@
                     <div class="search-hotel">
                         <h3 class="agileits-sear-head i18n" contrastName="SEARCH_HERE">Search Here..</h3>
                         <form class="form-inline my-lg-0" action="{{ url_for('search') }}" method="post">
-                        <input class="form-control mr-sm-2" placeholder="Product name..." id="search_result"
-                               name="search_result"><input type="submit" value=" ">
-                    </form>
-{#                        <form action="#" method="post">#}
-{#                            <input type="search" placeholder="Product name..." name="search" required="">#}
-{#                            <input type="submit" value=" ">#}
-{#                        </form>#}
+                            <input class="form-control mr-sm-2" placeholder="Product name..." id="search_result"
+                                   name="search_result"><input type="submit" value=" ">
+                        </form>
+                        {#                        <form action="#" method="post">#}
+                        {#                            <input type="search" placeholder="Product name..." name="search" required="">#}
+                        {#                            <input type="submit" value=" ">#}
+                        {#                        </form>#}
                     </div>
                     <!-- price range -->
                     {#                    <div class="range">#}
@@ -96,7 +96,11 @@
                                         {% else %}
                                             {{ commodity.commodity_name }}
                                         {% endif %}</a><br>
-                                <a href="single/{{ commodity.id }}">{{ commodity.price }}</a><br>
+                                    {% if lang == 'zh_CN' %}
+                                        <a href="single/{{ commodity.id }}">价格: {{ commodity.price }}</a><br>
+                                    {% else %}
+                                        <a href="single/{{ commodity.id }}">price: {{ commodity.price }}</a><br>
+                                    {% endif %}
                                     <span class="i18n"
                                           contrastName="RELEASE_TIME">release_time:</span><span>{{ commodity.release_time }}</span>
                                 </div>
@@ -137,7 +141,8 @@
                                                         </h4>
                                                         <div class="grid-price mt-2">
                                                             <span class="money ">{{ product.price }}</span><br>
-                                                            <span class="i18n" contrastName="COLLECT_NUM">collect_num:</span>
+                                                            <span class="i18n"
+                                                                  contrastName="COLLECT_NUM">collect_num:</span>
                                                             <span id="collect_num{{ product.id }}">{{ product.collect_num }}</span>
                                                         </div>
                                                     </div>
@@ -154,16 +159,16 @@
                                                     <input type="hidden" value="{{ product.id }}"
                                                            id="product_id">
                                                     {% if authority != 1 %}
-                                                    <button id="button_collect{{ product.id }}"
-                                                            class="toys-cart ptoys-cart"
-                                                            {% if product.is_collected %}
-                                                            style="background: rgb(255, 193, 7)"
-                                                            {% else %}
-                                                            style="background: #ea1d5d"
-                                                            {% endif %}
-                                                            onclick=collect("{{ product.id }}")>
-                                                        <i class="fas fa-star"></i>
-                                                    </button>
+                                                        <button id="button_collect{{ product.id }}"
+                                                                class="toys-cart ptoys-cart"
+                                                                {% if product.is_collected %}
+                                                                style="background: rgb(255, 193, 7)"
+                                                                {% else %}
+                                                                style="background: #ea1d5d"
+                                                                {% endif %}
+                                                                onclick=collect("{{ product.id }}")>
+                                                            <i class="fas fa-star"></i>
+                                                        </button>
                                                     {% endif %}
                                                     {#                                                    </form>#}
                                                 </div>
@@ -242,9 +247,9 @@
     <!-- //show Now-->
     <!--subscribe-address-->
     <section class="subscribe">
-         <div class="container-fluid">
-         <div class="row">
-           <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 map-info-right px-0 text-center">
                     <div class="address-gried-2">
                         <b class="i18n" contrastName="DIS">Doraemon Instrument Store</b>
                         <p class="i18n" contrastName="GYBCOI">
@@ -252,35 +257,35 @@
                         </p>
                     </div>
                 </div>
-            <div class="col-lg-6 col-md-6 address-w3l-right text-center">
-<!--               <div class="address-gried ">-->
-<!--                  <span class="far fa-map"></span>-->
-<!--                  <p>25478 Road St.121<br>USA New Hill-->
-<!--                  <p>-->
-<!--               </p></div>-->
-               <div class="address-gried mt-3">
-                  <span class="fas fa-phone-volume"></span>
-                  <p> 13718691558<br></p>
-               </div>
-               <div class=" address-gried mt-3">
-                  <span class="far fa-envelope"></span>
-                  <p><a href="mailto:info@example.com">519315516@qq.com</a>
-<!--                     <br><a href="mailto:info@example.com">info@example2.com</a>-->
-                  </p>
-               </div>
+                <div class="col-lg-6 col-md-6 address-w3l-right text-center">
+                    <!--               <div class="address-gried ">-->
+                    <!--                  <span class="far fa-map"></span>-->
+                    <!--                  <p>25478 Road St.121<br>USA New Hill-->
+                    <!--                  <p>-->
+                    <!--               </p></div>-->
+                    <div class="address-gried mt-3">
+                        <span class="fas fa-phone-volume"></span>
+                        <p> 13718691558<br></p>
+                    </div>
+                    <div class=" address-gried mt-3">
+                        <span class="far fa-envelope"></span>
+                        <p><a href="mailto:info@example.com">519315516@qq.com</a>
+                            <!--                     <br><a href="mailto:info@example.com">info@example2.com</a>-->
+                        </p>
+                    </div>
+                </div>
             </div>
-         </div>
-		 </div>
-      </section>
-      <!--//subscribe-address-->
+        </div>
+    </section>
+    <!--//subscribe-address-->
 
-      <!--//subscribe-->
-      <!-- footer -->
-      <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
-         <div class="copy-agile-right">
+    <!--//subscribe-->
+    <!-- footer -->
+    <footer class="py-lg-4 py-md-3 py-sm-3 py-3 text-center">
+        <div class="copy-agile-right">
             <p class="i18n" contrastName="BTTT">Back to the top</p>
-         </div>
-      </footer>
+        </div>
+    </footer>
     <!-- //footer -->
     <!-- Modal 1-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -457,16 +462,16 @@
                     if (document.getElementById("button_collect" + product).style.backgroundColor === "rgb(255, 193, 7)") {
                         console.log("12")
                         document.getElementById("button_collect" + product).style.background = "#ea1d5d"
-                        var a = document.getElementById("collect_num"+ product).innerHTML;
-                        var b = (a-0)-1;
-                        var c =document.getElementById("collect_num"+ product).innerHTML=b;
+                        var a = document.getElementById("collect_num" + product).innerHTML;
+                        var b = (a - 0) - 1;
+                        var c = document.getElementById("collect_num" + product).innerHTML = b;
 
                     } else {
                         console.log("123")
                         document.getElementById("button_collect" + product).style.background = "rgb(255, 193, 7)"
-                        var a = document.getElementById("collect_num"+ product).innerHTML;
-                        var b = (a-0)+1;
-                        var c =document.getElementById("collect_num"+ product).innerHTML=b;
+                        var a = document.getElementById("collect_num" + product).innerHTML;
+                        var b = (a - 0) + 1;
+                        var c = document.getElementById("collect_num" + product).innerHTML = b;
                     }
                     alert(data)
                     {#console.log("123");#}
