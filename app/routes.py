@@ -754,7 +754,7 @@ def single(id):
                                type_value=change_type().values(), authority=authority, send_power=send_power, user=user)
     else:
         send_power = 0
-        return render_template('single.html', islogin=islogined(), icon=user_icon, reviews=reviews,
+        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon, reviews=reviews,
                                commodity=commodity,
                                types=change_type(),
                                type_value=change_type().values(), authority=authority, send_power=send_power,user=None)
