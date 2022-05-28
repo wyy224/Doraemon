@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 from flask import render_template, redirect, flash, url_for, session, request, jsonify, send_from_directory, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
-from sqlalchemy import and_, distinct
+from sqlalchemy import and_, distinct,or_
 from flask_mail import Mail, Message
 from app import app, db, Config
 
@@ -118,12 +118,12 @@ def search():
     if search_result == '' or search_result is None:
         return redirect(url_for('base'))
 
-    final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%"),
-                                          Commodity.is_delete == 0).all()
+    final_search = Commodity.query.filter(or_(Commodity.commodity_name.like("%" + search_result + "%"),
+                                              Commodity.name_zh.like("%" + search_result + "%"))).all()
 
-    return render_template('SearchResults.html', final_search=final_search, types=change_type(),
-                           type_value=change_type().values(), icon=user_icon, authority=authority, islogin=islogined(),
-                           username=name)
+    return render_template('SearchResults.html', lang=session.get('lang'), final_search=final_search,
+                           types=change_type(),
+                           type_value=change_type().values())
 
 
 # @app.route('/customer_search', methods=['GET', 'POST'])

@@ -98,10 +98,26 @@
 
                 <img href="main_page" src="{{ search_results.pic_path1 }}" alt=" " class="img-items">
                 <div class="item-info">
-                    <a href="single/{{ search_results.id }}" style="font-size: 35px;cursor: pointer; color: black" ><b>{{ search_results.commodity_name }}</b></a>
-                    <p style="font-size: 20px"><b>price: $</b>{{ search_results.price }} </p>
+                    <a href="single/{{ search_results.id }}" style="font-size: 35px;cursor: pointer; color: black" ><b>
+                        {% if lang == 'zh_CN' %}
+                            {{ search_results.name_zh }}
+                        {% else %}
+                            {{ search_results.commodity_name }}
+                        {% endif %}
+                    </b></a>
+                    <p style="font-size: 20px"><b>
+                        {% if lang == 'zh_CN' %}
+                            价格：$
+                        {% else %}
+                            price: $
+                        {% endif %}
+                    </b>{{ search_results.price }} </p>
                     <p class="show-text">
-                        {{ search_results.introduction }}
+                        {% if lang == 'zh_CN' %}
+                            {{ search_results.intro_zh }}
+                        {% else %}
+                            {{ search_results.introduction }}
+                        {% endif %}
                     </p>
                 </div>
 
