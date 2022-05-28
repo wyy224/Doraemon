@@ -118,7 +118,8 @@ def search():
     if search_result == '' or search_result is None:
         return redirect(url_for('base'))
 
-    final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
+    final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%"),
+                                          Commodity.is_delete == 0).all()
 
     return render_template('SearchResults.html', final_search=final_search, types=change_type(),
                            type_value=change_type().values(), icon=user_icon, authority=authority, islogin=islogined(),
