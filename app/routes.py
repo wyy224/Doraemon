@@ -795,6 +795,9 @@ def single_delete(id):
     commodity = Commodity.query.filter(Commodity.id == id).first()
     if commodity.is_delete == 0:
         commodity.is_delete = 1
+        collection1 = Collections.query.filter(Collections.commodity_id == id).all()
+        for col in collection1:
+            db.session.delete(col)
         db.session.commit()
     else:
         commodity.is_delete = 0
