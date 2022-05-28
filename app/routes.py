@@ -18,7 +18,7 @@ from flask import render_template, redirect, flash, url_for, session, request, j
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_avatars import Avatars
 from sqlalchemy import and_, distinct
-from flask_mail import Mail,Message
+from flask_mail import Mail, Message
 from app import app, db, Config
 
 # from app.forms import LoginForm, SignupForm, YearForm, UpdateForm
@@ -69,18 +69,19 @@ avatars = Avatars()
 socketio = SocketIO()
 socketio.init_app(app)
 
+
 @app.route('/api/check_lang', methods=["POST"])
 def check_lang():
     lang = request.form['lang']
     session['lang'] = lang
     return jsonify({'returnValue': 1})
 
+
 def change_type():
     if session.get('lang') == "zh_CN":
         return all_type_cn
     else:
         return all_type_en
-
 
 
 # logger = logging.getLogger(__name__)
@@ -97,12 +98,21 @@ def base():
         user_icon = 'NULL'
         authority = 0
 
-    return render_template('index.html', islogin=islogined(), user=user, types=change_type(), type_value=change_type().values(),
+    return render_template('index.html', islogin=islogined(), user=user, types=change_type(),
+                           type_value=change_type().values(),
                            icon=user_icon, authority=authority)
 
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    if islogined():
+        name = session['USERNAME']
+        user_icon = setIcon()
+        authority = session.get('authority')
+    else:
+        name = "visitor"
+        user_icon = 'NULL'
+        authority = 0
     search_result = request.form.get("search_result")
 
     if search_result == '' or search_result is None:
@@ -111,7 +121,8 @@ def search():
     final_search = Commodity.query.filter(Commodity.commodity_name.like("%" + search_result + "%")).all()
 
     return render_template('SearchResults.html', final_search=final_search, types=change_type(),
-                           type_value=change_type().values())
+                           type_value=change_type().values(), icon=user_icon, authority=authority, islogin=islogined(),
+                           username=name)
 
 
 # @app.route('/customer_search', methods=['GET', 'POST'])
@@ -178,7 +189,8 @@ def contact():
         return redirect(url_for('login'))
 
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=change_type(),
-                           type_value=change_type().values(), authority=authority, username=username, user=user, room=room,
+                           type_value=change_type().values(), authority=authority, username=username, user=user,
+                           room=room,
                            message=message, uid=uid, contact_icon=contact_icon)
 
 
@@ -205,7 +217,8 @@ def contact_admin(id):
         user_icon = 'NULL'
         return redirect(url_for('login'))
     return render_template('contact.html', islogin=islogined(), icon=user_icon, types=change_type(),
-                           type_value=change_type().values(), authority=authority, username=username, user=user, room=room,
+                           type_value=change_type().values(), authority=authority, username=username, user=user,
+                           room=room,
                            message=message, uid=uid, contact_icon=contact_icon)
 
 
@@ -310,7 +323,8 @@ def ShoppingCart():
                 flash('The user has been disabled')
             return redirect(url_for('log_out'))
         else:
-            return render_template('ShoppingCart.html', types=change_type(), lang = session.get('lang'), type_value=change_type().values())
+            return render_template('ShoppingCart.html', types=change_type(), lang=session.get('lang'),
+                                   type_value=change_type().values())
     else:
         return redirect(url_for('login'))
 
@@ -421,7 +435,8 @@ def product():
     x = new_commodities
     for a in x:
         a.release_time = a.release_time.strftime('%Y-%m-%d')
-    return render_template('product.html', islogin=islogined(), lang = session.get('lang'), products=products, types=change_type(),
+    return render_template('product.html', islogin=islogined(), lang=session.get('lang'), products=products,
+                           types=change_type(),
                            type_value=change_type().values(),
                            authority=authority, new_commodities=x, icon=user_icon, type=types,
                            user_id=user_id)
@@ -466,7 +481,7 @@ def purchase():
                     message = "空购物车"
                 else:
                     message = 'Empty cart'
-                return render_template('payfail.html',lang=session.get('lang'), message=message)
+                return render_template('payfail.html', lang=session.get('lang'), message=message)
             price = commodity.price
             num = session['purchase_num']
         profile = Profile.query.filter(Profile.user_id == session.get('uid')).first()
@@ -502,7 +517,7 @@ def purchase():
                                 message = "库存不足"
                             else:
                                 message = "No more stock"
-                            return render_template('payfail.html',lang=session.get('lang'), message=message)
+                            return render_template('payfail.html', lang=session.get('lang'), message=message)
 
                         com.cargo_quantity -= int(c_num)
                         cart = Cart.query.filter(Cart.commodity_id == com.id).all()
@@ -513,7 +528,7 @@ def purchase():
                         message = "账户余额不足"
                     else:
                         message = "Insufficient account balance"
-                    return (render_template('payfail.html',lang=session.get('lang'), message=message))
+                    return (render_template('payfail.html', lang=session.get('lang'), message=message))
             else:
 
                 quantity = int(request.form['num'])
@@ -529,7 +544,7 @@ def purchase():
                             message = "库存不足"
                         else:
                             message = "No more stock"
-                        return render_template('payfail.html',lang=session.get('lang'), message=message)
+                        return render_template('payfail.html', lang=session.get('lang'), message=message)
                     com.cargo_quantity -= int(request.form['num'])
                     print("after:", com.cargo_quantity)
                     db.session.add(orderdetail)
@@ -538,14 +553,15 @@ def purchase():
                         message = "账户余额不足"
                     else:
                         message = "Insufficient account balance"
-                    return (render_template('payfail.html', lang=session.get('lang'),message=message))
+                    return (render_template('payfail.html', lang=session.get('lang'), message=message))
             session.pop('cid', None)
             session.pop('order_list', None)
             session.pop('price', None)
             db.session.commit()
             return redirect(url_for('Orders'))
 
-        return render_template('pay.html', lang = session.get('lang'), commodity=commodity, profile=profile, price=price, cart_pay=cart_pay,
+        return render_template('pay.html', lang=session.get('lang'), commodity=commodity, profile=profile, price=price,
+                               cart_pay=cart_pay,
                                showlist=showList, num=num)
     else:
         return redirect('/login')
@@ -659,7 +675,8 @@ def shop():
     for a in x:
         list[a.id] = a.release_time.strftime('%Y-%m-%d')
 
-    return render_template('shop.html', islogin=islogined(), lang=session.get('lang'), commodities=commodities, new_commodities=x,
+    return render_template('shop.html', islogin=islogined(), lang=session.get('lang'), commodities=commodities,
+                           new_commodities=x,
                            types=change_type(), type_value=change_type().values(), icon=user_icon, user_id=user_id,
                            authority=authority, collect_commodities=collect_commodities, list=list, user=user)
 
@@ -748,16 +765,18 @@ def single(id):
     if session.get('uid') is not None:
         send_power = 1
         user = User.query.filter(User.id == session.get('uid')).first()
-        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon, reviews=reviews,
+        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon,
+                               reviews=reviews,
                                commodity=commodity,
                                types=change_type(),
                                type_value=change_type().values(), authority=authority, send_power=send_power, user=user)
     else:
         send_power = 0
-        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon, reviews=reviews,
+        return render_template('single.html', islogin=islogined(), lang=session.get('lang'), icon=user_icon,
+                               reviews=reviews,
                                commodity=commodity,
                                types=change_type(),
-                               type_value=change_type().values(), authority=authority, send_power=send_power,user=None)
+                               type_value=change_type().values(), authority=authority, send_power=send_power, user=None)
     # if form.validate_on_submit():
     #     if session.get('uid') is not None:
     #         user = User.query.filter(User.id == session.get('uid')).first()
@@ -773,7 +792,6 @@ def single(id):
     #         return redirect(url_for('login'))
 
 
-
 @app.route('/api/send_comment', methods=['GET', 'POST'])
 def send():
     title = request.form.get('title')
@@ -781,14 +799,15 @@ def send():
     user = User.query.filter(User.id == session.get('uid')).first()
     if user.ban == 0:
         if title != '' and content != '':
-                review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
-                db.session.add(review)
-                db.session.commit()
-                return jsonify({'returnValue': 1})
+            review = Review(user_id=session.get('uid'), commodity_id=session.get('cid'), title=title, text=content)
+            db.session.add(review)
+            db.session.commit()
+            return jsonify({'returnValue': 1})
         else:
             return jsonify({'returnValue': 0})
     else:
         return jsonify({'returnValue': 2})
+
 
 @app.route('/single_delete/<int:id>', methods=['GET', 'POST'])
 def single_delete(id):
@@ -886,9 +905,9 @@ def newproduct():
             list.append(translator(i))
         intro = translator((request.form.get('introduction')).replace('-', ' '))
         newcommodity = Commodity(commodity_name=request.form.get('product name'),
-                                 name_zh = ('-'.join(list)), cargo_quantity=request.form.get('quantity'),
+                                 name_zh=('-'.join(list)), cargo_quantity=request.form.get('quantity'),
                                  price=request.form.get('price'), introduction=request.form.get('introduction'),
-                                 intro_zh=intro,type=request.form.get('type'))
+                                 intro_zh=intro, type=request.form.get('type'))
         dir = "../static/instruments/"
         if request.files.get('pic1').filename != "":
             f = request.files.get('pic1')
@@ -944,7 +963,8 @@ def Orders():
         print(session['allorders'])
         authority = session.get('authority')
 
-        return render_template('order.html', user=user, icon=user_icon, lang=session.get('lang'), islogin=islogined(), orders=list,
+        return render_template('order.html', user=user, icon=user_icon, lang=session.get('lang'), islogin=islogined(),
+                               orders=list,
                                allorders=alllist,
                                authority=authority)
 
@@ -982,7 +1002,8 @@ def singleOrder(id):
 
     detail = OrderDetail.query.filter(OrderDetail.id == id).first()
 
-    return render_template('singleOrder.html', lang = session.get('lang'), user=user, icon=user_icon, islogin=islogined(), order=order, user1=user1,
+    return render_template('singleOrder.html', lang=session.get('lang'), user=user, icon=user_icon, islogin=islogined(),
+                           order=order, user1=user1,
                            sta=sta, detail=detail)
 
 
@@ -993,7 +1014,7 @@ def change_status(id):
     order = Order.query.filter(Order.id == details.order_id).first()
     order.status = status
     db.session.commit()
-    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
+    return redirect(url_for('singleOrder', lang=session.get('lang'), id=id))
 
 
 def get_orders(p, list):
@@ -1064,7 +1085,7 @@ def urgent(id):
     else:
         order.Urgent = 1
     db.session.commit()
-    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
+    return redirect(url_for('singleOrder', lang=session.get('lang'), id=id))
 
 
 @app.route('/singleOrder/order/receive/<int:id>', methods=['GET', 'POST'])
@@ -1082,7 +1103,7 @@ def receiveOder(id):
     order.status = "Signed in"
     order.Urgent = 0
     db.session.commit()
-    return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
+    return redirect(url_for('singleOrder', lang=session.get('lang'), id=id))
 
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -1103,7 +1124,7 @@ def edit(id):
         details.name = request.form['name']
         details.transport = request.form['transport']
         db.session.commit()
-        return redirect(url_for('singleOrder', lang = session.get('lang'), id=id))
+        return redirect(url_for('singleOrder', lang=session.get('lang'), id=id))
 
     return render_template('editorder.html', details=details)
 
@@ -1174,7 +1195,8 @@ def collection():
             user_icon = setIcon()
             authority = session.get('authority')
             collects = Collections.query.filter(Collections.user_id == session.get('uid'))
-            return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(), lang = session.get('lang'),collects=collects,
+            return render_template('collection.html', user=user, icon=user_icon, islogin=islogined(),
+                                   lang=session.get('lang'), collects=collects,
                                    authority=authority)
     else:
         return redirect(url_for('login'))
@@ -1333,10 +1355,10 @@ def reg_mes():
             return redirect(url_for('login'))
         password = request.form["password1"]
         usern = request.form["username1"]
-        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6}$',password):
+        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6}$', password):
             flash("The password must contain a minimum of six characters,including numbers and letters!")
             return redirect(url_for('login'))
-        if not re.match(r'^.{1,12}$',usern):
+        if not re.match(r'^.{1,12}$', usern):
             flash("The username is too long!")
             return redirect(url_for('login'))
         else:
@@ -1519,8 +1541,8 @@ def modify_single(id):
         authority = 1
         commodity = Commodity.query.get(int(id))
         if request.method == 'POST':
-            os.rename(os.path.join(Config.MUSIC_SAVE_PATH, commodity.commodity_name+'.mp3'),
-                       os.path.join(Config.MUSIC_SAVE_PATH, request.form.get('product name')+'.mp3'))
+            os.rename(os.path.join(Config.MUSIC_SAVE_PATH, commodity.commodity_name + '.mp3'),
+                      os.path.join(Config.MUSIC_SAVE_PATH, request.form.get('product name') + '.mp3'))
             commodity.commodity_name = request.form.get('product name')
             name_list = request.form.get('product name').split('-')
             list = []
@@ -1680,7 +1702,7 @@ def ban(id):
     return redirect(url_for('customer'))
 
 
-@app.route('/Forget', methods=["GET","POST"])
+@app.route('/Forget', methods=["GET", "POST"])
 def Forget():
     # if request.method == 'POST':
     #     if request.form["verify"] != "":
@@ -1692,6 +1714,7 @@ def Forget():
     #         flash("hi")
     # else:
     return render_template('Forget_P.html', types=change_type(), type_value=change_type().values())
+
 
 @app.route('/api/getcode', methods=["POST"])
 def Getcode():
@@ -1706,8 +1729,9 @@ def Getcode():
 
     msg.body = "Hello, sending you this email from Doraemon store, please check your verification code\n" + captcha
     mail.send(msg)
-    session[email]=captcha
+    session[email] = captcha
     return jsonify({'returnValue': 1})
+
 
 @app.route('/api/updatePwd', methods=["POST"])
 def updatePwd():
