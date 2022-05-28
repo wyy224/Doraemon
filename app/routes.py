@@ -1345,6 +1345,7 @@ def reg_mes():
                 flash('User registered with username:{}'.format(request.form["username1"]))
             session['USERNAME'] = user.user_name
             session['uid'] = user.id
+            session['authority'] = 0
             if session.get('lang') == None:
                 session['lang'] = 'en_US'
             print(session)
