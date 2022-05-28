@@ -4,6 +4,7 @@ import json
 import random
 from translate import Translator
 from uuid import uuid4
+import re
 
 from flask_socketio import SocketIO, join_room, leave_room
 from PIL import Image
@@ -1330,6 +1331,14 @@ def reg_mes():
                 flash('密码不一致')
             else:
                 flash('Passwords do not match!')
+            return redirect(url_for('login'))
+        password = request.form["password1"]
+        usern = request.form["username1"]
+        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6}$',password):
+            flash("The password must contain a minimum of six characters,including numbers and letters!")
+            return redirect(url_for('login'))
+        if not re.match(r'^.{1,12}$',usern):
+            flash("The username is too long!")
             return redirect(url_for('login'))
         else:
             passw_hash = generate_password_hash(request.form["password1"])
