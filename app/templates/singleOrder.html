@@ -255,7 +255,7 @@
 
                         {% endif %}
                         {% if sta != 'Signed in' %}
-                            <form action="order/delete/{{ order.id }}" method="post">
+                            <form action="order/delete/{{ order.detail }}" method="post">
                                 <button class="cancel i18n"
                                         onclick="{if(confirm('Please confirm whether you want to cancel the order?')){return true;}return false;}"
                                         contrastName="CANCEL_ORDER">Cancel order
