@@ -109,7 +109,11 @@
                             {% endif %}
                             <span ><a href="/CheckTopup" class="i18n" contrastName="TOPUP_L">Top up List</a></span>
                         </p>
+                    {% if modify == 0 %}
                         <h1 class="bread i18n">New Product</h1>
+                    {% elif modify == 1 %}
+                        <h1 class="bread i18n">Edit Product</h1>
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -186,32 +190,34 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p><b>Picture1:</b></p>
-                                                    <div>
-                                                        {% if c.pic_path1 is not none %}
-                                                        <img src="{{ c.pic_path1 }}" width=300 height=300 style="position:relative;left: 210px">
-                                                        {% else %}
-                                                            <b>No picture</b>
-                                                        {% endif %}
-                                                    </div>
+                                                    {% if modify == 1 %}
+                                                        <p><b>Picture1:</b></p>
+                                                        <div>
+                                                            {% if c.pic_path1 is not none %}
+                                                            <img src="{{ c.pic_path1 }}" width=300 height=300 style="position:relative;left: 210px">
+                                                            {% else %}
+                                                                <b>No picture</b>
+                                                            {% endif %}
+                                                        </div>
 
-                                                    <p><b>Picture2:</b></p>
-                                                    <div>
-                                                        {% if c.pic_path2 is not none %}
-                                                        <img src="{{ c.pic_path2 }}" width=300 height=300 style="position:relative;left: 210px">
-                                                        {% else %}
-                                                            <b>No picture</b>
-                                                        {% endif %}
-                                                    </div>
+                                                        <p><b>Picture2:</b></p>
+                                                        <div>
+                                                            {% if c.pic_path2 is not none %}
+                                                            <img src="{{ c.pic_path2 }}" width=300 height=300 style="position:relative;left: 210px">
+                                                            {% else %}
+                                                                <b>No picture</b>
+                                                            {% endif %}
+                                                        </div>
 
-                                                    <p><b>Picture3:</b></p>
-                                                    <div>
-                                                        {% if c.pic_path3 is not none %}
-                                                        <img src="{{ c.pic_path3 }}" width=300 height=300 style="position:relative;left: 210px">
-                                                        {% else %}
-                                                            <b>No picture</b>
-                                                        {% endif %}
-                                                    </div>
+                                                        <p><b>Picture3:</b></p>
+                                                        <div>
+                                                            {% if c.pic_path3 is not none %}
+                                                            <img src="{{ c.pic_path3 }}" width=300 height=300 style="position:relative;left: 210px">
+                                                            {% else %}
+                                                                <b>No picture</b>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

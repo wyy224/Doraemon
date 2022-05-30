@@ -934,7 +934,7 @@ def newproduct():
         return redirect(url_for('home'))
     else:
         return render_template('newProduct.html', islogin=islogined(), user=user, icon=user_icon, c=None,
-                               authority=authority, types=change_type(), type_value=change_type().values())
+                               authority=authority, types=change_type(), type_value=change_type().values(), modify=0)
 
 
 @app.route('/Orders')
@@ -1581,7 +1581,7 @@ def modify_single(id):
             return redirect(url_for('productList'))
         return render_template('newProduct.html', user=user, icon=user_icon, islogin=islogined(), c=commodity,
                                types=change_type(),
-                               type_value=change_type().values(), authority=authority, )
+                               type_value=change_type().values(), authority=authority, modify=1)
     return redirect('/home')
 
 
