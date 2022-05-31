@@ -175,11 +175,7 @@
         2000);
 
     document.onreadystatechange=function () {
-          if (document.readyState !== "complete"){
-              $("body").hide();
-          }
           if (document.readyState==="complete"){
-              $("body").show();
                loadingFade();
           }
 }
@@ -192,8 +188,6 @@
                    clearInterval(time);
                    //loadingPage.remove();
                    $('#loading').remove();
-
-
               }
 
               loadingBackground.style.opacity=opacity;
