@@ -244,7 +244,6 @@
                     if (really) {
                         change(tds[1].innerText, 'delete', 1);
                         tbody.removeChild(tr);
-                        debugger
                     }
                     break;
                 case 'pay_for': //付款
@@ -298,10 +297,10 @@
                 var flag = true;
                 var id = tr.id + '_checked'
                 var unshow = document.getElementById(id);
-                if (!target.checked) unshow.style.setProperty('display', 'none');
-                else {
-                    unshow.style.removeProperty('display', 'none');
-                }
+                {#if (!target.checked) unshow.style.setProperty('display', 'none');#}
+                {#else {#}
+                {#    unshow.style.removeProperty('display', 'none');#}
+                {#/}#}
                 /*当存在一个复选框未选中，全选框为false*/
                 for (var i = 0; i < trs.length; i++) {
                     var checkbox = trs[i].cells[0].children[0];
