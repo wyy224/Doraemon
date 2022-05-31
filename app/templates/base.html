@@ -179,8 +179,8 @@
               $("body").hide();
           }
           if (document.readyState==="complete"){
-              $("body").show();
                loadingFade();
+               $("body").show();
           }
 }
     function loadingFade() {
@@ -195,7 +195,6 @@
 
 
               }
-
               loadingBackground.style.opacity=opacity;
               opacity-=0.4;
          },100);
