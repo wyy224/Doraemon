@@ -61,7 +61,7 @@ $.i18n.properties = function(settings) {
 	// call callback
 	if(settings.callback){
         console.log(window.location.href.toString().indexOf('single'));
-        if((window.location.href.toString().indexOf('single'))!=-1 || (window.location.href.toString().indexOf('contact_admin'))!=-1)
+        if((window.location.href.toString().indexOf('single'))!=-1 || (window.location.href.toString().indexOf('contact_admin'))!=-1 || (window.location.href.toString().indexOf('modify_commodity'))!=-1)
         {
             settings.path='../static/js/i18n/';
             // load and parse bundle files

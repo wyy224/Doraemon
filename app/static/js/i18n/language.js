@@ -12,8 +12,6 @@ var getNavLanguage = function() {
 	return false;
 }
 var transfer = function (i18nLanguage) {
-	// console.log(j.i18n)
-	// debugger
 	if(j.i18n == undefined) {
 		return false;
 	};
@@ -73,7 +71,6 @@ var webLanguage = ['zh_CN', 'en_US'];
  * @return
  */
 var execI18n = function() {
-	debugger
 	if(!Language) {
 		var lang = "en_US"
 		document.cookie = "i18nLanguage=en_US; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
@@ -100,7 +97,6 @@ var execI18n = function() {
     })
 };
 var jump = function () {
-	debugger
 	transfer(i18nLanguage);
 }
 // }

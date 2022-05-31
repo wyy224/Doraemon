@@ -1002,10 +1002,12 @@ def singleOrder(id):
     sta = order['status']
 
     detail = OrderDetail.query.filter(OrderDetail.id == id).first()
+    authority = session.get('authority')
+
 
     return render_template('singleOrder.html', lang=session.get('lang'), user=user, icon=user_icon, islogin=islogined(),
                            order=order, user1=user1,
-                           sta=sta, detail=detail)
+                           sta=sta, detail=detail, authority=authority)
 
 
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
@@ -1356,8 +1358,8 @@ def reg_mes():
             return redirect(url_for('login'))
         password = request.form["password1"]
         usern = request.form["username1"]
-        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6}$', password):
-            flash("The password must contain a minimum of six characters,including numbers and letters!")
+        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$', password):
+            flash("The password must be between 6 and 12 characters long,including numbers and letters, not symbols!")
             return redirect(url_for('login'))
         if not re.match(r'^.{1,12}$', usern):
             flash("The username is too long!")
