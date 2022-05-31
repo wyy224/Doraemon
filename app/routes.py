@@ -1356,8 +1356,8 @@ def reg_mes():
             return redirect(url_for('login'))
         password = request.form["password1"]
         usern = request.form["username1"]
-        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6}$', password):
-            flash("The password must contain a minimum of six characters,including numbers and letters!")
+        if not re.match(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$', password):
+            flash("The password must be between 6 and 12 characters long,including numbers and letters, not symbols!")
             return redirect(url_for('login'))
         if not re.match(r'^.{1,12}$', usern):
             flash("The username is too long!")
