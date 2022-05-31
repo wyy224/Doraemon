@@ -1002,10 +1002,12 @@ def singleOrder(id):
     sta = order['status']
 
     detail = OrderDetail.query.filter(OrderDetail.id == id).first()
+    authority = session.get('authority')
+
 
     return render_template('singleOrder.html', lang=session.get('lang'), user=user, icon=user_icon, islogin=islogined(),
                            order=order, user1=user1,
-                           sta=sta, detail=detail)
+                           sta=sta, detail=detail, authority=authority)
 
 
 @app.route('/status/<int:id>', methods=['GET', 'POST'])
